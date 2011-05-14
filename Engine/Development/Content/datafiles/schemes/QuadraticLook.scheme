@@ -1,0 +1,45 @@
+<?xml version = "1.0" ?>
+<GUIScheme Name = "QuadraticLook">
+	<Imageset Name = "QuadraticLook" Filename = "../datafiles/imagesets/QuadraticLook.imageset" />
+	<LookNFeel Filename = "../datafiles/looknfeel/QuadraticLook.looknfeel" />
+	<WindowSet Filename = "CEGUIFalagardBase" />
+	<FalagardMapping WindowType = "QuadraticLook/Button" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/Button" />
+	<FalagardMapping WindowType = "QuadraticLook/Checkbox" TargetType = "Falagard/Checkbox" LookNFeel = "QuadraticLook/Checkbox" />
+	<FalagardMapping WindowType = "QuadraticLook/Listbox" TargetType = "Falagard/Listbox" LookNFeel = "QuadraticLook/Listbox" />
+	<FalagardMapping WindowType = "QuadraticLook/MenuItem" TargetType = "Falagard/MenuItem" LookNFeel = "QuadraticLook/MenuItem" />
+	<FalagardMapping WindowType = "QuadraticLook/VerticalScrollbar" TargetType = "Falagard/Scrollbar" LookNFeel = "QuadraticLook/VerticalScrollbar" />
+	<FalagardMapping WindowType = "QuadraticLook/VerticalScrollbarThumb" TargetType = "Falagard/Thumb" LookNFeel = "QuadraticLook/VerticalScrollbarThumb" />
+	<FalagardMapping WindowType = "QuadraticLook/HorizontalScrollbar" TargetType = "Falagard/Scrollbar" LookNFeel = "QuadraticLook/HorizontalScrollbar" />
+	<FalagardMapping WindowType = "QuadraticLook/HorizontalScrollbarThumb" TargetType = "Falagard/Thumb" LookNFeel = "QuadraticLook/HorizontalScrollbarThumb" />
+	<FalagardMapping WindowType = "QuadraticLook/Menubar" TargetType = "Falagard/Menubar" LookNFeel = "QuadraticLook/Menubar" />
+	<FalagardMapping WindowType = "QuadraticLook/PopupMenu" TargetType = "Falagard/PopupMenu" LookNFeel = "QuadraticLook/PopupMenu" />
+	<FalagardMapping WindowType = "QuadraticLook/StaticText" TargetType = "Falagard/StaticText" LookNFeel = "QuadraticLook/StaticText" />
+	<FalagardMapping WindowType = "QuadraticLook/ComboDropList" TargetType = "Falagard/ComboDropList" LookNFeel = "QuadraticLook/ComboDropList" />
+	<FalagardMapping WindowType = "QuadraticLook/ComboEditbox" TargetType = "Falagard/Editbox" LookNFeel = "QuadraticLook/ComboEditbox" />
+	<FalagardMapping WindowType = "QuadraticLook/Combobox" TargetType = "Falagard/Combobox" LookNFeel = "QuadraticLook/Combobox" />
+	<FalagardMapping WindowType = "QuadraticLook/Editbox" TargetType = "Falagard/Editbox" LookNFeel = "QuadraticLook/Editbox" />
+	<FalagardMapping WindowType = "QuadraticLook/TabButton" TargetType = "Falagard/TabButton" LookNFeel = "QuadraticLook/TabButton" />
+	<FalagardMapping WindowType = "QuadraticLook/TabControl" TargetType = "Falagard/TabControl" LookNFeel = "QuadraticLook/TabControl" />
+	<FalagardMapping WindowType = "QuadraticLook/TabPane" TargetType = "Falagard/TabPane" LookNFeel = "QuadraticLook/TabPane" />
+	<FalagardMapping WindowType = "QuadraticLook/LeftEdge" TargetType = "Falagard/TabPane" LookNFeel = "QuadraticLook/LeftEdge" />
+	<FalagardMapping WindowType = "QuadraticLook/ArrowButton" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/ArrowButton" />
+	<FalagardMapping WindowType = "QuadraticLook/MultiLineEditbox" TargetType = "Falagard/MultiLineEditbox" LookNFeel = "QuadraticLook/MultiLineEditbox" />
+	<FalagardMapping WindowType = "QuadraticLook/ProgressBar" TargetType = "Falagard/ProgressBar" LookNFeel = "QuadraticLook/ProgressBar" />
+	<FalagardMapping WindowType = "QuadraticLook/Tooltip" TargetType = "Falagard/Tooltip" LookNFeel = "QuadraticLook/Tooltip" />
+	<FalagardMapping WindowType = "QuadraticLook/FrameWindow" TargetType = "Falagard/FrameWindow" LookNFeel = "QuadraticLook/FrameWindow" />
+	<FalagardMapping WindowType = "QuadraticLook/StaticImage" TargetType = "Falagard/StaticImage" LookNFeel = "QuadraticLook/StaticImage" />
+	<FalagardMapping WindowType = "QuadraticLook/ButtonArrowLeft" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/ButtonArrowLeft" />
+	<FalagardMapping WindowType = "QuadraticLook/ButtonArrowRight" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/ButtonArrowRight" />
+	<FalagardMapping WindowType = "QuadraticLook/ButtonArrowUp" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/ButtonArrowUp" />
+	<FalagardMapping WindowType = "QuadraticLook/ButtonArrowDown" TargetType = "Falagard/Button" LookNFeel = "QuadraticLook/ButtonArrowDown" />
+	<FalagardMapping WindowType = "QuadraticLook/FrameWindow" TargetType = "Falagard/FrameWindow" LookNFeel = "QuadraticLook/FrameWindow" />
+	<FalagardMapping WindowType = "QuadraticLook/Titlebar" TargetType = "Falagard/Titlebar" LookNFeel = "QuadraticLook/Titlebar" />
+	<FalagardMapping WindowType = "QuadraticLook/SystemButton" TargetType = "Falagard/SystemButton" LookNFeel = "QuadraticLook/Button" />
+	<FalagardMapping WindowType = "QuadraticLook/Spinner" TargetType = "Falagard/Spinner" LookNFeel = "QuadraticLook/Spinner" />
+	<FalagardMapping WindowType = "QuadraticLook/Slider" TargetType = "Falagard/Slider" LookNFeel = "QuadraticLook/Slider" />
+	<FalagardMapping WindowType = "QuadraticLook/SliderThumb" TargetType = "Falagard/Thumb" LookNFeel = "QuadraticLook/SliderThumb" />
+	<FalagardMapping WindowType = "QuadraticLook/MultiColumnList" TargetType = "Falagard/MultiColumnList" LookNFeel = "QuadraticLook/MultiColumnList" />
+	<FalagardMapping WindowType = "QuadraticLook/ListHeader" TargetType = "Falagard/ListHeader" LookNFeel = "QuadraticLook/ListHeader" />
+	<FalagardMapping WindowType = "QuadraticLook/ListHeaderSegment" TargetType = "Falagard/ListHeaderSegment" LookNFeel = "QuadraticLook/ListHeaderSegment" />
+	<FalagardMapping WindowType = "QuadraticLook/RadioButton" TargetType = "Falagard/RadioButton" LookNFeel = "QuadraticLook/RadioButton" />
+</GUIScheme>

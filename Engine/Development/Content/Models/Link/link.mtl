@@ -1,0 +1,326 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 5.5 5.5.3.2642 Release
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl prop_arrow_smd_mesh_02
+Ka 1 1 1
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd arrowhead.tga
+map_bump arrowhead_normal.tga
+bump arrowhead_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_arrow_smd_mesh_03
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd arrowtail.tga
+map_bump arrowtail_normal.tga
+bump arrowtail_normal.tga
+map_opacity arrowtail.tga
+map_d arrowtail.tga
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_arrow_smd_mesh_01
+Ka 1 1 1
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd al_arrow.tga
+map_bump al_arrow_normal.tga
+bump al_arrow_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_10
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 34.2967
+map_Kd eyewhite.tga
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_07
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 59.7141
+map_Kd iris2.tga
+map_bump 
+bump 
+map_opacity iris2.tga
+map_d iris2.tga
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_06
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 17.1484
+map_Kd face.tga
+map_bump face_normal.tga
+bump face_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_05
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 73.5167
+map_Kd link3.tga
+map_bump link3_normal.tga
+bump link3_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_04
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd inside.tga
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_03
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 25.9921
+map_Kd link1.tga
+map_bump link1_normal.tga
+bump link1_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_02
+Ka 0.4 0.4 0.4
+Kd 0.4 0.4 0.4
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl link_link_09_smd_mesh_01
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 21.1121
+map_Kd link2.tga
+map_bump link2_normal.tga
+bump link2_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_boomerang_smd_mesh_02
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd boomerang2.tga
+map_bump boomerang2_normal.tga
+bump boomerang2_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_boomerang_smd_mesh_01
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 27.8576
+map_Kd boomerang.tga
+map_bump boomerang_normal.tga
+bump boomerang_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_bow_smd_mesh_02
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 55.7152
+map_Kd al_Bowb.tga
+map_bump al_Bowb_normal.tga
+bump al_Bowb_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_bow_smd_mesh_01
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd al_BowA.tga
+map_bump al_BowA_normal.tga
+bump al_BowA_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_hookshot_smd_mesh_02
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd al_HS_tip.tga
+map_bump al_HS_tip_normal.tga
+bump al_HS_tip_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_hookshot_smd_mesh_01
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 48.5029
+map_Kd al_HS.tga
+map_bump al_HS_normal.tga
+bump al_HS_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl default02
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 34.2967
+map_Kd sheath.tga
+map_bump sheath_normal.tga
+bump sheath_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_msword_smd_mesh_01
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 27.8576
+map_Kd blade.tga
+map_bump 
+bump 
+map_opacity blade.tga
+map_d blade.tga
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl prop_msword_smd_mesh_02
+Ka 0.4 0.4 0.4
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 121.887
+map_Kd grip.tga
+map_bump grip_normal.tga
+bump grip_normal.tga
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
