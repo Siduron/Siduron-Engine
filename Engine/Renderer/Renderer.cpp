@@ -11,7 +11,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
 {
 	this->window = hWnd;
 	Logger::Instance()->Log("Creating Direct3D Interface", Info);
-	this->g_pD3D = Direct3DCreate9(D3D_SDK_VERSION); // Creër Direct3D interface
+	this->g_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
 	
 	if(this->g_pD3D == NULL)
 	{
@@ -35,7 +35,9 @@ bool Renderer::InitDirect3D(HWND hWnd)
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
-	//d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_8_SAMPLES;
+	LPDIRECT3DSURFACE9 newDepthStencil	= NULL;
+
 	//d3dpp.MultiSampleQuality = 0;
 	//DWORD total;
 	//if(SUCCEEDED(this->g_pD3D->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,		  							              D3DDEVTYPE_HAL,
@@ -44,13 +46,15 @@ bool Renderer::InitDirect3D(HWND hWnd)
  //                                                    D3DMULTISAMPLE_16_SAMPLES,
 	//								      &total)))
 	//  {
-	//	d3dpp.MultiSampleType = D3DMULTISAMPLE_16_SAMPLES;
+		//d3dpp.MultiSampleType = D3DMULTISAMPLE_8_SAMPLES;
 	//	d3dpp.MultiSampleQuality = total - 1;
 	//  }
 
 	Logger::Instance()->Log("Creating Direct3D Device..", Info);
 	// Creër Direct3D device
 	HRESULT createDevice = this->g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice);
+		this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL );
+	this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );;
 	if(createDevice != 0)
 		return false;
 	//Logger::Instance()->Log("Initializing Direct3D Device..", Info);	
@@ -61,13 +65,13 @@ bool Renderer::InitDirect3D(HWND hWnd)
 	this->g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(255, 255, 255));    // ambient light
 
 	//Texture filtering
-	this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);
-	this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_ANISOTROPIC);
-	this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_ANISOTROPIC);
+	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);
+	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_ANISOTROPIC);
+	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_ANISOTROPIC);
 
 	// Save transformation matrices of the device
-    this->g_pD3DDevice->GetTransform(D3DTS_VIEW,       &this->matViewSave) ;
-    this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &this->matProjSave);
+    //this->g_pD3DDevice->GetTransform(D3DTS_VIEW,       &this->matViewSave) ;
+    //this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &this->matProjSave);
 
 	this->backBufferTarget = new RenderTarget();
 	this->renderTarget = new RenderTarget();
@@ -80,36 +84,40 @@ bool Renderer::InitDirect3D(HWND hWnd)
 	this->backBufferTarget->SetSurface(tempSurface);
 
 	this->renderTarget->Create();
+	//Multisampled backbuffer
+	this->g_pD3DDevice->CreateRenderTarget( SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_A8R8G8B8, 
+                                  D3DMULTISAMPLE_8_SAMPLES, 0,
+                                  false, &this->multisampleSurface, NULL );	
 
 	//Rendering quad
- 	CUSTOMVERTEX_UNTRANSFORMED Quad[] = {
-	{0.0f,SCREEN_HEIGHT,0.0f,1.0f,0.0f,1.0f},
-	{0.0f,0.0f,0.0f,1.0f,0.0f,0.0f},
-	{SCREEN_WIDTH,SCREEN_HEIGHT,0.0f,1.0f,1.0f,1.0f},
-	{SCREEN_WIDTH,0.0f,0.0f,1.0f,1.0f,0.0f}
-	};
+ //	CUSTOMVERTEX_UNTRANSFORMED Quad[] = {
+	//{0.0f,SCREEN_HEIGHT,0.0f,1.0f,0.0f,1.0f},
+	//{0.0f,0.0f,0.0f,1.0f,0.0f,0.0f},
+	//{SCREEN_WIDTH,SCREEN_HEIGHT,0.0f,1.0f,1.0f,1.0f},
+	//{SCREEN_WIDTH,0.0f,0.0f,1.0f,1.0f,0.0f}
+	//};
 
-	HRESULT hr = this->g_pD3DDevice->CreateVertexBuffer(4*sizeof(CUSTOMVERTEX_UNTRANSFORMED),D3DUSAGE_WRITEONLY,CUSTOMFVF_UNTRANSFORMED,D3DPOOL_MANAGED,&this->t_buffer,NULL);
-	VOID* pVoid = NULL;
+	//HRESULT hr = this->g_pD3DDevice->CreateVertexBuffer(4*sizeof(CUSTOMVERTEX_UNTRANSFORMED),D3DUSAGE_WRITEONLY,CUSTOMFVF_UNTRANSFORMED,D3DPOOL_MANAGED,&this->t_buffer,NULL);
+	//VOID* pVoid = NULL;
 
-	this->t_buffer->Lock(0,3*sizeof(CUSTOMVERTEX_UNTRANSFORMED), &pVoid, 0);    // locks t_buffer, the buffer we made earlier
-	memcpy(pVoid, Quad, sizeof(Quad));    // copy vertices to the vertex buffer
-	this->t_buffer->Unlock();    // unlock t_buffer
+	//this->t_buffer->Lock(0,3*sizeof(CUSTOMVERTEX_UNTRANSFORMED), &pVoid, 0);    // locks t_buffer, the buffer we made earlier
+	//memcpy(pVoid, Quad, sizeof(Quad));    // copy vertices to the vertex buffer
+	//this->t_buffer->Unlock();    // unlock t_buffer
 
-	this->postprocess = Kernel::Instance()->GetResourceManager()->GetShader("Shaders/Postprocess.fx");
+	//this->postprocess = Kernel::Instance()->GetResourceManager()->GetShader("Shaders/Postprocess.fx");
 	/*HRESULT cube = this->g_pD3DDevice->CreateCubeTexture(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_R5G6B5,
 								D3DPOOL_DEFAULT, &this->cubemap,0);*/
 
 	//D3DXCreateTextureFromFile(this->g_pD3DDevice, "Textures/errortexture.bmp", &this->testtexture);
 	//this->postprocessTexture1 = Kernel::Instance()->GetResourceManager()->GetTexture("Textures/Terrain/dust.jpg");
 
-	return true; // Direct3D is klaar voor gebruik
+	return true;
 }
 void Renderer::BeginScene()
 {
 	//Clear the screen
-	D3DCOLOR screenColor = D3DCOLOR_XRGB(0, 0, 255);
-	this->g_pD3DDevice->SetRenderTarget(0,this->renderTarget->GetSurface());
+	D3DCOLOR screenColor = D3DCOLOR_XRGB(0, 0, 0);
+	//this->g_pD3DDevice->SetRenderTarget(0,this->renderTarget->GetSurface());
 	this->g_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, screenColor, 1.0f, 0.0f);
 	this->g_pD3DDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	this->g_pD3DDevice->SetRenderState(D3DRS_MULTISAMPLEANTIALIAS, TRUE);
@@ -121,21 +129,24 @@ void Renderer::EndScene()
 }
 void Renderer::Present()
 {
-	HRESULT hr = this->g_pD3DDevice->SetRenderTarget(0,this->backBufferTarget->GetSurface());
-	this->g_pD3DDevice->BeginScene();
+	HRESULT rt;
+	//rt = this->g_pD3DDevice->StretchRect(this->renderTarget->GetSurface(), NULL, this->multisampleSurface, NULL, D3DTEXF_LINEAR );
+	//rt = this->g_pD3DDevice->StretchRect(multisampleSurface, NULL, this->backBufferTarget->GetSurface(), NULL, D3DTEXF_LINEAR );
+	//rt = this->g_pD3DDevice->SetRenderTarget(0,this->backBufferTarget->GetSurface());
+	//this->g_pD3DDevice->BeginScene();
 
 	//Postprocessing
 	//UINT passes;
 	//this->postprocess->GetD3DEffect()->Begin(&passes,0);
 	//this->postprocess->GetD3DEffect()->BeginPass(0);
-	this->g_pD3DDevice->SetStreamSource(0,this->t_buffer,0,sizeof(CUSTOMVERTEX_UNTRANSFORMED));
-	this->g_pD3DDevice->SetFVF(CUSTOMFVF_UNTRANSFORMED);
-	this->g_pD3DDevice->SetTexture(0,this->renderTarget->GetRenderTexture());
+	//this->g_pD3DDevice->SetStreamSource(0,this->t_buffer,0,sizeof(CUSTOMVERTEX_UNTRANSFORMED));
+	//this->g_pD3DDevice->SetFVF(CUSTOMFVF_UNTRANSFORMED);
+	//this->g_pD3DDevice->SetTexture(0,this->renderTarget->GetRenderTexture());
 	//this->postprocess->GetD3DEffect()->SetTexture("texture1", this->postprocessTexture1->GetD3DTexture());
 	//this->postprocess->GetD3DEffect()->SetFloat( "time", timeGetTime());
-	this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	this->g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,0,2);
-	this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//this->g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP,0,2);
+	//this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	//this->postprocess->GetD3DEffect()->EndPass();
 	//this->postprocess->GetD3DEffect()->End();
 	
@@ -144,8 +155,10 @@ void Renderer::Present()
 	D3DXMatrixPerspectiveFovLH( &this->matProjSave, D3DX_PI/2, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 0.1f, 145.0f );
 	this->g_pD3DDevice->SetTransform( D3DTS_VIEW, &this->matViewSave);
 	this->g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &this->matProjSave);
-	this->g_pD3DDevice->EndScene();
+
+	//this->g_pD3DDevice->EndScene();
 	this->g_pD3DDevice->Present(0,0,0,0);
+	//this->multisampleSurface = NULL;
 }
 
 const D3DXMATRIX& Renderer::GetWorldMatrix() const

@@ -183,22 +183,22 @@ void Sound(char*name)
 
 void Scene::CreateLoadingScreen()
 {
-	Texture* lscreen = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/gui/loadingscreen.jpg");
-		
-	LPD3DXSPRITE sprite; //Create Sprite object
-	D3DXCreateSprite(Kernel::Instance()->GetRenderer()->GetDevice(), &sprite);    //Init Sprite object
+	//Texture* lscreen = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/gui/loadingscreen.jpg");
+	//	
+	//LPD3DXSPRITE sprite; //Create Sprite object
+	//D3DXCreateSprite(Kernel::Instance()->GetRenderer()->GetDevice(), &sprite);    //Init Sprite object
 
-	D3DXVECTOR3 center(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
-	D3DXVECTOR3 position(0.0f, 0.0f, 0.0f);    // position at 50, 50 with no depth
-	
-	Kernel::Instance()->GetRenderer()->BeginScene(); //Start render
-	sprite->Begin(NULL);    // begin sprite drawing
-	sprite->Draw(lscreen->GetD3DTexture(), NULL, &center, &position, D3DCOLOR_XRGB(255, 255, 255));  // draw it!
-	sprite->End();    // end sprite drawing
-	sprite->Release(); //Release the sprite object from memory
-	Kernel::Instance()->GetRenderer()->EndScene(); //End render, present to screen
-	Kernel::Instance()->GetRenderer()->Present();
-	Kernel::Instance()->GetResourceManager()->DeleteTexture("Content/Textures/gui/loadingscreen.jpg");
+	//D3DXVECTOR3 center(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
+	//D3DXVECTOR3 position(0.0f, 0.0f, 0.0f);    // position at 50, 50 with no depth
+	//
+	//Kernel::Instance()->GetRenderer()->BeginScene(); //Start render
+	//sprite->Begin(NULL);    // begin sprite drawing
+	//sprite->Draw(lscreen->GetD3DTexture(), NULL, &center, &position, D3DCOLOR_XRGB(255, 255, 255));  // draw it!
+	//sprite->End();    // end sprite drawing
+	//sprite->Release(); //Release the sprite object from memory
+	//Kernel::Instance()->GetRenderer()->EndScene(); //End render, present to screen
+	//Kernel::Instance()->GetRenderer()->Present();
+	//Kernel::Instance()->GetResourceManager()->DeleteTexture("Content/Textures/gui/loadingscreen.jpg");
 }
 
 Terrain* Scene::GetTerrain()

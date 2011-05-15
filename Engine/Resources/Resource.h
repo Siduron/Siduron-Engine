@@ -9,10 +9,12 @@ class Resource
 		virtual void AddUse();
 		virtual void SubtractUse();
 		virtual int GetUses();
+		virtual void Reload() = 0;
 		
 	protected:
 		virtual ~Resource();
 		unsigned int uses;
+		std::string path;
 		virtual void Delete() = 0;
 
 };

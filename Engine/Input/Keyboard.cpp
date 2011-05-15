@@ -68,6 +68,12 @@ std::queue<Input>* Keyboard::GetKeyboardInput()
 		newInput.key = F;
 		this->queue->push(newInput);
 	}
+	if(keystate[DIK_R] & 0x80)
+	{
+		Input newInput;
+		newInput.key = R;
+		this->queue->push(newInput);
+	}
 	if(keystate[DIK_SPACE] & 0x80)
 	{
 		Input newInput;

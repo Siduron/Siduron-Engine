@@ -53,6 +53,14 @@ Model* ResourceManager::GetModel(const std::string modelPath, const std::string 
 		return this->models[modelPath+modelName];
 	}
 }
+void ResourceManager::ReloadShaders()
+{
+	std::map<std::string, Shader*>::iterator p;
+	for(p = this->shaders.begin(); p != this->shaders.end(); p++)
+	{
+		p->second->Reload();
+	}
+}
 
 void ResourceManager::DeleteTexture(std::string path)
 {

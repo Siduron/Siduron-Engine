@@ -3,6 +3,7 @@
 Resource::Resource()
 {
 	this->uses = 1;
+	this->path = "";
 }
 
 void Resource::AddUse()

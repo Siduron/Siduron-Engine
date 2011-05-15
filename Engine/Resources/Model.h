@@ -18,7 +18,9 @@ class Model : public Resource
 		void Render(D3DXMATRIX);
 		std::vector<Mesh*> GetMeshes();
 		void SetShader(std::string path);
+		Shader* GetShader();
 		static void CreateBox();
+		void Reload();
 		~Model();
 	private:
 		const aiScene* scene;
@@ -30,8 +32,6 @@ class Model : public Resource
 		
 		unsigned int faceAmount;
 		unsigned int vertexAmount;
-
-		Shader* shader;
 
 		void Delete();
 };

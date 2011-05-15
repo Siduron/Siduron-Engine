@@ -65,6 +65,7 @@ private:
 	LPDIRECT3DVERTEXBUFFER9 t_buffer;
 	RenderTarget* backBufferTarget;
 	RenderTarget* renderTarget;
+	LPDIRECT3DSURFACE9 multisampleSurface;
 	LPDIRECT3DCUBETEXTURE9 cubemap;
 	Camera* camera;
 	

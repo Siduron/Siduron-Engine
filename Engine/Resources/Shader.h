@@ -6,15 +6,17 @@
 
 class Shader : public Resource
 {
-friend class ResourceManager;
-public:
-	Shader(const std::string path);
-	void SetFloat(std::string param, float value);
-	LPD3DXEFFECT GetD3DEffect();
-	~Shader();
-private:
-	LPD3DXEFFECT effect;
-	void Delete();
+	friend class ResourceManager;
+	public:
+		Shader(const std::string path);
+		void SetFloat(std::string param, float value);
+		LPD3DXEFFECT GetD3DEffect();
+		void Reload();
+		~Shader();
+	private:
+		LPD3DXEFFECT effect;
+		void Create(const std::string path);
+		void Delete();
 };
 
 #endif

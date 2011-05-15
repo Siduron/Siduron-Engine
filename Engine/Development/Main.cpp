@@ -14,8 +14,8 @@ bool SetupEngine();
 bool EngineLoop();
 
 //ScenegraphTest* graphTest;
-//RTStest* rtsTest;
-ModelTest* modelTest;
+RTStest* rtsTest;
+//ModelTest* modelTest;
 
 int main()
 {
@@ -31,42 +31,36 @@ int main()
 	return 0;
 }
 
+
+void LoadingScreen()
+{
+	Texture* lscreen = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/gui/loadingscreen.jpg");
+		
+	LPD3DXSPRITE sprite; //Create Sprite object
+	D3DXCreateSprite(Kernel::Instance()->GetRenderer()->GetDevice(), &sprite);    //Init Sprite object
+
+	D3DXVECTOR3 center(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
+	D3DXVECTOR3 position(0.0f, 0.0f, 0.0f);    // position at 50, 50 with no depth
+	
+	Kernel::Instance()->GetRenderer()->BeginScene();
+	sprite->Begin(NULL);    // begin sprite drawing
+	sprite->Draw(lscreen->GetD3DTexture(), NULL, &center, &position, D3DCOLOR_XRGB(255, 255, 255));  // draw it!
+	sprite->End();    // end sprite drawing
+	sprite->Release(); //Release the sprite object from memory
+	Kernel::Instance()->GetRenderer()->Present();
+	Kernel::Instance()->GetRenderer()->EndScene();
+	Kernel::Instance()->GetResourceManager()->DeleteTexture("Content/Textures/gui/loadingscreen.jpg");
+}
+
 bool SetupEngine()
 {
-	//Logger::Instance()->Log("Initializing Engine..", Info);
-	//Kernel::Instance()->GetWindow()->SetSize(800,600);
-	//	
-	//if(!Kernel::Instance()->GetWindow()->MakeWindow())
-	//{
-	//	Logger::Instance()->Log("Failed creating Window", Error);
-	//	return false;
-	//}
-	//Logger::Instance()->Log("Initializing Renderer..", Info);
-	//if(!Kernel::Instance()->GetRenderer()->InitDirect3D(Kernel::Instance()->GetWindow()->GetHWND()))
-	//{
-	//	Logger::Instance()->Log("Failed initializing Renderer", Error);
-	//	return false;
-	//}
-	///*Kernel::Instance()->GetRenderer()->SetCamera(camera);*/
-	//Logger::Instance()->Log("Initializing Input..", Info);
-	//if(!Kernel::Instance()->GetInputManager()->InitInput(hInstancez,Kernel::Instance()->GetWindow()->GetHWND()))
-	//{
-	//	Logger::Instance()->Log("Failed initializing Input", Error);
-	//	return false;
-	//}
-	//Logger::Instance()->Log("Initializing Scene..", Info);
-	//if(!Kernel::Instance()->GetScene()->Init())
-	//{
-	//	Logger::Instance()->Log("Failed initializing Scene", Error);
-	//	return false;
-	//}
-
-	/*Logger::Instance()->Log("Initializing GUI..", Info);
-	Kernel::Instance()->GetGUI()->Init();*/
 	//graphTest = new ScenegraphTest();
+	
+	//LoadingScreen();
+
 	Kernel::Instance();
-	//rtsTest = new RTStest();
-	modelTest = new ModelTest();
+	rtsTest = new RTStest();
+	//modelTest = new ModelTest();
 	//Logger::Instance()->Log("Running..", Info);
 	return true;
 }
@@ -75,8 +69,10 @@ bool EngineLoop()
 {   
 	Kernel::Instance()->GetRenderer()->BeginScene();
 	Kernel::Instance()->GetScene()->Render();
-	Kernel::Instance()->GetGUI()->Render();
+	//Kernel::Instance()->GetGUI()->Render();
+	Kernel::Instance()->GetRenderer()->EndScene();
 	Kernel::Instance()->GetRenderer()->Present();
+	
 	//if(Kernel::Instance()->GetWindow()->IsFocused())
 	//{
 	//	DIMOUSESTATE mousestate = Kernel::Instance()->GetInputManager()->GetMouseInput() ;
@@ -145,11 +141,11 @@ bool EngineLoop()
 	//	}
 	//}
 	//graphTest->Run();
-	if(!modelTest->Run())
+	if(!rtsTest->Run())
 		return false;
 	Kernel::Instance()->GetWindow()->Update();
 	//Kernel::Instance()->GetGUI()->Render();
-    Kernel::Instance()->GetRenderer()->EndScene();
+    
 	
 	return true;
 }

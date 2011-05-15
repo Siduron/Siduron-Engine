@@ -6,7 +6,7 @@ texture baseColor;
 float AmbientIntensity = 0.5;
 float4 AmbientColor : AMBIENT = float4(.5,.5,.5,1);
 
-float DiffuseIntensity = 1.0;
+float DiffuseIntensity = 2.0;
 float4 DiffuseColor : Diffuse = float4(1,1,1,1);
 
 float4 SpecularColor : Specular = float4(1,1,1,1);

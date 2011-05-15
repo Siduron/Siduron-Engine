@@ -9,6 +9,7 @@ class Texture : public Resource
 	public:
 		Texture(const std::string path);
 		LPDIRECT3DTEXTURE9 GetD3DTexture();
+		void Reload();
 		~Texture();
 	private:
 		LPDIRECT3DTEXTURE9 d3dtexture;

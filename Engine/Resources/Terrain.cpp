@@ -25,7 +25,7 @@ void Terrain::Create(int mapSize)
 	//this->texture_alphamap_lava = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_2.png");
 
 	this->texture_detail1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
-	this->texture_detail1_alternate = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/dirt2.png");
+	this->texture_detail1_alternate = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
 	this->texture_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
 	this->texture_detail3 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
 	
@@ -1023,7 +1023,7 @@ void Terrain::CreateNoise()
 	module::Billow myModule;
 	myModule.SetOctaveCount(6);
 	myModule.SetFrequency(6);
-	myModule.SetSeed(20);
+	myModule.SetSeed(40);
 	module::Billow myModule2;
 	myModule2.SetOctaveCount(6);
 	myModule2.SetFrequency(6);

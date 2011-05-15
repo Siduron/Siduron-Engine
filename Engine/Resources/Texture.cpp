@@ -24,6 +24,11 @@ void Texture::Delete()
 	delete this->d3dtexture;
 }
 
+void Texture::Reload()
+{
+
+}
+
 Texture::~Texture()
 {
 

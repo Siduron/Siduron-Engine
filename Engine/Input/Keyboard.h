@@ -16,6 +16,7 @@ enum Key
 	F,
 	Z,
 	C,
+	R,
 	SPACE,
 	ESCAPE
 };

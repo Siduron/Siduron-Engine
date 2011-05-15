@@ -16,7 +16,7 @@ RTStest::RTStest()
 
 	Scene* scene = Kernel::Instance()->GetScene();
 	EntityModel* generator = new EntityModel();
-	generator->SetModel("Content/Models/Shieldgenerator2/","towerplaintexture.3DS");
+	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
 	generator->SetShader("Content/Shaders/Model.fx");
 	generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
 	generator->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
@@ -138,6 +138,10 @@ bool RTStest::Run()
 				{
 					//Kernel::Instance()->GetGUI()->Reload();
 					keyTimer = timeGetTime();
+				}
+				if(queue->front().key == R)
+				{
+					Kernel::Instance()->GetResourceManager()->ReloadShaders();
 				}
 				//else if(queue->front().key == C)
 				//{

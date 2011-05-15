@@ -16,6 +16,7 @@ public:
 	Texture* GetTexture(std::string path);
 	Shader* GetShader(std::string path);
 	Model* GetModel(const std::string modelPath, const std::string modelName);
+	void ReloadShaders();
 	void DeleteTexture(std::string path);
 private:
 	std::map<std::string, Texture*> textures;

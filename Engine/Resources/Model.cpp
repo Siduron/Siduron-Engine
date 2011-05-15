@@ -103,7 +103,18 @@ void Model::SetShader(std::string path)
 	}
 }
 
+Shader* Model::GetShader()
+{
+	//TODO: shader per meshes
+	return this->meshes.at(0)->GetShader();
+}
+
 void Model::Delete()
+{
+
+}
+
+void Model::Reload()
 {
 
 }

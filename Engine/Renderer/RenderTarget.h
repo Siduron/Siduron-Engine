@@ -17,8 +17,9 @@ public:
 	void Release();
 
 private:
-	LPDIRECT3DTEXTURE9 pRenderTexture;
-	LPDIRECT3DSURFACE9 pRenderSurface;
+	LPDIRECT3DTEXTURE9 renderTexture;
+	LPDIRECT3DSURFACE9 surface;
+	LPDIRECT3DSURFACE9 multisampleSurface;
 	D3DXMATRIX matProj;
 };
 

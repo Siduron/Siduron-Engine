@@ -18,24 +18,24 @@ float4 DomeShader( float2 Tex : TEXCOORD0 ) : COLOR0
     float2 Tex1 = Tex;
     float2 Tex2 = Tex;
     
-    Tex1.y = Tex1.y + time/50000;
-    Tex2.y = Tex2.y - time/40000;
-    Tex1.x = Tex1.x - time/40000;
-    Tex2.x = Tex2.x + time/50000;
+    Tex1.y = Tex1.y + time/100000;
+    Tex2.y = Tex2.y - time/400000;
+    Tex1.x = Tex1.x - time/400000;
+    Tex2.x = Tex2.x + time/100000;
     
     Tex1.xy = Tex1.xy;
     Tex2.xy = Tex2.xy;
     
-    Color = tex2D( TextureSampler1, Tex1.xy*2);
-    Color2 = tex2D( TextureSampler1, Tex2.xy*2);
+    Color = tex2D( TextureSampler1, Tex1.xy*8);
+    Color2 = tex2D( TextureSampler1, Tex2.xy*16);
     
-    float4 Color3 = pow(lerp(Color,Color2,0.2),8);
+    float4 Color3 = pow(lerp(Color,Color2,0.4),8);
 
 	Color3.a = (Color3.r+Color3.g+Color3.b)/3;
 
     
-    float4 Color4 = float4(0.0,0.5,1.0,0.1);
-    return (Color3+Color4);
+    float4 Color4 = float4(0.0,0.5,1.0,0.05);
+    return (Color4+Color3);
 
 }
 struct VS_OUTPUT

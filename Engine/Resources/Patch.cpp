@@ -79,7 +79,7 @@ void Patch::Render()
 	this->shader->GetD3DEffect()->SetFloat( "LightPosX", 0);
 	this->shader->GetD3DEffect()->SetFloat( "LightPosY", 50);	
 	this->shader->GetD3DEffect()->SetFloat( "LightPosZ", -10);
-	this->shader->GetD3DEffect()->SetFloat( "atmosphere", this->atmosphere);
+	//this->shader->GetD3DEffect()->SetFloat( "atmosphere", this->atmosphere);
 
 	if(this->lod == HIGH) this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
 	//this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
