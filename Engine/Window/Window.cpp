@@ -122,3 +122,8 @@ void Window::Update()
 	DispatchMessage(&Msg);
 	
 }
+
+Window::~Window()
+{
+
+}

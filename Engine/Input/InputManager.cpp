@@ -5,11 +5,6 @@ InputManager::InputManager()
 
 }
 
-InputManager::~InputManager()
-{
-
-}
-
 bool InputManager::InitInput( HINSTANCE hInstance, HWND hWnd )
 {
 	this->hwnd = hWnd;
@@ -72,9 +67,13 @@ const float& InputManager::GetMouseY() const
 // this is the function that closes DirectInput
 void InputManager::Cleanup()
 {
-    this->dkeyboard->Unacquire();    // make sure the keyboard is unacquired
 	this->dinmouse->Unacquire();    // make sure the mouse is unacquired
-    this->dinterface->Release();    // close DirectInput before exiting
-	delete &this->dinterface;
+    this->dinterface->Release();
+	this->dinmouse->Release();
     return;
+}
+
+InputManager::~InputManager()
+{
+	this->Cleanup();
 }

@@ -62,7 +62,7 @@ private:
 	
 	LPDIRECT3D9 g_pD3D; // Pointer naar Direct3D interface
 	LPDIRECT3DDEVICE9 g_pD3DDevice; // Pointer naar Direct3D device
-	LPDIRECT3DVERTEXBUFFER9 t_buffer;
+	//LPDIRECT3DVERTEXBUFFER9 t_buffer;
 	RenderTarget* backBufferTarget;
 	RenderTarget* renderTarget;
 	LPDIRECT3DSURFACE9 multisampleSurface;
@@ -79,8 +79,6 @@ private:
 	
 	D3DXMATRIX matView, matViewSave;
 	D3DXMATRIX matProj,matProjSave;
-
-	IDirect3DVertexDeclaration9* m_vertexDeclaration;
 
 	LPD3DXEFFECT m_pEffect;              // Effect object for this technique
 	D3DXHANDLE m_hTPostProcess;        // PostProcess technique handle

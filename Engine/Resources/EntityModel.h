@@ -10,19 +10,19 @@ class EntityModel : public Entity
 		EntityModel();
 		void Render();
 		void Update();
-		void SetScale(Vector* scale);
+		void SetScale(Vector scale);
 		void SetScale(float x, float y, float z);
 		void SetModel(const std::string modelPath, const std::string modelName);
 		void SetShader(std::string path);
 		void Scale(float amount);
 		void Scale(float x, float y, float z);
 
-		Vector* GetScale();
+		Vector GetScale();
 		Model* GetModel();
 
 	private:
 		Model* model;
-		Vector* scale;
+		Vector scale;
 };
 
 #endif

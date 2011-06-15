@@ -3,8 +3,9 @@
 
 EntityModel::EntityModel()
 {
-	this->scale = new Vector(1.0f,1.0f,1.0f);
+	this->scale = Vector(1.0f,1.0f,1.0f);
 }
+
 void EntityModel::Render()
 {
 	this->model->Render(this->matWorld);
@@ -28,16 +29,16 @@ void EntityModel::Update()
 	Entity::Update();
 }
 
-void EntityModel::SetScale(Vector* scale)
+void EntityModel::SetScale(Vector scale)
 {
-	this->SetScale(scale->x, scale->y, scale->x);
+	this->SetScale(scale.x, scale.y, scale.x);
 }
 
 void EntityModel::SetScale(float x, float y, float z)
 {
-	this->scale->x = x;
-	this->scale->y = y;
-	this->scale->z = z;
+	this->scale.x = x;
+	this->scale.y = y;
+	this->scale.z = z;
 	Node::SetScale(x,y,z);
 }
 
@@ -51,7 +52,7 @@ void EntityModel::SetShader(std::string path)
 	this->model->SetShader(path);
 }
 
-Vector* EntityModel::GetScale()
+Vector EntityModel::GetScale()
 {
 	return this->scale;
 }
@@ -63,8 +64,8 @@ Model* EntityModel::GetModel()
 
 void EntityModel::Scale(float x, float y, float z)
 {
-	this->scale->x += x;
-	this->scale->y += y;
-	this->scale->z += z;
-	Node::SetScale(this->scale->x,this->scale->y,this->scale->z);
+	this->scale.x += x;
+	this->scale.y += y;
+	this->scale.z += z;
+	Node::SetScale(this->scale.x,this->scale.y,this->scale.z);
 }

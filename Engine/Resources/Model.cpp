@@ -29,18 +29,19 @@ Model::Model(const std::string modelPath, const std::string modelName)
 	}
 
 	// Now we can access the file's contents. 
-	this->scene = scene;
+	//this->scene = scene;
 
 	for(int i = 0; i < scene->mNumMeshes; i++)
 	{
 		aiString texturePath;
-		this->scene->mMaterials[scene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE,0,&texturePath);
+		scene->mMaterials[scene->mMeshes[i]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE,0,&texturePath);
 		std::string tpath(texturePath.data);
 		Texture* newTexture = Kernel::Instance()->GetResourceManager()->GetTexture(modelPath + tpath);
 
 		this->meshes.push_back(new Mesh(scene->mMeshes[i], newTexture));
 	}
 	this->SetShader("Content/Shaders/Default.fx");
+	importer.FreeScene();
 }
 
 void Model::Render(D3DXMATRIX matWorld)
@@ -111,7 +112,11 @@ Shader* Model::GetShader()
 
 void Model::Delete()
 {
-
+	//Delete all meshes.
+	for(int i = 0; i < this->meshes.size(); i++)
+	{
+		this->meshes[i]->~Mesh();
+	}
 }
 
 void Model::Reload()
@@ -121,5 +126,5 @@ void Model::Reload()
 
 Model::~Model()
 {
-
+	this->Delete();
 }

@@ -79,3 +79,11 @@ ResourceManager* Kernel::GetResourceManager()
 {
 	return resourcemanager;
 }
+
+Kernel::~Kernel()
+{
+	delete this->renderer;
+	delete this->window;
+	delete this->resourcemanager;
+	delete this->input;
+}

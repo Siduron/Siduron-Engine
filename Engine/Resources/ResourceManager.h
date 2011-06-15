@@ -18,11 +18,13 @@ public:
 	Model* GetModel(const std::string modelPath, const std::string modelName);
 	void ReloadShaders();
 	void DeleteTexture(std::string path);
+	void Flush();
+	~ResourceManager();
 private:
 	std::map<std::string, Texture*> textures;
 	std::map<std::string, Shader*> shaders;
 	std::map<std::string, Model*> models;
-	~ResourceManager();
+	
 };
 
 #endif

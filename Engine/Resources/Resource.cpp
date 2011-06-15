@@ -20,8 +20,3 @@ int Resource::GetUses()
 {
 	return this->uses;
 }
-
-Resource::~Resource()
-{
-
-}

@@ -17,6 +17,7 @@ class Mesh
 		Mesh(aiMesh* m, Texture* t);
 		void SetShader(std::string path);
 		Shader* GetShader();
+		~Mesh();
 
 	private:
 		aiMesh* mesh;

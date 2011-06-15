@@ -30,18 +30,16 @@ class InputManager
 {
 	public:
 		InputManager();
-		~InputManager();
 		bool InitInput(	HINSTANCE hInstance, HWND hWnd	);
 		std::queue<Input>* GetKeyboardInput();
 		DIMOUSESTATE GetMouseInput();
 		const float& GetMouseX() const;
 		const float& GetMouseY() const;
 		void Cleanup();
-
+		~InputManager();
 	private:
 		// global declarations
 		LPDIRECTINPUT8 dinterface;    // the pointer to our DirectInput interface
-		LPDIRECTINPUTDEVICE8 dkeyboard;    // the pointer to the keyboard device
 		LPDIRECTINPUTDEVICE8 dinmouse;    // the pointer to the mouse device
 		HINSTANCE instance;
 		HWND hwnd;

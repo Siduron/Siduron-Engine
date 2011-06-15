@@ -27,7 +27,6 @@ class Model : public Resource
 		LPDIRECT3DDEVICE9 g_pD3DDevice;
 		LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
 		LPDIRECT3DINDEXBUFFER9 indexBuffer;
-		std::vector<Vertex*> verts;
 		std::vector<Mesh*> meshes;
 		
 		unsigned int faceAmount;

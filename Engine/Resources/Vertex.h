@@ -40,8 +40,7 @@ class Vertex
 		DWORD color;
 		float u;
 		float v;
-		CUSTOMVERTEX vertex; //The 'real' vertex
-		CUSTOMVERTEX* vertexP; //pointer to the vertex
+		CUSTOMVERTEX* vertex;
 };
 
 #endif

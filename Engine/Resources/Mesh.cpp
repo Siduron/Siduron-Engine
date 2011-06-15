@@ -66,3 +66,12 @@ Shader* Mesh::GetShader()
 {
 	return this->shader;
 }
+
+Mesh::~Mesh()
+{
+	//Delete all vertices.
+	for(int i = 0; i < this->verts.size(); i++)
+	{
+		delete this->verts[i];
+	}
+}

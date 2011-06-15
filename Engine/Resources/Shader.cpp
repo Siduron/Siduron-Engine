@@ -43,5 +43,5 @@ void Shader::Reload()
 
 Shader::~Shader()
 {
-
+	this->Delete();
 }

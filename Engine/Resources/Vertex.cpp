@@ -6,19 +6,27 @@ Vertex::Vertex(float xValue, float yValue, float zValue, float r, float g, float
 	this->u = uValue;
 	this->v = vValue;
 	
-	CUSTOMVERTEX tempVertex = {this->position.x, this->position.y, this->position.z, r,g,b, this->u, this->v};
+	CUSTOMVERTEX* tempVertex =  new CUSTOMVERTEX();
+	tempVertex->X = this->position.x;
+	tempVertex->Y = this->position.y;
+	tempVertex->Z = this->position.z;
+	tempVertex->R = r;
+	tempVertex->G = g;
+	tempVertex->B = b;
+	tempVertex->U = uValue;
+	tempVertex->V = vValue;
 	this->vertex = tempVertex;
-	this->vertexP = &this->vertex;
+	//this->vertexP = &this->vertex;
 
 }
 void Vertex::SetHeight(float value)
 {
 	this->position.y = value;
-	this->vertex.Y = value;
+	this->vertex->Y = value;
 }
 CUSTOMVERTEX* Vertex::GetCustomVertex()
 {
-	return this->vertexP;
+	return this->vertex;
 }
 Vector Vertex::GetPosition()
 {
@@ -35,16 +43,16 @@ float Vertex::GetV()
 void Vertex::SetU(float u)
 {
 	this->u = u;
-	this->vertex.U = u;
+	this->vertex->U = u;
 }
 void Vertex::SetV(float v)
 {
 	this->v = v;
-	this->vertex.V = v;
+	this->vertex->V = v;
 }
 void Vertex::SetCustomVertex(CUSTOMVERTEX* v)
 {
-	this->vertexP = v;
+	this->vertex = v;
 }
 void Vertex::DeleteCustomVertex()
 {
@@ -52,5 +60,5 @@ void Vertex::DeleteCustomVertex()
 }
 Vertex::~Vertex()
 {
-
+	delete this->vertex;
 }

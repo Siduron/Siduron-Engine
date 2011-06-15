@@ -69,15 +69,41 @@ void ResourceManager::DeleteTexture(std::string path)
 		this->textures[path]->SubtractUse();
 		if(this->textures[path]->GetUses() == 0)
 		{
-			this->textures[path]->Delete();
+			//this->textures[path]->Delete();
 			delete this->textures[path];
 			this->textures.erase(path);
 			//Logger::Instance()->Log("Deleting texture: "+path, Info);
 		}
 	}
 }
+void ResourceManager::Flush()
+{
+	std::map<std::string, Texture*>::iterator currentTexture;
+	for(currentTexture = this->textures.begin(); currentTexture != this->textures.end(); currentTexture++)
+	{
+		//currentTexture->second->~Texture();
+		delete currentTexture->second;
+	}
+	this->textures.clear();
+
+	std::map<std::string, Shader*>::iterator currentShader;
+	for(currentShader = this->shaders.begin(); currentShader != this->shaders.end(); currentShader++)
+	{
+		//currentShader->second->~Shader();
+		delete currentShader->second;
+	}
+	this->shaders.clear();
+
+	std::map<std::string, Model*>::iterator currentModel;
+	for(currentModel = this->models.begin(); currentModel != this->models.end(); currentModel++)
+	{
+		//currentModel->second->~Model();
+		delete currentModel->second;
+	}
+	this->models.clear();
+}
 
 ResourceManager::~ResourceManager()
 {
-
+	this->Flush();
 }

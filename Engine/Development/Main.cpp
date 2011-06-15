@@ -23,6 +23,8 @@ int main()
 	if(SetupEngine())
 	{
 		while(EngineLoop());
+		delete Kernel::Instance();
+		//Kernel::Instance()->GetResourceManager()->Flush();
 	}
 	else
 	{

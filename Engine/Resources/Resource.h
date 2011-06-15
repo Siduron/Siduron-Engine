@@ -12,7 +12,6 @@ class Resource
 		virtual void Reload() = 0;
 		
 	protected:
-		virtual ~Resource();
 		unsigned int uses;
 		std::string path;
 		virtual void Delete() = 0;

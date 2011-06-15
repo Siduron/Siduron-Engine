@@ -19,8 +19,9 @@ class Kernel
 		Scene* GetScene();
 		GUI* GetGUI();
 		ResourceManager* GetResourceManager();
-	private:
 		~Kernel();
+
+	private:
 		Renderer* renderer;
 		Window* window;
 		InputManager* input;

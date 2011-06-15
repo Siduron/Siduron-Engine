@@ -10,11 +10,12 @@ Camera* camera;
 RTStest::RTStest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
-	Terrain* terrain = new Terrain();
+	/*Terrain* terrain = new Terrain();
 	terrain->Create(8);
 	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
-
+	*/
 	Scene* scene = Kernel::Instance()->GetScene();
+	/*
 	EntityModel* generator = new EntityModel();
 	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
 	generator->SetShader("Content/Shaders/Model.fx");
@@ -40,43 +41,18 @@ RTStest::RTStest()
 	powerstation2->SetShader("Content/Shaders/Model.fx");
 	powerstation2->SetPosition(terrainCenter[0]-6, 0, terrainCenter[1]);
 	powerstation2->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation2->GetPosition()));
-	powerstation2->SetScale(0.05f,0.05f,0.05f);
+	powerstation2->SetScale(0.05f,0.05f,0.05f);*/
 
 
 	scene->Add(camera);
-	scene->Add(terrain);
-	scene->Add(generator);
-	scene->Add(dome);
-	scene->Add(powerstation1);
-	scene->Add(powerstation2);
+	//scene->Add(terrain);
+	//scene->Add(generator);
+	//scene->Add(dome);
+	//scene->Add(powerstation1);
+	//scene->Add(powerstation2);
 	
-	camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
+	//camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
 	camera->Pitch(80);
-
-
-	//Trees
-	//float rnd = rand() / 10;
-	//for(int a = 0; a < 20; a++)
-	//{
-	//	for(int b = 0; b < 20; b++)
-	//	{
-	//		float spawnTree = rand()%4;
-	//		if(spawnTree <= 2.0f)
-	//		{
-	//			EntityModel* newTree = new EntityModel();
-	//			newTree->SetModel("Content/Models/wowtree/","treecanopy01.ms3d");
-	//			newTree->SetPosition(0+(a*(5.1+(rand()%10))), 0, 0-(b*(5.1+(rand()%10))));
-	//			newTree->SetYaw(rand()%360);
-	//			newTree->SetScale(0.05f,0.05f,0.05f);
-	//			Vector newPos = terrain->Collide(newTree->GetPosition());
-	//			newPos.y -= 0.2;
-	//			newTree->SetPosition(newPos);
-	//			newTree->SetShader("Content/Shaders/Model.fx");
-	//			scene->Add(newTree);
-	//		}
-	//	}
-	//}
-
 }
 
 bool RTStest::Run()
@@ -143,14 +119,6 @@ bool RTStest::Run()
 				{
 					Kernel::Instance()->GetResourceManager()->ReloadShaders();
 				}
-				//else if(queue->front().key == C)
-				//{
-				//	middleCube->Yaw(0.1f);
-				//}
-				//else if(queue->front().key == Z)
-				//{
-				//	middleCube->Yaw(-0.1f);
-				//}
 				else if(queue->front().key == ESCAPE)
 				{
 					return false;

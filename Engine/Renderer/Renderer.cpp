@@ -53,8 +53,8 @@ bool Renderer::InitDirect3D(HWND hWnd)
 	Logger::Instance()->Log("Creating Direct3D Device..", Info);
 	// Creër Direct3D device
 	HRESULT createDevice = this->g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice);
-		this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL );
-	this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );;
+	this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL );
+	this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );
 	if(createDevice != 0)
 		return false;
 	//Logger::Instance()->Log("Initializing Direct3D Device..", Info);	
@@ -284,4 +284,10 @@ Renderer::~Renderer()
 {
 	this->g_pD3DDevice->Release();    // close and release the 3D device
     this->g_pD3D->Release();    // close and release Direct3D
+	//this->t_buffer->Release();
+	delete this->backBufferTarget;
+	delete this->renderTarget;
+	delete this->camera;
+	//delete this->postprocess;
+	//delete this->postprocessTexture1;
 }
