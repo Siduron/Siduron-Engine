@@ -23,7 +23,7 @@ ModelTest::ModelTest()
 
 bool ModelTest::Run()
 {
-	if(Kernel::Instance()->GetWindow()->IsFocused())
+	/*if(Kernel::Instance()->GetWindow()->IsFocused())
 	{
 		std::queue<Input>* queue = Kernel::Instance()->GetInputManager()->GetKeyboardInput();
 		if(!queue->empty())
@@ -37,7 +37,7 @@ bool ModelTest::Run()
 				queue->pop();
 			}
 		}
-	}
+	}*/
 	generator->Yaw(0.1f);
 	return true;
 }

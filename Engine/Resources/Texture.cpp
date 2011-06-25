@@ -4,6 +4,7 @@
 Texture::Texture(const std::string path)
 {
 	this->d3dtexture = NULL;
+	this->path = path;
 	HRESULT hr = D3DXCreateTextureFromFile(Kernel::Instance()->GetRenderer()->GetDevice(), path.c_str(), &this->d3dtexture); //Load texture from file
 	if(hr != D3D_OK)
 	{
@@ -27,6 +28,11 @@ void Texture::Delete()
 void Texture::Reload()
 {
 
+}
+
+std::string Texture::GetPath()
+{
+	return this->path;
 }
 
 Texture::~Texture()

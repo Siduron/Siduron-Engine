@@ -2,74 +2,117 @@
 
 <GUILayout >
     <Window Type="DefaultWindow" Name="root" >
-        <Property Name="UnifiedAreaRect" Value="{{0.00110677,0},{-0.000936335,0},{1.00111,0},{0.999064,0}}" />
-        <Window Type="Vanilla/FrameWindow" Name="testWindow" >
+        <Property Name="UnifiedAreaRect" Value="{{-0.000464484,0},{-0.00187266,0},{0.999541,0},{0.998128,0}}" />
+        <Window Type="TaharezLook/FrameWindow" Name="MainGUI" >
             <Property Name="Font" Value="DejaVuSans-10" />
             <Property Name="Alpha" Value="0.95" />
             <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="RollUpEnabled" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />
-            <Property Name="UnifiedAreaRect" Value="{{0.0172526,0},{0.746609,0},{0.983986,0},{0.990201,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0182943,0},{0.753163,0},{0.985028,0},{0.996755,0}}" />
+            <Property Name="DragMovingEnabled" Value="False" />
             <Property Name="CloseButtonEnabled" Value="False" />
-            <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
-            <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
-            <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
-            <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
             <Window Type="Vanilla/FrameWindow" Name="info" >
                 <Property Name="Font" Value="DejaVuSans-10" />
                 <Property Name="Text" Value="&lt;Unit info&gt;" />
                 <Property Name="TitlebarFont" Value="DejaVuSans-10" />
                 <Property Name="TitlebarEnabled" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0.150973,0},{0.000119719,0},{0.585766,0},{1.00351,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.150973,0},{0.0231828,0},{0.585766,0},{1.00351,0}}" />
+                <Property Name="DragMovingEnabled" Value="False" />
                 <Property Name="CloseButtonEnabled" Value="False" />
                 <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
                 <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
                 <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
                 <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
             </Window>
-            <Window Type="Vanilla/FrameWindow" Name="commands" >
+            <Window Type="Vanilla/FrameWindow" Name="Portrait" >
                 <Property Name="Font" Value="DejaVuSans-10" />
-                <Property Name="Text" Value="&lt;Commands&gt;" />
-                <Property Name="TitlebarFont" Value="DejaVuSans-10" />
-                <Property Name="TitlebarEnabled" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0.699756,0},{0.00017985,0},{0.998245,0},{0.99973,0}}" />
-                <Property Name="CloseButtonEnabled" Value="False" />
-                <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
-                <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
-                <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
-                <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
-                <Window Type="Vanilla/Button" Name="Build" >
-                    <Property Name="Font" Value="DejaVuSans-10" />
-                    <Property Name="Text" Value="Build" />
-                    <Property Name="UnifiedAreaRect" Value="{{0.0227659,0},{0.00775072,0},{0.332329,0},{0.434648,0}}" />
-                    <Property Name="WantsMultiClickEvents" Value="True" />
-                </Window>
-                <Window Type="Vanilla/Button" Name="Advanced" >
-                    <Property Name="Text" Value="Advanced" />
-                    <Property Name="UnifiedAreaRect" Value="{{0.348923,0},{0.00775817,0},{0.669316,0},{0.434656,0}}" />
-                    <Property Name="WantsMultiClickEvents" Value="True" />
-                </Window>
-            </Window>
-            <Window Type="Vanilla/FrameWindow" Name="map" >
-                <Property Name="Text" Value="&lt;Map&gt;" />
-                <Property Name="TitlebarFont" Value="DejaVuSans-10" />
-                <Property Name="TitlebarEnabled" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0.00789001,0},{0.00405364,0},{0.144213,0},{1.0036,0}}" />
-                <Property Name="CloseButtonEnabled" Value="False" />
-                <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
-                <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
-                <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
-                <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
-            </Window>
-            <Window Type="Vanilla/FrameWindow" Name="portrait" >
                 <Property Name="Text" Value="&lt;Portrait&gt;" />
                 <Property Name="TitlebarFont" Value="DejaVuSans-10" />
                 <Property Name="TitlebarEnabled" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0.590824,0},{0.000209819,0},{0.690511,0},{1.00745,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.590824,0},{0.0271167,0},{0.690511,0},{1.00745,0}}" />
+                <Property Name="DragMovingEnabled" Value="False" />
                 <Property Name="CloseButtonEnabled" Value="False" />
                 <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
                 <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
                 <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
                 <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
+                <Window Type="TaharezLook/StaticImage" Name="Portrait/Image" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.0324968,0},{0.0107466,0},{0.974267,0},{0.970561,0}}" />
+                </Window>
+            </Window>
+            <Window Type="TaharezLook/StaticImage" Name="MainGUI/Map" >
+                <Property Name="UnifiedAreaRect" Value="{{0.00422394,0},{0.0232436,0},{0.145396,0},{0.984354,0}}" />
+            </Window>
+            <Window Type="Vanilla/FrameWindow" Name="CommandMenu" >
+                <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+                <Property Name="SizingEnabled" Value="False" />
+                <Property Name="TitlebarEnabled" Value="True" />
+                <Property Name="UnifiedAreaRect" Value="{{0.697152,0},{0.0254823,0},{0.991158,0},{1.00104,0}}" />
+                <Property Name="DragMovingEnabled" Value="False" />
+                <Property Name="CloseButtonEnabled" Value="False" />
+                <Window Type="DefaultWindow" Name="BuildMenu" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.0101022,0},{-0.212715,0},{0.993701,0},{0.946724,0}}" />
+                    <Window Type="Vanilla/Button" Name="Build" >
+                        <Property Name="Font" Value="DejaVuSans-10" />
+                        <Property Name="Text" Value="Build" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.033229,0},{0.183673,0},{0.332074,0},{0.473557,0}}" />
+                    </Window>
+                    <Window Type="Vanilla/Button" Name="Advanced" >
+                        <Property Name="Text" Value="Advanced" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.340325,0},{0.186096,0},{0.661525,0},{0.47598,0}}" />
+                    </Window>
+                </Window>
+                <Window Type="DefaultWindow" Name="BuildMenuBasic" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.0102101,0},{-0.212811,0},{0.993809,0},{0.946628,0}}" />
+                    <Window Type="Vanilla/Button" Name="Generator" >
+                        <Property Name="Font" Value="DejaVuSans-10" />
+                        <Property Name="Text" Value="Generator" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.033229,0},{0.183673,0},{0.236261,0},{0.626445,0}}" />
+                    </Window>
+                    <Window Type="Vanilla/Button" Name="Refinery" >
+                        <Property Name="Text" Value="Refinery" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.252309,0},{0.187142,0},{0.455341,0},{0.629914,0}}" />
+                    </Window>
+                    <Window Type="Vanilla/Button" Name="BuildBasic_Cancel" >
+                        <Property Name="Font" Value="Batang-26" />
+                        <Property Name="Text" Value="X" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.475147,0},{0.187287,0},{0.678179,0},{0.630059,0}}" />
+                    </Window>
+                </Window>
+                <Window Type="DefaultWindow" Name="BuildMenuAdvanced" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.00890135,0},{-0.214033,0},{0.9925,0},{0.945406,0}}" />
+                    <Window Type="Vanilla/Button" Name="Research" >
+                        <Property Name="Text" Value="Research Lab" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.033229,0},{0.183673,0},{0.236261,0},{0.626445,0}}" />
+                    </Window>
+                    <Window Type="Vanilla/Button" Name="BuildAdvanced_Cancel" >
+                        <Property Name="Font" Value="Batang-26" />
+                        <Property Name="Text" Value="X" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.251586,0},{0.190685,0},{0.454618,0},{0.633457,0}}" />
+                    </Window>
+                </Window>
+            </Window>
+        </Window>
+        <Window Type="Vanilla/FrameWindow" Name="Inventory" >
+            <Property Name="Font" Value="DejaVuSans-10" />
+            <Property Name="Visible" Value="False" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.101564,0},{0.0144196,0},{0.503125,0},{0.728839,0}}" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+            <Property Name="EWSizingCursorImage" Value="set:TaharezLook image:MouseEsWeCursor" />
+            <Property Name="NSSizingCursorImage" Value="set:TaharezLook image:MouseNoSoCursor" />
+            <Property Name="NESWSizingCursorImage" Value="set:TaharezLook image:MouseNeSwCursor" />
+            <Property Name="NWSESizingCursorImage" Value="set:TaharezLook image:MouseNwSeCursor" />
+            <Window Type="DragContainer" Name="Inventory/" >
+                <Property Name="DragAlpha" Value="0.5" />
+                <Property Name="StickyMode" Value="False" />
+                <Property Name="DragThreshold" Value="8" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0485086,0},{0.0343385,0},{0.14157,0},{0.121822,0}}" />
+                <Window Type="TaharezLook/StaticImage" Name="Inventory//" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.0770037,0},{0.105244,0},{0.898433,0},{0.879587,0}}" />
+                </Window>
             </Window>
         </Window>
     </Window>

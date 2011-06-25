@@ -5,6 +5,7 @@
 #include "RTStest.h"
 #include "ModelTest.h"
 
+
 //Camera* camera = new Camera();
 //
 //float timer;
@@ -17,14 +18,13 @@ bool EngineLoop();
 RTStest* rtsTest;
 //ModelTest* modelTest;
 
-int main()
+int main(int argc, char *argv[])
 {
 	//Logger::Instance()->Log("Starting..", Info);
 	if(SetupEngine())
 	{
 		while(EngineLoop());
 		delete Kernel::Instance();
-		//Kernel::Instance()->GetResourceManager()->Flush();
 	}
 	else
 	{
@@ -32,7 +32,6 @@ int main()
 	}
 	return 0;
 }
-
 
 void LoadingScreen()
 {
@@ -61,7 +60,7 @@ bool SetupEngine()
 	//LoadingScreen();
 
 	Kernel::Instance();
-	rtsTest = new RTStest();
+	//rtsTest = new RTStest();
 	//modelTest = new ModelTest();
 	//Logger::Instance()->Log("Running..", Info);
 	return true;
@@ -71,7 +70,7 @@ bool EngineLoop()
 {   
 	Kernel::Instance()->GetRenderer()->BeginScene();
 	Kernel::Instance()->GetScene()->Render();
-	//Kernel::Instance()->GetGUI()->Render();
+	Kernel::Instance()->GetGUI()->Render();
 	Kernel::Instance()->GetRenderer()->EndScene();
 	Kernel::Instance()->GetRenderer()->Present();
 	
@@ -143,9 +142,9 @@ bool EngineLoop()
 	//	}
 	//}
 	//graphTest->Run();
-	if(!rtsTest->Run())
-		return false;
-	Kernel::Instance()->GetWindow()->Update();
+	//if(!rtsTest->Run())
+	//	return false;
+	//Kernel::Instance()->GetWindow()->Update();
 	//Kernel::Instance()->GetGUI()->Render();
     
 	

@@ -2,9 +2,9 @@
 #define ENTITY_H
 #include "Vector.h"
 #include <vector>
-#include "Node.h"
+#include "../Scene/Node.h"
 
-class Entity : public Node
+class Entity : public SceneManagement::Node
 {
 	public:
 		Entity(); //Constructor

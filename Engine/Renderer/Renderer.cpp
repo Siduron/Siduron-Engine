@@ -24,7 +24,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
 
 	D3DPRESENT_PARAMETERS d3dpp;
 	ZeroMemory(&d3dpp, sizeof(d3dpp)); 
-	d3dpp.Windowed = !this->fullscreen; 
+	d3dpp.Windowed = !FULLSCREEN; 
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD; 
 	d3dpp.hDeviceWindow = hWnd;
 	d3dpp.BackBufferFormat = d3ddm.Format;
@@ -34,7 +34,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
     d3dpp.EnableAutoDepthStencil = TRUE;  
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
 	d3dpp.MultiSampleType = D3DMULTISAMPLE_8_SAMPLES;
 	LPDIRECT3DSURFACE9 newDepthStencil	= NULL;
 

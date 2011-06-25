@@ -9,9 +9,9 @@
 #include "Quadtree.h"
 #include <vector>
 #include "noise/noise.h"
-#include "Node.h"
+#include "../Scene/Node.h"
 
-class Terrain : public Node
+class Terrain : public SceneManagement::Node
 {
 	public:
 		Terrain();
@@ -24,6 +24,7 @@ class Terrain : public Node
 		Vector Collide(Vector v);
 		Quadtree* GetQuadtree();
 		void CreateNoise();
+		~Terrain();
 
 	private:
 		void CreateIndexbuffers();
@@ -49,15 +50,15 @@ class Terrain : public Node
 		Texture* texture_detail1_alternate;
 		Texture* texture_detail2;
 		Texture* texture_detail3;
-		Texture* texture_lava;
-		Texture* texture_lightmap;
-		Texture* texture_alphamap_detail1;
-		Texture* texture_alphamap_detail2;
-		Texture* texture_alphamap_lava;	
+		//Texture* texture_lava;
+		//Texture* texture_lightmap;
+		//Texture* texture_alphamap_detail1;
+		//Texture* texture_alphamap_detail2;
+		//Texture* texture_alphamap_lava;	
 		Texture* texture_normal;
 		Texture* texture_water1;
 		Texture* texture_water2;
-		Texture* texture_height;
+		//Texture* texture_height;
 		Shader* terrainshader;
 		Shader* watershader;
 

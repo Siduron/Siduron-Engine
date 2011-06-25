@@ -76,6 +76,21 @@ void ResourceManager::DeleteTexture(std::string path)
 		}
 	}
 }
+
+void ResourceManager::DeleteShader(std::string path)
+{
+	if(this->shaders.count(path) > 0)
+	{
+		this->shaders[path]->SubtractUse();
+		if(this->shaders[path]->GetUses() == 0)
+		{
+			//this->textures[path]->Delete();
+			delete this->shaders[path];
+			this->shaders.erase(path);
+			//Logger::Instance()->Log("Deleting texture: "+path, Info);
+		}
+	}
+}
 void ResourceManager::Flush()
 {
 	std::map<std::string, Texture*>::iterator currentTexture;

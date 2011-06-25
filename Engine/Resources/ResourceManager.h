@@ -18,6 +18,7 @@ public:
 	Model* GetModel(const std::string modelPath, const std::string modelName);
 	void ReloadShaders();
 	void DeleteTexture(std::string path);
+	void DeleteShader(std::string path);
 	void Flush();
 	~ResourceManager();
 private:

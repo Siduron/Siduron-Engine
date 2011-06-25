@@ -174,10 +174,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Node.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\noiseutils.cpp"
 				>
 			</File>
@@ -249,10 +245,6 @@
 			</File>
 			<File
 				RelativePath=".\Model.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Node.h"
 				>
 			</File>
 			<File

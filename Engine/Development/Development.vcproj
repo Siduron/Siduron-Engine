@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="GUI"
-	ProjectGUID="{F53FC2C3-1F6A-426D-A1FE-E43E14B5C383}"
-	RootNamespace="GUI"
+	Name="Development"
+	ProjectGUID="{15E1F5B9-95A8-41E4-BE60-A2913694E0D5}"
+	RootNamespace="Development"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,8 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include&quot;;&quot;D:\Program Files\lua-5.1.4\src&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../../Content"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -60,12 +60,18 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase_d.lib CEGUIDirect3D9Renderer_d.lib CEGUILuaScriptModule_d.lib"
-				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\lib&quot;"
+				Name="VCLinkerTool"
+				AdditionalDependencies="d3d9.lib d3dx9.lib dinput8.lib winmm.lib"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -77,6 +83,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -84,7 +96,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -105,8 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -123,12 +134,20 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="&quot;CEGUIBase.lib  CEGUIDirect3D9Renderer.lib"
-				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.1-vc8\lib&quot;"
+				Name="VCLinkerTool"
+				AdditionalDependencies="d3d9.lib d3dx9.lib dinput8.lib winmm.lib"
+				LinkIncremental="1"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -138,6 +157,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -153,16 +178,28 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CEGUI_Window.cpp"
+				RelativePath=".\Main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GUI.cpp"
+				RelativePath=".\ModelTest.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\RTSGui.cpp"
+				RelativePath=".\RTStest.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\scenegraphTest.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -171,15 +208,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CEGUI_Window.h"
+				RelativePath=".\ModelTest.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GUI.h"
+				RelativePath=".\RTStest.h"
 				>
 			</File>
 			<File
-				RelativePath=".\RTSGui.h"
+				RelativePath=".\sceneGraphTest.h"
 				>
 			</File>
 		</Filter>
@@ -188,6 +225,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Development.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\icon.ico"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

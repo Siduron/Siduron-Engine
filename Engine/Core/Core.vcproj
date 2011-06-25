@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\dependencies\include&quot;;&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include\ScriptingModules\LuaScriptModule\support\tolua++&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

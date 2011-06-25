@@ -3,10 +3,13 @@
 
 #include "../Resources/ResourceManager.h"
 #include "../Renderer/Renderer.h"
-#include "../Window/Window.h"
+#include "../Window/SDLWindow.h"
 #include "../Input/InputManager.h"
 #include "../Scene/Scene.h"
 #include "../GUI/GUI.H"
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define FULLSCREEN false
 
 class Kernel
 {
@@ -15,7 +18,7 @@ class Kernel
 		static Kernel* Instance();
 		Renderer* GetRenderer();
 		InputManager* GetInputManager();
-		Window* GetWindow();
+		SDLWindow* GetWindow();
 		Scene* GetScene();
 		GUI* GetGUI();
 		ResourceManager* GetResourceManager();
@@ -23,7 +26,7 @@ class Kernel
 
 	private:
 		Renderer* renderer;
-		Window* window;
+		SDLWindow* window;
 		InputManager* input;
 		Scene* scene;
 		ResourceManager* resourcemanager;

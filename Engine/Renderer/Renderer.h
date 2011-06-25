@@ -28,9 +28,6 @@
 #define D3D_DEBUG_INFO
 #endif
 #endif
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1200
-
 
 class Renderer
 {

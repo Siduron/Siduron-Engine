@@ -1,0 +1,7 @@
+class Kernel
+{
+	public:
+		Kernel();
+		static Kernel* Instance();
+		~Kernel();
+};

@@ -105,8 +105,8 @@ void Terrain::Create(int mapSize)
 			temppatch->indexbufferLow_stitchtopright = this->indexbufferLow_stitchtopright;
 			temppatch->indexbufferLow_stitchbottomright = this->indexbufferLow_stitchbottomright;
 			
-			temppatch->texture_alphamap_detail1 = this->texture_alphamap_detail1;
-			temppatch->texture_alphamap_detail2 = this->texture_alphamap_detail2;
+			//temppatch->texture_alphamap_detail1 = this->texture_alphamap_detail1;
+			//temppatch->texture_alphamap_detail2 = this->texture_alphamap_detail2;
 			temppatch->texture_detail1 = this->texture_detail1;
 			temppatch->texture_detail1_alternate = this->texture_detail1_alternate;
 			temppatch->texture_detail2 = this->texture_detail2;
@@ -1104,4 +1104,53 @@ void Terrain::CreateNoise()
    normalMapWriter.SetDestFilename ("tutorialNormal.bmp");
    normalMapWriter.WriteDestFile ();
    this->texture_normal = Kernel::Instance()->GetResourceManager()->GetTexture("tutorialNormal.bmp");
+}
+
+Terrain::~Terrain()
+{
+	this->t_buffer->Release();
+	this->waterbuffer->Release();
+	delete this->matWorldInverseTransponse;
+	delete this->matWorldInverse;
+	delete this->worldViewProj;
+	delete this->quadtree;
+	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
+	resourceManager->DeleteTexture(this->texture_map->GetPath());
+	resourceManager->DeleteTexture(this->texture_detail1->GetPath());
+	resourceManager->DeleteTexture(this->texture_detail1_alternate->GetPath());
+	resourceManager->DeleteTexture(this->texture_detail2->GetPath());
+	resourceManager->DeleteTexture(this->texture_detail3->GetPath());
+	resourceManager->DeleteTexture(this->texture_water1->GetPath());
+	resourceManager->DeleteTexture(this->texture_water2->GetPath());
+		
+	//Release Indexbuffers
+	this->indexbufferHigh->Release();
+	this->indexbufferMedium->Release();
+	this->indexbufferLow->Release();
+
+	this->indexbufferMedium_stitchleft->Release();
+	this->indexbufferMedium_stitchtopleft->Release();
+	this->indexbufferMedium_stitchbottomleft->Release();
+	this->indexbufferMedium_stitchtop->Release();
+	this->indexbufferMedium_stitchbottom->Release();
+	this->indexbufferMedium_stitchright->Release();
+	this->indexbufferMedium_stitchtopright->Release();
+	this->indexbufferMedium_stitchbottomright->Release();
+
+	this->indexbufferLow_stitchleft->Release();
+	this->indexbufferLow_stitchtopleft->Release();
+	this->indexbufferLow_stitchbottomleft->Release();
+	this->indexbufferLow_stitchtop->Release();
+	this->indexbufferLow_stitchbottom->Release();
+	this->indexbufferLow_stitchright->Release();
+	this->indexbufferLow_stitchtopright->Release();
+	this->indexbufferLow_stitchbottomright->Release();
+
+	for(unsigned int a = 0; a < this->verts2.size(); a++)
+	{
+		for(unsigned int b = 0; b < this->verts2.size(); b++)
+		{
+			delete this->verts2[a][b];
+		}
+	}
 }

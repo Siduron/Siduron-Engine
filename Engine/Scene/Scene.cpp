@@ -8,14 +8,9 @@ Scene::Scene()
 	this->atmosRange = 13;
 }
 
-Scene::~Scene()
-{
-
-}
-
 bool Scene::Init()
 {
-	this->masterNode = new Node();
+	this->masterNode = new SceneManagement::Node();
 	this->CreateLoadingScreen();
 	this->camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	//this->camera->SetPosition(0.0f, 0.0f, -2.0f);
@@ -132,7 +127,7 @@ bool Scene::Init()
 	return true;
 }
 
-void Scene::Add(Node* node)
+void Scene::Add(SceneManagement::Node* node)
 {
 	this->masterNode->AddChildNode(node);
 }
@@ -216,7 +211,13 @@ Camera* Scene::GetActiveCamera()
 //	return this->skybox;
 //}
 
-Node* Scene::GetMasterNode()
+SceneManagement::Node* Scene::GetMasterNode()
 {
 	return this->masterNode;
+}
+
+
+Scene::~Scene()
+{
+	if(!this->terrain) delete this->terrain;
 }

@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="GUI"
-	ProjectGUID="{F53FC2C3-1F6A-426D-A1FE-E43E14B5C383}"
-	RootNamespace="GUI"
-	Keyword="Win32Proj"
+	Name="LUA Interfaces"
+	ProjectGUID="{86C83635-4C98-4691-9028-7D034446EC44}"
+	RootNamespace="LUAInterfaces"
 	>
 	<Platforms>
 		<Platform
@@ -40,12 +39,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include&quot;;&quot;D:\Program Files\lua-5.1.4\src&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="&quot;D:\Program Files\lua-5.1.4\src&quot;;&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include\ScriptingModules\LuaScriptModule\support\tolua++&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -61,8 +58,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase_d.lib CEGUIDirect3D9Renderer_d.lib CEGUILuaScriptModule_d.lib"
-				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\lib&quot;"
+				AdditionalDependencies="tolua++_d.lib"
+				AdditionalLibraryDirectories="D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -84,7 +81,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -105,10 +102,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -123,12 +117,17 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="&quot;CEGUIBase.lib  CEGUIDirect3D9Renderer.lib"
-				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.1-vc8\lib&quot;"
+				Name="VCLinkerTool"
+				GenerateDebugInformation="true"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -138,6 +137,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -153,15 +158,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CEGUI_Window.cpp"
+				RelativePath=".\Kernel_Interface.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GUI.cpp"
+				RelativePath=".\Logger_Interface.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\RTSGui.cpp"
+				RelativePath=".\LuaInterface.cpp"
 				>
 			</File>
 		</Filter>
@@ -171,23 +176,33 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CEGUI_Window.h"
+				RelativePath=".\Kernel_Interface.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GUI.h"
+				RelativePath=".\Logger_Interface.h"
 				>
 			</File>
 			<File
-				RelativePath=".\RTSGui.h"
+				RelativePath=".\LuaInterface.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			Name="Package Files"
 			>
+			<File
+				RelativePath=".\Kernel_Interface.pkg"
+				>
+			</File>
+			<File
+				RelativePath=".\Logger_Interface.pkg"
+				>
+			</File>
+			<File
+				RelativePath=".\LuaInterface.pkg"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

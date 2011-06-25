@@ -51,7 +51,6 @@ bool Window::MakeWindow()
 	ShowCursor(TRUE);
 	this->SetVisible(true);
 	UpdateWindow(this->hwnd);
-
 	return true;
 }
 
@@ -64,10 +63,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
                         PostQuitMessage(0);
                         break;
 				case WM_SETFOCUS :
-						Kernel::Instance()->GetWindow()->SetFocus(true);
+						//Kernel::Instance()->GetWindow()->SetFocus(true);
                         break;
 				case WM_KILLFOCUS :
-                        Kernel::Instance()->GetWindow()->SetFocus(false);
+                        //Kernel::Instance()->GetWindow()->SetFocus(false);
 					    break;
                 default:
                         return DefWindowProc(hwnd, Message, wParam, lParam);

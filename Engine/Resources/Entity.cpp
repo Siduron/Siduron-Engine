@@ -14,7 +14,7 @@ Entity::~Entity()
 
 void Entity::Render()
 {
-	Node::Render();
+	SceneManagement::Node::Render();
 }
 
 void Entity::SetPosition(float x, float y, float z)
@@ -22,7 +22,7 @@ void Entity::SetPosition(float x, float y, float z)
 	this->position.x = x;
 	this->position.y = y;
 	this->position.z = z;
-	Node::SetTranslation(x,y,z);
+	SceneManagement::Node::SetTranslation(x,y,z);
 }
 
 void Entity::SetPosition(Vector pos)
@@ -40,7 +40,7 @@ void Entity::SetRotation(float x,float y, float z)
 	this->rotation.x = x;
 	this->rotation.y = y;
 	this->rotation.z = z;
-	Node::SetRotation(x,y,z);
+	SceneManagement::Node::SetRotation(x,y,z);
 }
 
 void Entity::SetPitch(float amount)

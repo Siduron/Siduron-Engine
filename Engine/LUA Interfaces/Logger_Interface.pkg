@@ -1,0 +1,7 @@
+class Logger
+{
+	public:
+		static Logger* Instance();
+		static void Log(std::string message, Messagetype type);
+		static void Progress();
+};

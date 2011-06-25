@@ -67,9 +67,9 @@ const float& InputManager::GetMouseY() const
 // this is the function that closes DirectInput
 void InputManager::Cleanup()
 {
-	this->dinmouse->Unacquire();    // make sure the mouse is unacquired
-    this->dinterface->Release();
-	this->dinmouse->Release();
+	//this->dinmouse->Unacquire();    // make sure the mouse is unacquired
+ //   this->dinterface->Release();
+	//this->dinmouse->Release();
     return;
 }
 
