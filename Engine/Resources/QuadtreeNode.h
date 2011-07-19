@@ -11,7 +11,7 @@ class QuadtreeNode
 		std::vector<std::vector<QuadtreeNode*>> GetNode();
 		Vector Collide(Vector vec);
 		void CalcLod(Vector cameraPosition);
-		QuadtreeNode* CurrentNode(Vector* vec);
+		QuadtreeNode* CurrentNode(Vector vec);
 		Patch* GetPatch();
 		std::vector<int> GetCenter();
 

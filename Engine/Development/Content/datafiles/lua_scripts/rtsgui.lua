@@ -19,8 +19,9 @@ buildScreen_Advanced:getChild("BuildAdvanced_Cancel"):subscribeEvent("Clicked","
 function BuildBasic()
 	buildScreen:setVisible(false);
 	buildScreen_Basic:setVisible(true);
-	local logger = Logger:Instance();
-	logger:Progress();
+	--local logger = Logger:Instance();
+	--logger:Progress();
+
 end
 
 function BuildBasic_Cancel()

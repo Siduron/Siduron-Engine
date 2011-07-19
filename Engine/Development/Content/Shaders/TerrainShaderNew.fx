@@ -172,41 +172,12 @@ PS_OUT Terrain_Low(VS_OUT input)
     return output;
 }
 
-PS_OUT Terrain_New(VS_OUT input)
+PS_OUT Terrain_Debug(VS_OUT input)
 {
 	PS_OUT output = (PS_OUT)0;
-	float4 ColorMap = tex2D( ColormapSampler, input.Tex.xy/(32*size));
-	float4 NormalMap = tex2D( NormalSampler, input.Tex.xy/(32*size));
-	float4 Grass = tex2D( TextureSampler1, input.Tex.xy/8);
-	float4 GrassDetail = tex2D( TextureSampler1, input.Tex.xy/2);
-	GrassDetail.rgb = (GrassDetail.r+GrassDetail.g+GrassDetail.b)/3.0f;
-	float4 Dirt = tex2D( TextureSampler2, input.Tex.xy/8);
-	float4 DirtDetail = tex2D( TextureSampler2, input.Tex.xy/2);
-	DirtDetail.rgb = (DirtDetail.r+DirtDetail.g+DirtDetail.b)/3.0f;
-	float4 Rock = tex2D( TextureSampler3, input.Tex.xy/8);
-	float4 RockDetail = tex2D( TextureSampler3, input.Tex.xy/2);
-	RockDetail.rgb = (RockDetail.r+RockDetail.g+RockDetail.b)/3.0f;
-	
-	float4 Color = float4(0,0,0,1);
-	Color.rgb += ((Grass*GrassDetail)*2)*ColorMap.r;
-	Color.rgb += ((Dirt*DirtDetail)*2)*ColorMap.g;
-	Color.rgb += ((Rock*RockDetail)*2)*ColorMap.b;
-	
-	input.Normal.r = NormalMap.r;
-    input.Normal.g = NormalMap.g;
-    input.Normal.b = NormalMap.b;
-    
-    float3 Norm = normalize(input.Normal);
-    float3 LightDir = normalize(input.Light);
-    float4 Ambient = AmbientIntensity * AmbientColor;
-    float4 Diffuse = (DiffuseIntensity * DiffuseColor) * saturate(dot(LightDir,Norm));
-    float3 Half = normalize(LightDir + normalize(input.CamView));    
-    float specular = pow(saturate(dot(Norm,Half)),25);
-	float4 finalLight = Ambient + (Diffuse) + ((SpecularColor * SpecularIntensity) * specular);
-	finalLight.a = 1.0;
-    output.Color = Color*finalLight;
-    //output.Color = Color;
-    return output;
+	float4 Texture1 = tex2D( TextureSampler1, input.Tex.xy/8);
+	output.Color = Texture1;
+	return output;
 }
 
 technique HighDetail
@@ -229,3 +200,12 @@ technique LowDetail
     }
 }
 
+technique Debug
+{
+    pass p0
+    {
+        VertexShader = compile vs_1_1 VS();
+        PixelShader = compile ps_2_0 Terrain_Debug();
+        ZEnable = TRUE;
+    }
+}

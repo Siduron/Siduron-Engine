@@ -256,24 +256,24 @@ void QuadtreeNode::CalcLod(Vector cameraPosition)
 	}
 }
 //Compare a position with the boundaries of this node, and return the node.
-QuadtreeNode* QuadtreeNode::CurrentNode(Vector* vec)
+QuadtreeNode* QuadtreeNode::CurrentNode(Vector vec)
 {
 	QuadtreeNode* tempNode;	
 	if(this->hasNodes)
 	{
-		if(vec->x >= this->node0->minX && vec->x <= this->node0->maxX && vec->z <= this->node0->minZ && vec->z >= this->node0->maxZ)
+		if(vec.x >= this->node0->minX && vec.x <= this->node0->maxX && vec.z <= this->node0->minZ && vec.z >= this->node0->maxZ)
 		{
 			tempNode = this->node0->CurrentNode(vec);
 		}
-		else if(vec->x >= this->node1->minX && vec->x <= this->node1->maxX && vec->z <= this->node1->minZ && vec->z >= this->node1->maxZ)
+		else if(vec.x >= this->node1->minX && vec.x <= this->node1->maxX && vec.z <= this->node1->minZ && vec.z >= this->node1->maxZ)
 		{
 			tempNode = this->node1->CurrentNode(vec);
 		}
-		else if(vec->x >= this->node2->minX && vec->x <= this->node2->maxX && vec->z <= this->node2->minZ && vec->z >= this->node2->maxZ)
+		else if(vec.x >= this->node2->minX && vec.x <= this->node2->maxX && vec.z <= this->node2->minZ && vec.z >= this->node2->maxZ)
 		{
 			tempNode = this->node2->CurrentNode(vec);
 		}
-		else if(vec->x >= this->node3->minX && vec->x <= this->node3->maxX && vec->z <= this->node3->minZ && vec->z >= this->node3->maxZ)
+		else if(vec.x >= this->node3->minX && vec.x <= this->node3->maxX && vec.z <= this->node3->minZ && vec.z >= this->node3->maxZ)
 		{
 			tempNode = this->node3->CurrentNode(vec);
 		}

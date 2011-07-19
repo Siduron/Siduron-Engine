@@ -19,6 +19,7 @@ class Logger
 		static void Progress();
 		~Logger();
 	private:
+		Logger();
 		static Logger* pInstance;
 };
 #endif

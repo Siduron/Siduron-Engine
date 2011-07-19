@@ -20,7 +20,8 @@ class Patch
 		Patch(Renderer* r);
 		void Create(std::vector<Vertex*> v);
 		void Render();
-		void ToggleWireframe();
+		void EnableWireframe(bool wireframe);
+		
 		void SetNeighbours(std::map<std::string, Patch*> n);
 		void SetLod(DETAILLEVEL lod);
 		void SetShader(Shader* s);
@@ -30,6 +31,8 @@ class Patch
 		const std::vector<Vertex*>& GetVertices() const;
 		float atmosphere;
 	protected:
+		void EnableDebug(bool debug);
+
 		//Indexbuffers
 		LPDIRECT3DINDEXBUFFER9 indexbufferHigh;
 		LPDIRECT3DINDEXBUFFER9 indexbufferMedium;
@@ -54,14 +57,14 @@ class Patch
 		LPDIRECT3DINDEXBUFFER9 indexbufferLow_stitchtopright;
 		LPDIRECT3DINDEXBUFFER9 indexbufferLow_stitchbottomright;
 
-		Texture* texture_map;
+		/*Texture* texture_map;
 		Texture* texture_detail1;
 		Texture* texture_detail1_alternate;
 		Texture* texture_detail2;
 		Texture* texture_lava;
 		Texture* texture_alphamap_detail1;
 		Texture* texture_alphamap_detail2;
-		Texture* texture_normal;
+		Texture* texture_normal;*/
 	
 		Patch* left;
 		Patch* right;
@@ -72,6 +75,7 @@ class Patch
 		//D3DXMATRIX matWorld, matTranslate, matScale, matRotateX, matRotateY, matRotateZ;
 		D3DXMATRIX *matWorldInverseTransponse, *matWorldInverse, *worldViewProj;
 	private:
+		bool debug;
 		Vector position;
 		Vector rotation;
 		Vector scale;

@@ -158,6 +158,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\ExposeTest_Interface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Kernel_Interface.cpp"
 				>
 			</File>
@@ -176,6 +180,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\ExposeTest_Interface.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Kernel_Interface.h"
 				>
 			</File>
@@ -191,6 +199,10 @@
 		<Filter
 			Name="Package Files"
 			>
+			<File
+				RelativePath=".\ExposeTest_Interface.pkg"
+				>
+			</File>
 			<File
 				RelativePath=".\Kernel_Interface.pkg"
 				>

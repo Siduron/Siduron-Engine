@@ -1,14 +1,16 @@
 /*
 ** Lua binding: Logger_Interface
-** Generated automatically by tolua++-1.0.92 on 06/24/11 18:46:33.
+** Generated automatically by tolua++-1.0.92 on 07/11/11 00:37:55.
 */
 
 #ifndef __cplusplus
 #include "stdlib.h"
 #endif
 #include "string.h"
-#include "../Util/Logger.h"
+
 #include "tolua++.h"
+#include "../Util/Logger.h"
+#include "../Development/ExposeTest.h"
 
 /* Exported function */
 int tolua_Logger_Interface_open (lua_State* tolua_S);

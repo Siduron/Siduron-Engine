@@ -11,6 +11,16 @@
 #include "noise/noise.h"
 #include "../Scene/Node.h"
 
+struct TextureSet
+{
+	Texture* Texture1;
+	Texture* Texture2;
+	Texture* Texture3;
+
+	Texture* alt_Texture1;
+	Texture* debug;
+};
+
 class Terrain : public SceneManagement::Node
 {
 	public:
@@ -19,14 +29,17 @@ class Terrain : public SceneManagement::Node
 		void Render();
 		void RenderWater();
 		void ToggleWireframe();
+		void EnableDebug(bool debug);
 		bool LoadBMP(std::string argFileName);
 		void SmoothHeightData(int Passes);
 		Vector Collide(Vector v);
 		Quadtree* GetQuadtree();
 		void CreateNoise();
+
 		~Terrain();
 
 	private:
+		bool debug;
 		void CreateIndexbuffers();
 		Renderer* renderer;
 		LPDIRECT3DDEVICE9 g_pD3DDevice;
@@ -42,14 +55,17 @@ class Terrain : public SceneManagement::Node
 
 		//std::vector<std::vector<Patch*>> patches; //vector<vertical><horizontal>
 		float hmap[530][530];
+		std::vector<std::vector<Patch*>> patches; //vector<vertical><horizontal>
 		std::vector<std::vector<Vertex*>> verts2; //vector<vertical><horizontal>
 		Quadtree* quadtree;
-
+		
+		TextureSet currentSet;
+		TextureSet greenWorld;
 		Texture* texture_map;
-		Texture* texture_detail1;
-		Texture* texture_detail1_alternate;
-		Texture* texture_detail2;
-		Texture* texture_detail3;
+		//Texture* texture_detail1;
+		//Texture* texture_detail1_alternate;
+		//Texture* texture_detail2;
+		//Texture* texture_detail3;
 		//Texture* texture_lava;
 		//Texture* texture_lightmap;
 		//Texture* texture_alphamap_detail1;
@@ -58,6 +74,7 @@ class Terrain : public SceneManagement::Node
 		Texture* texture_normal;
 		Texture* texture_water1;
 		Texture* texture_water2;
+		
 		//Texture* texture_height;
 		Shader* terrainshader;
 		Shader* watershader;

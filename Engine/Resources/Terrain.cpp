@@ -4,6 +4,7 @@
 
 Terrain::Terrain()
 {
+	this->debug = false;
 	this->renderer = Kernel::Instance()->GetRenderer();
 	this->g_pD3DDevice = this->renderer->GetDevice();
 	//this->position = Vector(0.0f,0.0f,0.0f);
@@ -13,6 +14,14 @@ Terrain::Terrain()
 	this->worldViewProj = new D3DXMATRIX();
 	this->matWorldInverse = new D3DXMATRIX();
 	this->matWorldInverseTransponse = new D3DXMATRIX();
+	
+	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
+	this->greenWorld.Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
+	this->greenWorld.Texture2 = resourceManager->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
+	this->greenWorld.Texture3 = resourceManager->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
+	this->greenWorld.alt_Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
+	this->greenWorld.debug = resourceManager->GetTexture("Content/Textures/Terrain/devtexture.bmp");
+	this->currentSet = this->greenWorld;
 }
 
 void Terrain::Create(int mapSize)
@@ -24,10 +33,10 @@ void Terrain::Create(int mapSize)
 	//this->texture_alphamap_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_1.png");
 	//this->texture_alphamap_lava = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_2.png");
 
-	this->texture_detail1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
-	this->texture_detail1_alternate = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
-	this->texture_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
-	this->texture_detail3 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
+	//this->texture_detail1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
+	//this->texture_detail1_alternate = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
+	//this->texture_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
+	//this->texture_detail3 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
 	
 	//this->texture_lava = Kernel::Instance()->GetResourceManager()->GetTexture("Textures/Terrain/4278406515_9a31c37ff5.jpg");
 	
@@ -62,7 +71,6 @@ void Terrain::Create(int mapSize)
 	Logger::Instance()->Log("Creating Indexbuffers..", Info);
 	this->CreateIndexbuffers();
 
-	std::vector<std::vector<Patch*>> patches; //vector<vertical><horizontal>
 	Logger::Instance()->Log("Creating Patches..", Info);
 	for(unsigned int v = 0; v < (8*mapSize); v++)
 	{
@@ -107,37 +115,37 @@ void Terrain::Create(int mapSize)
 			
 			//temppatch->texture_alphamap_detail1 = this->texture_alphamap_detail1;
 			//temppatch->texture_alphamap_detail2 = this->texture_alphamap_detail2;
-			temppatch->texture_detail1 = this->texture_detail1;
+			/*temppatch->texture_detail1 = this->texture_detail1;
 			temppatch->texture_detail1_alternate = this->texture_detail1_alternate;
 			temppatch->texture_detail2 = this->texture_detail2;
 			temppatch->texture_map = this->texture_map;
-			temppatch->texture_normal = this->texture_normal;
+			temppatch->texture_normal = this->texture_normal;*/
 			temppatch->SetShader(this->terrainshader);
 			temppatch->worldViewProj = this->worldViewProj;
 			temppatch->matWorldInverse = this->matWorldInverse;
 			temppatch->matWorldInverseTransponse = this->matWorldInverseTransponse;
 			temppatches.push_back(temppatch);
 		}
-		patches.push_back(temppatches);
+		this->patches.push_back(temppatches);
 	}
 
 	//Set neighbours for the patches
 	Logger::Instance()->Log("Setting Patch neighbours..", Info);
-	for(unsigned int a = 0; a < patches.size(); a++)
+	for(unsigned int a = 0; a < this->patches.size(); a++)
 	{	
-		for(unsigned int b = 0; b < patches.at(a).size(); b++)
+		for(unsigned int b = 0; b < this->patches.at(a).size(); b++)
 		{	
 			std::map<std::string, Patch*> neighbours;
-			if(b > 0) neighbours.insert(std::make_pair("Left", patches.at(a).at(b-1)));
-			if(b < patches.at(a).size()-1) neighbours.insert(std::make_pair("Right", patches.at(a).at(b+1)));
-			if(a > 0) neighbours.insert(std::make_pair("Up", patches.at(a-1).at(b)));
-			if(a < patches.size()-1) neighbours.insert(std::make_pair("Down", patches.at(a+1).at(b)));
-			patches.at(a).at(b)->SetNeighbours(neighbours);
+			if(b > 0) neighbours.insert(std::make_pair("Left", this->patches.at(a).at(b-1)));
+			if(b < this->patches.at(a).size()-1) neighbours.insert(std::make_pair("Right", this->patches.at(a).at(b+1)));
+			if(a > 0) neighbours.insert(std::make_pair("Up", this->patches.at(a-1).at(b)));
+			if(a < this->patches.size()-1) neighbours.insert(std::make_pair("Down", this->patches.at(a+1).at(b)));
+			this->patches.at(a).at(b)->SetNeighbours(neighbours);
 		}
 	}
 	//Create Quadtree
 	Logger::Instance()->Log("Creating Quadtree..", Info);
-	this->quadtree = new Quadtree(patches, 0.0f, 8.0f*mapSize, 0.0f, -8.0f*mapSize, 8.0f*mapSize, 8.0f*mapSize);
+	this->quadtree = new Quadtree(this->patches, 0.0f, 8.0f*mapSize, 0.0f, -8.0f*mapSize, 8.0f*mapSize, 8.0f*mapSize);
 	
 	//Water plane, to test water shader only
 	/*Logger::Instance()->Log("Creating Water..", Info);
@@ -168,13 +176,13 @@ void Terrain::Render()
 	//this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	Vector camPos = this->renderer->GetCamera()->GetPosition();
 
-	D3DXMatrixRotationX( &this->matRotateX, this->rotation.x );        // Pitch
-	D3DXMatrixRotationY( &this->matRotateY, this->rotation.y );        // Yaw
-	D3DXMatrixRotationZ( &this->matRotateZ, this->rotation.z );        // Roll
-	D3DXMatrixTranslation( &this->matTranslate, this->position.x,this->position.y,this->position.z );
-	D3DXMatrixScaling( &this->matScale, this->scale.x,this->scale.y,this->scale.z );
+	//D3DXMatrixRotationX( &this->matRotateX, this->rotation.x );        // Pitch
+	//D3DXMatrixRotationY( &this->matRotateY, this->rotation.y );        // Yaw
+	//D3DXMatrixRotationZ( &this->matRotateZ, this->rotation.z );        // Roll
+	//D3DXMatrixTranslation( &this->matTranslate, this->position.x,this->position.y,this->position.z );
+	//D3DXMatrixScaling( &this->matScale, this->scale.x,this->scale.y,this->scale.z );
 
-	this->matWorld=(this->matRotateX*this->matRotateY*this->matRotateZ) * this->matScale * this->matTranslate;
+	//this->matWorld=(this->matRotateX*this->matRotateY*this->matRotateZ) * this->matScale * this->matTranslate;
 	this->g_pD3DDevice->SetTransform( D3DTS_WORLD,&this->matWorld );
 	*this->worldViewProj = (this->matWorld*this->renderer->GetViewMatrix()*this->renderer->GetProjectionMatrix());
 	D3DXMATRIX view = this->renderer->GetViewMatrix();
@@ -185,12 +193,19 @@ void Terrain::Render()
 	D3DXMatrixTranspose(this->matWorldInverseTransponse, &this->matWorld);
 	D3DXMatrixInverse(this->matWorldInverseTransponse, NULL, matWorldInverseTransponse);
 	
-	this->g_pD3DDevice->SetTexture(0,this->texture_map->GetD3DTexture() );
-	this->g_pD3DDevice->SetTexture(1,this->texture_detail1->GetD3DTexture() );
-	this->g_pD3DDevice->SetTexture(2,this->texture_detail2->GetD3DTexture() );
-	this->g_pD3DDevice->SetTexture(3,this->texture_detail3->GetD3DTexture() );
-	this->g_pD3DDevice->SetTexture(4,this->texture_normal->GetD3DTexture() );
-	this->g_pD3DDevice->SetTexture(5,this->texture_detail1_alternate->GetD3DTexture() );
+	if(!debug)
+	{
+		this->g_pD3DDevice->SetTexture(0,this->texture_map->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(1,this->currentSet.Texture1->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(2,this->currentSet.Texture2->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(3,this->currentSet.Texture3->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(4,this->texture_normal->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(5,this->currentSet.alt_Texture1->GetD3DTexture() );
+	}
+	else
+	{
+		this->g_pD3DDevice->SetTexture(1,this->currentSet.debug->GetD3DTexture() );
+	}
 	
 	//Render
 	this->quadtree->GetMasterNode()->CalcLod(Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition());
@@ -239,6 +254,18 @@ void Terrain::ToggleWireframe()
 	//		//this->patches.at(a).at(b)->ToggleWireframe();
 	//	}
 	//}
+}
+
+void Terrain::EnableDebug(bool debug)
+{
+	this->debug = debug;
+	for(unsigned int a = 0; a < this->patches.size(); a++)
+	{
+		for(unsigned int b = 0; b < this->patches[a].size(); b++)
+		{
+			this->patches[a][b]->EnableDebug(debug);
+		}
+	}
 }
 
 bool Terrain::LoadBMP(std::string argFileName)
@@ -1116,10 +1143,10 @@ Terrain::~Terrain()
 	delete this->quadtree;
 	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
 	resourceManager->DeleteTexture(this->texture_map->GetPath());
-	resourceManager->DeleteTexture(this->texture_detail1->GetPath());
-	resourceManager->DeleteTexture(this->texture_detail1_alternate->GetPath());
-	resourceManager->DeleteTexture(this->texture_detail2->GetPath());
-	resourceManager->DeleteTexture(this->texture_detail3->GetPath());
+	resourceManager->DeleteTexture(this->currentSet.Texture1->GetPath());
+	resourceManager->DeleteTexture(this->currentSet.alt_Texture1->GetPath());
+	resourceManager->DeleteTexture(this->currentSet.Texture2->GetPath());
+	resourceManager->DeleteTexture(this->currentSet.Texture3->GetPath());
 	resourceManager->DeleteTexture(this->texture_water1->GetPath());
 	resourceManager->DeleteTexture(this->texture_water2->GetPath());
 		

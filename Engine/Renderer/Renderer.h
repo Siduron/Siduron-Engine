@@ -52,6 +52,7 @@ public:
 	void ToggleFullScreen();
 	void RenderCubemap();
 	void SetRenderTarget(RenderTarget* renderTarget);
+	void EnableWireframe(bool wireframe);
 	
 	~Renderer();
 	

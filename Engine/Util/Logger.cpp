@@ -11,6 +11,11 @@ Logger* Logger::Instance()
 	return pInstance;
 }
 
+Logger::Logger()
+{
+
+}
+
 void Logger::Log(std::string message, Messagetype type)
 {
 	if(type == Info)std::cout << "}"+ message + "\n";

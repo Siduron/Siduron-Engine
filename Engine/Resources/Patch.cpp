@@ -2,6 +2,7 @@
 
 Patch::Patch(Renderer* r)
 {
+	this->debug = false;
 	this->renderer = r;
 	this->g_pD3DDevice = r->GetDevice();
 	this->wireframe = false;
@@ -80,16 +81,24 @@ void Patch::Render()
 	this->shader->GetD3DEffect()->SetFloat( "LightPosY", 50);	
 	this->shader->GetD3DEffect()->SetFloat( "LightPosZ", -10);
 	//this->shader->GetD3DEffect()->SetFloat( "atmosphere", this->atmosphere);
-
-	if(this->lod == HIGH) this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
+	if(this->debug)
+	{
+		this->shader->GetD3DEffect()->SetTechnique( "Debug" );
+	}
+	else if(this->lod == HIGH) this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
 	//this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
 	else this->shader->GetD3DEffect()->SetTechnique( "LowDetail" );
+
 	this->shader->GetD3DEffect()->SetMatrix( "wvp", this->worldViewProj);
 	this->shader->GetD3DEffect()->SetMatrix( "itw", this->matWorldInverseTransponse);
 	this->shader->GetD3DEffect()->Begin(&passes,0);
 	this->shader->GetD3DEffect()->BeginPass(0);
 	this->g_pD3DDevice->SetStreamSource(0, this->t_buffer, 0, sizeof(CUSTOMVERTEX));
 	this->g_pD3DDevice->SetFVF(CUSTOMFVF);
+	if(this->wireframe)
+	{
+		this->renderer->EnableWireframe(true);
+	}
 	//this->g_pD3DDevice->SetTexture(0,this->texture_detail1->GetD3DTexture());
 	if(this->lod == HIGH)
 	{
@@ -206,13 +215,28 @@ void Patch::Render()
 	}
 	this->shader->GetD3DEffect()->EndPass();
 	this->shader->GetD3DEffect()->End();
+	if(this->wireframe)
+	{
+		this->renderer->EnableWireframe(false);
+	}
 }
 
-void Patch::ToggleWireframe()
+void Patch::EnableWireframe(bool wireframe)
 {
-	this->wireframe = !this->wireframe;
-	if(this->wireframe) this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
-	if(!this->wireframe) this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE,D3DFILL_SOLID);
+	this->wireframe = wireframe;
+	//if(wireframe)
+	//{
+	//	this->wireframerenderer->EnableWireframe(true);
+	//}
+	//else
+	//{
+	//	this->renderer->EnableWireframe(false);
+	//}
+}
+
+void Patch::EnableDebug(bool debug)
+{
+	this->debug = debug;
 }
 
 void Patch::SetNeighbours(std::map<std::string, Patch*> n)

@@ -280,6 +280,18 @@ void Renderer::SetRenderTarget(RenderTarget* renderTarget)
 	this->renderTarget = renderTarget;
 }
 
+void Renderer::EnableWireframe(bool wireframe)
+{
+	if(wireframe)
+	{
+		this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+	}
+	else
+	{
+		this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE,D3DFILL_SOLID);
+	}
+}
+
 Renderer::~Renderer()
 {
 	this->g_pD3DDevice->Release();    // close and release the 3D device

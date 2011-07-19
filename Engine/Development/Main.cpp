@@ -4,7 +4,7 @@
 #include "scenegraphTest.h"
 #include "RTStest.h"
 #include "ModelTest.h"
-
+#include "TerrainTest.h"
 
 //Camera* camera = new Camera();
 //
@@ -15,8 +15,9 @@ bool SetupEngine();
 bool EngineLoop();
 
 //ScenegraphTest* graphTest;
-RTStest* rtsTest;
+//RTStest* rtsTest;
 //ModelTest* modelTest;
+TerrainTest terrainTest;
 
 int main(int argc, char *argv[])
 {
@@ -70,7 +71,7 @@ bool EngineLoop()
 {   
 	Kernel::Instance()->GetRenderer()->BeginScene();
 	Kernel::Instance()->GetScene()->Render();
-	Kernel::Instance()->GetGUI()->Render();
+	//Kernel::Instance()->GetGUI()->Render();
 	Kernel::Instance()->GetRenderer()->EndScene();
 	Kernel::Instance()->GetRenderer()->Present();
 	
@@ -142,8 +143,8 @@ bool EngineLoop()
 	//	}
 	//}
 	//graphTest->Run();
-	//if(!rtsTest->Run())
-	//	return false;
+	if(!terrainTest.Run())
+		return false;
 	//Kernel::Instance()->GetWindow()->Update();
 	//Kernel::Instance()->GetGUI()->Render();
     
