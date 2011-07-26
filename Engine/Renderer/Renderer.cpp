@@ -116,7 +116,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
 void Renderer::BeginScene()
 {
 	//Clear the screen
-	D3DCOLOR screenColor = D3DCOLOR_XRGB(0, 0, 0);
+	D3DCOLOR screenColor = D3DCOLOR_XRGB(126, 189, 235);
 	//this->g_pD3DDevice->SetRenderTarget(0,this->renderTarget->GetSurface());
 	this->g_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, screenColor, 1.0f, 0.0f);
 	this->g_pD3DDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);

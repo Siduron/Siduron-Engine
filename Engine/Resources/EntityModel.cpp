@@ -4,11 +4,15 @@
 EntityModel::EntityModel()
 {
 	this->scale = Vector(1.0f,1.0f,1.0f);
+	this->model = NULL;
 }
 
 void EntityModel::Render()
 {
-	this->model->Render(this->matWorld);
+	if(this->model != NULL)
+	{
+		this->model->Render(this->matWorld);
+	}
 	Entity::Render();
 }
 

@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\Siduron Engine&quot;"
+				AdditionalIncludeDirectories="..\..\Engine"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,9 +58,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Core.lib GUI.lib Input.lib Math.lib Renderer.lib winmm.lib Resources.lib Scene.lib Util.lib Window.lib"
-				AdditionalLibraryDirectories="&quot;D:\Siduron Engine\debug&quot;"
+				AdditionalDependencies="Core.lib GUI.lib Input.lib Math.lib Renderer.lib winmm.lib Resources.lib Scene.lib Util.lib Window.lib LUAInterfaces.lib"
+				AdditionalLibraryDirectories="&quot;..\..\Engine\debug&quot;"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -157,11 +158,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Building.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Concrete.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameObject.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\Generator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tile.cpp"
 				>
 			</File>
 			<File
@@ -175,7 +196,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Building.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Concrete.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GameObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Generator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tile.h"
 				>
 			</File>
 			<File

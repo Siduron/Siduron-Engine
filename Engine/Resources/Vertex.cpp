@@ -32,6 +32,11 @@ Vector Vertex::GetPosition()
 {
 	return this->position;
 }
+const float Vertex::GetHeight()
+{
+	return this->position.y;
+}
+
 float Vertex::GetU()
 {
 	return this->u;

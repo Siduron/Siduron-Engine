@@ -16,7 +16,7 @@ struct TextureSet
 	Texture* Texture1;
 	Texture* Texture2;
 	Texture* Texture3;
-
+	Texture* Texture4;
 	Texture* alt_Texture1;
 	Texture* debug;
 };
@@ -35,6 +35,9 @@ class Terrain : public SceneManagement::Node
 		Vector Collide(Vector v);
 		Quadtree* GetQuadtree();
 		void CreateNoise();
+		Patch* GetPatchByIndex(int y, int x) const;
+		const int NumPatchesY() const;
+		const int NumPatchesX() const;
 
 		~Terrain();
 

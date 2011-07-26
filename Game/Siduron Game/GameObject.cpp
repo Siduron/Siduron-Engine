@@ -20,6 +20,16 @@ void GameObject::SetPosition(Vector pos)
 	this->entity->SetPosition(pos);
 }
 
+void GameObject::SetScale(const float newScale)
+{
+	this->entity->SetScale(newScale,newScale,newScale);
+}
+
+void GameObject::SetShader(const std::string shader)
+{
+	this->entity->SetShader(shader);
+}
+
 Vector GameObject::GetPosition() const
 {
 	return this->entity->GetPosition();

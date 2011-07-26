@@ -19,6 +19,7 @@ Terrain::Terrain()
 	this->greenWorld.Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
 	this->greenWorld.Texture2 = resourceManager->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
 	this->greenWorld.Texture3 = resourceManager->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
+	this->greenWorld.Texture4 = resourceManager->GetTexture("Content/Textures/Terrain/Concrete tile.jpg");
 	this->greenWorld.alt_Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
 	this->greenWorld.debug = resourceManager->GetTexture("Content/Textures/Terrain/devtexture.bmp");
 	this->currentSet = this->greenWorld;
@@ -75,7 +76,7 @@ void Terrain::Create(int mapSize)
 	for(unsigned int v = 0; v < (8*mapSize); v++)
 	{
 		std::vector<Patch*> temppatches;
-		for(unsigned int h = 0; h <= (8*mapSize); h++)
+		for(unsigned int h = 0; h < (8*mapSize); h++)
 		{
 			Patch* temppatch = new Patch(this->renderer);
 			std::vector<Vertex*> verts;
@@ -201,6 +202,7 @@ void Terrain::Render()
 		this->g_pD3DDevice->SetTexture(3,this->currentSet.Texture3->GetD3DTexture() );
 		this->g_pD3DDevice->SetTexture(4,this->texture_normal->GetD3DTexture() );
 		this->g_pD3DDevice->SetTexture(5,this->currentSet.alt_Texture1->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(6,this->currentSet.Texture4->GetD3DTexture() );
 	}
 	else
 	{
@@ -1046,41 +1048,67 @@ Quadtree* Terrain::GetQuadtree()
 
 void Terrain::CreateNoise()
 {
-	//Billow
-	module::Billow myModule;
-	myModule.SetOctaveCount(6);
-	myModule.SetFrequency(6);
-	myModule.SetSeed(40);
-	module::Billow myModule2;
-	myModule2.SetOctaveCount(6);
-	myModule2.SetFrequency(6);
+	////Billow
+	//module::Billow myModule;
+	//myModule.SetOctaveCount(6);
+	//myModule.SetFrequency(6);
+	//myModule.SetSeed(40);
+	//module::Billow myModule2;
+	//myModule2.SetOctaveCount(6);
+	//myModule2.SetFrequency(6);
 
-	//Scale
-	module::ScaleBias flatModule1;
-	flatModule1.SetSourceModule(0, myModule);
-	flatModule1.SetScale(0.125/2);
+	////Scale
+	//module::ScaleBias flatModule1;
+	//flatModule1.SetSourceModule(0, myModule);
+	//flatModule1.SetScale(0.125/2);
 
-	module::Select selectModule1;
-	selectModule1.SetSourceModule(0, flatModule1);
-	selectModule1.SetBounds(5,1000);
+	//module::Select selectModule1;
+	//selectModule1.SetSourceModule(0, flatModule1);
+	//selectModule1.SetBounds(5,1000);
 
-	module::ScaleBias flatModule2;
-	flatModule2.SetSourceModule(0, myModule2);
-	flatModule2.SetScale(0.125/2);
-	flatModule2.SetBias(-0.5);
+	//module::ScaleBias flatModule2;
+	//flatModule2.SetSourceModule(0, myModule2);
+	//flatModule2.SetScale(0.125/2);
+	//flatModule2.SetBias(-0.5);
+	//
+	////Final
+	//module::Perlin terrainType;
+	//terrainType.SetFrequency (2.5);
+	//terrainType.SetPersistence (0.125);
+	//terrainType.SetSeed(20);
+
+	//module::Select finalTerrain;
+	//finalTerrain.SetSourceModule (0, flatModule1);
+	//finalTerrain.SetSourceModule (1, flatModule2);
+	//finalTerrain.SetControlModule(terrainType);
+	//finalTerrain.SetBounds (0.0, 1000.0);
+	//finalTerrain.SetEdgeFalloff (0.50);
+
+	module::Billow mountainTerrain;
+	module::Billow baseFlatTerrain;
+	baseFlatTerrain.SetFrequency (2.0);
 	
-	//Final
-	module::Perlin terrainType;
-	terrainType.SetFrequency (2.5);
-	terrainType.SetPersistence (0.125);
-	terrainType.SetSeed(20);
+	module::ScaleBias flatTerrain;
+	flatTerrain.SetSourceModule (0, baseFlatTerrain);
+	flatTerrain.SetScale(0.00125);
+	flatTerrain.SetBias(-0.75);
 
-	module::Select finalTerrain;
-	finalTerrain.SetSourceModule (0, flatModule1);
-	finalTerrain.SetSourceModule (1, flatModule2);
-	finalTerrain.SetControlModule(terrainType);
-	finalTerrain.SetBounds (0.0, 1000.0);
-	finalTerrain.SetEdgeFalloff (0.50);
+	module::Perlin terrainType;
+	terrainType.SetFrequency (0.5);
+	terrainType.SetPersistence (0.125);
+	terrainType.SetSeed(1884);
+
+	module::Select terrainSelector;
+	terrainSelector.SetSourceModule (0, flatTerrain);
+	terrainSelector.SetSourceModule (1, mountainTerrain);
+	terrainSelector.SetControlModule (terrainType);
+	terrainSelector.SetBounds (0.0, 1000.0);
+	terrainSelector.SetEdgeFalloff (0.1);
+	
+	module::Turbulence finalTerrain;
+	finalTerrain.SetSourceModule (0, terrainSelector);
+	finalTerrain.SetFrequency (2);
+	finalTerrain.SetPower (0.125);
 
 	noise::utils::NoiseMap heightMap;
 	noise::utils::NoiseMapBuilderPlane heightMapBuilder;
@@ -1105,32 +1133,48 @@ void Terrain::CreateNoise()
 	this->LoadBMP("tutorial.bmp");
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
-	renderer.AddGradientPoint (-1.00, utils::Color (0, 225, 0, 255)); // dirt
-	renderer.AddGradientPoint (-0.55, utils::Color (0, 225, 0, 255)); // dirt
-	renderer.AddGradientPoint (-0.45, utils::Color (255, 0, 0, 255)); // grass
-	//renderer.AddGradientPoint ( 0.00, utils::Color (0, 0, 255, 255)); // rock
-	//renderer.AddGradientPoint ( 0.69, utils::Color (0, 0, 255, 255)); // rock
-	//renderer.AddGradientPoint ( 0.70, utils::Color (255, 0, 0, 255)); // grass
-	//renderer.AddGradientPoint ( 1.00, utils::Color (255, 255, 255, 255)); // snow
+	//renderer.AddGradientPoint (-1.00, utils::Color (0, 225, 0, 255)); // dirt
+	//renderer.AddGradientPoint (-0.55, utils::Color (0, 225, 0, 255)); // dirt
+	//renderer.AddGradientPoint (-0.45, utils::Color (255, 0, 0, 255)); // grass
+
+	renderer.AddGradientPoint (-1.00, utils::Color ( 160, 32,   0, 255)); // grass
+	renderer.AddGradientPoint (-0.25, utils::Color (124, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.25, utils::Color (32, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.00, utils::Color (124, 0, 255, 255)); // snow
 	renderer.Render ();
 	writer.SetSourceImage (image);
-	writer.SetDestFilename ("tutorial.bmp");
+	writer.SetDestFilename ("tutorialColor.bmp");
 	writer.WriteDestFile ();
 	
-	this->texture_map = Kernel::Instance()->GetResourceManager()->GetTexture("tutorial.bmp");
+	this->texture_map = Kernel::Instance()->GetResourceManager()->GetTexture("tutorialColor.bmp");
 
    noise::utils::RendererNormalMap normalMapRenderer;
    noise::utils::Image normalImage;
    normalImage.SetSize(530,530);
    normalMapRenderer.SetSourceNoiseMap(heightMap);
    normalMapRenderer.SetDestImage(normalImage);
-   normalMapRenderer.SetBumpHeight(10.0);
+   normalMapRenderer.SetBumpHeight(6);
    normalMapRenderer.Render();                   
    noise::utils::WriterBMP normalMapWriter;
    normalMapWriter.SetSourceImage (normalImage);
    normalMapWriter.SetDestFilename ("tutorialNormal.bmp");
    normalMapWriter.WriteDestFile ();
    this->texture_normal = Kernel::Instance()->GetResourceManager()->GetTexture("tutorialNormal.bmp");
+}
+
+Patch* Terrain::GetPatchByIndex(int y, int x) const
+{
+	return this->patches[y][x];
+}
+
+const int Terrain::NumPatchesY() const
+{
+	return this->patches.size();
+}
+
+const int Terrain::NumPatchesX() const
+{
+	return this->patches[0].size();
 }
 
 Terrain::~Terrain()

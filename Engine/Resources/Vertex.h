@@ -27,6 +27,7 @@ class Vertex
 		void SetHeight(float value);
 		CUSTOMVERTEX* GetCustomVertex();
 		Vector GetPosition();
+		const float GetHeight();
 		float GetU();
 		float GetV();
 		void SetU(float u);

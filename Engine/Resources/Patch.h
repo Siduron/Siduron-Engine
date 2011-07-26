@@ -21,15 +21,25 @@ class Patch
 		void Create(std::vector<Vertex*> v);
 		void Render();
 		void EnableWireframe(bool wireframe);
+
+		const bool IsFlat() const;
 		
 		void SetNeighbours(std::map<std::string, Patch*> n);
 		void SetLod(DETAILLEVEL lod);
 		void SetShader(Shader* s);
+		void SetTechnique(std::string technique);
 		const std::map<std::string, Patch*>& GetNeighbours() const;
 		Vector GetCenter() const;
 		const DETAILLEVEL& GetLod() const;
 		const std::vector<Vertex*>& GetVertices() const;
+		Shader* GetShader() const;
+
+		const float GetAverageHeight() const;
 		float atmosphere;
+
+		//Manipulation
+		void Flatten();
+
 	protected:
 		void EnableDebug(bool debug);
 
@@ -91,6 +101,8 @@ class Patch
 		bool wireframe;
 		Vector center; //The position of the center of this patch, used for level of detail
 		Shader* shader;
+		std::string technique;
+		float averageHeight;
 };
 
 #endif

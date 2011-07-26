@@ -2,13 +2,16 @@
 #define GAMEOBJECT_H
 #include "Resources/EntityModel.h"
 #include "Resources/Model.h"
+
 class GameObject
 {
 public:
 	GameObject();
 	void SetModel(std::string modelPath, std::string modelName);
-	void SetPosition(int x,int y,int z);
-	void SetPosition(Vector pos);
+	virtual void SetPosition(int x,int y,int z);
+	virtual void SetPosition(Vector pos);
+	void SetScale(const float newScale);
+	void SetShader(const std::string shader);
 	Vector GetPosition() const;
 	EntityModel* GetEntity();
 	~GameObject();

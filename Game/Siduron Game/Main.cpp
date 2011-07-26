@@ -2,19 +2,14 @@
 #include "Core/Kernel.h"
 #include "Resources/Camera.h"
 #include "Resources/Model.h"
-#include "GameObject.h"
-#include "World.h"
+#include "Game.h"
 
-Camera* camera;
-float timer;
-float keyTimer;
-HINSTANCE hInstancez= GetModuleHandle (0);
 bool SetupGame();
 bool GameLoop();
-GameObject* npc = new GameObject();
-World* world = new World();
 
-int main()
+Game game;
+
+int main(int argc, char *argv[])
 {
 	Logger::Instance()->Log("Starting..", Info);
 	if(SetupGame())
@@ -61,25 +56,26 @@ bool SetupGame()
 	/*Logger::Instance()->Log("Initializing GUI..", Info);
 	Kernel::Instance()->GetGUI()->Init();*/
 	//Logger::Instance()->Log("Running..", Info);
-	camera = Kernel::Instance()->GetRenderer()->GetCamera();
-	world->CreateTerrain(8);
-	std::vector<int> terrainCenter = world->GetTerrain()->GetQuadtree()->GetMasterNode()->GetCenter();
-	camera->SetPosition(32,5,-32);
-	camera->Pitch(80);
+	//camera = Kernel::Instance()->GetRenderer()->GetCamera();
+	//world->CreateTerrain(8);
+	//std::vector<int> terrainCenter = world->GetTerrain()->GetQuadtree()->GetMasterNode()->GetCenter();
+	//camera->SetPosition(32,5,-32);
+	//camera->Pitch(80);
 
 
-	GameObject* generator = new GameObject();
-	generator->GetEntity()->SetModel("Content/Models/Shieldgenerator2/","towerplaintexture.3DS");
-	generator->GetEntity()->SetShader("Content/Shaders/Model.fx");
-	generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
-	//Vector pos = generator->GetPosition();
-	//Vector test = world->GetTerrain()->(generator->GetPosition());
-	generator->SetPosition(world->GetTerrain()->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
-	generator->GetEntity()->SetScale(0.05f,0.05f,0.05f);
+	//GameObject* generator = new GameObject();
+	//generator->GetEntity()->SetModel("Content/Models/Shieldgenerator2/","towerplaintexture.3DS");
+	//generator->GetEntity()->SetShader("Content/Shaders/Model.fx");
+	//generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
+	////Vector pos = generator->GetPosition();
+	////Vector test = world->GetTerrain()->(generator->GetPosition());
+	//generator->SetPosition(world->GetTerrain()->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
+	//generator->GetEntity()->SetScale(0.05f,0.05f,0.05f);
 
-	world->Add(generator);
-	
-	Logger::Instance()->Log("Running Game", Info);
+	//world->Add(generator);
+	//
+	//Logger::Instance()->Log("Running Game", Info);
+	Kernel::Instance();	
 	return true;
 }
 
@@ -87,86 +83,91 @@ bool GameLoop()
 {
 	Kernel::Instance()->GetRenderer()->BeginScene();
 	Kernel::Instance()->GetScene()->Render();
-	if(Kernel::Instance()->GetWindow()->IsFocused())
-	{
-		DIMOUSESTATE mousestate = Kernel::Instance()->GetInputManager()->GetMouseInput() ;
-		long mouseX = mousestate.lX;
-		long mouseY = mousestate.lY;
-		long mouseZ = mousestate.lZ;
+	//Kernel::Instance()->GetGUI()->Render();
+	Kernel::Instance()->GetRenderer()->EndScene();
+	Kernel::Instance()->GetRenderer()->Present();
+		if(!game.Run())
+		return false;
 
-		if(timeGetTime() >= (timer+1))
-		{
-			timer = timeGetTime();
-			//camera->Yaw(mouseX/2.0f);
-			//camera->Pitch(mouseY/2.0f);
-			if(mouseZ > 0 || mouseZ < 0)
-			{
-				Kernel::Instance()->GetRenderer()->GetCamera()->MoveY(-mouseZ/100.0f);
-				if(mouseZ > 0)
-				{
-					Kernel::Instance()->GetRenderer()->GetCamera()->Pitch(-1.0f);
-				}
-				if(mouseZ < 0)
-				{
-					Kernel::Instance()->GetRenderer()->GetCamera()->Pitch(1.0f);
-				}
-			}
-		}
+	//if(Kernel::Instance()->GetWindow()->IsFocused())
+	//{
+	//	DIMOUSESTATE mousestate = Kernel::Instance()->GetInputManager()->GetMouseInput() ;
+	//	long mouseX = mousestate.lX;
+	//	long mouseY = mousestate.lY;
+	//	long mouseZ = mousestate.lZ;
 
-		std::queue<Input>* queue = Kernel::Instance()->GetInputManager()->GetKeyboardInput();
-		if(!queue->empty())
-		{
-			//if(timeGetTime() >= (keyTimer+10))
-			//{
-			for(unsigned int i = 0; i < queue->size(); i++)
-			{
-				if(queue->front().key == W)
-				{
-					camera->MoveZ(0.05f);
-					keyTimer = timeGetTime();
-				}
-				else if(queue->front().key == D)
-				{
-					camera->MoveX(0.05f);
-					keyTimer = timeGetTime();
-				}
-				else if(queue->front().key == A)
-				{
-					camera->MoveX(-0.05f);
-					keyTimer = timeGetTime();
-				}
-				else if(queue->front().key == S)
-				{
-					camera->MoveZ(-0.05f);
-					keyTimer = timeGetTime();
-				}
-				else if(queue->front().key == T)
-				{
-					Kernel::Instance()->GetScene()->GetTerrain()->ToggleWireframe();
-					keyTimer = timeGetTime();
-				}
-				//else if(queue->front().key == C)
-				//{
-				//	middleCube->Yaw(0.1f);
-				//}
-				//else if(queue->front().key == Z)
-				//{
-				//	middleCube->Yaw(-0.1f);
-				//}
-				else if(queue->front().key == ESCAPE)
-				{
-					return false;
-				}
-				queue->pop();
-				
-			}
-			
-			//}
-		}
-	}
-	Kernel::Instance()->GetWindow()->Update();
-	Kernel::Instance()->GetGUI()->Render();
-    Kernel::Instance()->GetRenderer()->EndScene();
-	
+	//	if(timeGetTime() >= (timer+1))
+	//	{
+	//		timer = timeGetTime();
+	//		//camera->Yaw(mouseX/2.0f);
+	//		//camera->Pitch(mouseY/2.0f);
+	//		if(mouseZ > 0 || mouseZ < 0)
+	//		{
+	//			Kernel::Instance()->GetRenderer()->GetCamera()->MoveY(-mouseZ/100.0f);
+	//			if(mouseZ > 0)
+	//			{
+	//				Kernel::Instance()->GetRenderer()->GetCamera()->Pitch(-1.0f);
+	//			}
+	//			if(mouseZ < 0)
+	//			{
+	//				Kernel::Instance()->GetRenderer()->GetCamera()->Pitch(1.0f);
+	//			}
+	//		}
+	//	}
+
+	//	std::queue<Input>* queue = Kernel::Instance()->GetInputManager()->GetKeyboardInput();
+	//	if(!queue->empty())
+	//	{
+	//		//if(timeGetTime() >= (keyTimer+10))
+	//		//{
+	//		for(unsigned int i = 0; i < queue->size(); i++)
+	//		{
+	//			if(queue->front().key == W)
+	//			{
+	//				camera->MoveZ(0.05f);
+	//				keyTimer = timeGetTime();
+	//			}
+	//			else if(queue->front().key == D)
+	//			{
+	//				camera->MoveX(0.05f);
+	//				keyTimer = timeGetTime();
+	//			}
+	//			else if(queue->front().key == A)
+	//			{
+	//				camera->MoveX(-0.05f);
+	//				keyTimer = timeGetTime();
+	//			}
+	//			else if(queue->front().key == S)
+	//			{
+	//				camera->MoveZ(-0.05f);
+	//				keyTimer = timeGetTime();
+	//			}
+	//			else if(queue->front().key == T)
+	//			{
+	//				Kernel::Instance()->GetScene()->GetTerrain()->ToggleWireframe();
+	//				keyTimer = timeGetTime();
+	//			}
+	//			//else if(queue->front().key == C)
+	//			//{
+	//			//	middleCube->Yaw(0.1f);
+	//			//}
+	//			//else if(queue->front().key == Z)
+	//			//{
+	//			//	middleCube->Yaw(-0.1f);
+	//			//}
+	//			else if(queue->front().key == ESCAPE)
+	//			{
+	//				return false;
+	//			}
+	//			queue->pop();
+	//			
+	//		}
+	//		
+	//		//}
+	//	}
+	//}
+	//Kernel::Instance()->GetWindow()->Update();
+	//Kernel::Instance()->GetGUI()->Render();
+ 	//
 	return true;
 }

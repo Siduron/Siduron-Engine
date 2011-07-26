@@ -12,16 +12,20 @@ Patch::Patch(Renderer* r)
 	//this->position = new Vector(0.0f,0.0f,0.0f);
 	//this->rotation = new Vector(0.0f,0.0f,0.0f);
 	this->scale = Vector(1.0f,1.0f,1.0f);
+	this->technique = "HighDetail";
+	this->averageHeight = 0;
 }
 
 void Patch::Create(std::vector<Vertex*> v)
 {
 	this->vertices = v;
+	float totalHeight = 0;
 	for(unsigned int i = 0; i < vertices.size(); i++)
 	{
 		this->Vertices[i] = *vertices.at(i)->GetCustomVertex();
+		totalHeight += vertices[i]->GetHeight();
 	}
-
+	this->averageHeight = totalHeight / this->vertices.size();
 	HRESULT hr = this->g_pD3DDevice->CreateVertexBuffer(25*sizeof(CUSTOMVERTEX),D3DUSAGE_WRITEONLY,CUSTOMFVF,D3DPOOL_MANAGED,&this->t_buffer,NULL);
 	VOID* pVoid = NULL;    // the void* we were talking about
 
@@ -85,9 +89,9 @@ void Patch::Render()
 	{
 		this->shader->GetD3DEffect()->SetTechnique( "Debug" );
 	}
-	else if(this->lod == HIGH) this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
+	this->shader->GetD3DEffect()->SetTechnique( this->technique.c_str());
 	//this->shader->GetD3DEffect()->SetTechnique( "HighDetail" );
-	else this->shader->GetD3DEffect()->SetTechnique( "LowDetail" );
+	//else this->shader->GetD3DEffect()->SetTechnique( "LowDetail" );
 
 	this->shader->GetD3DEffect()->SetMatrix( "wvp", this->worldViewProj);
 	this->shader->GetD3DEffect()->SetMatrix( "itw", this->matWorldInverseTransponse);
@@ -234,6 +238,20 @@ void Patch::EnableWireframe(bool wireframe)
 	//}
 }
 
+const bool Patch::IsFlat() const
+{
+	bool isFlat = true;
+	float testHeight = this->vertices[0]->GetHeight();
+	for(unsigned int i = 1; i < vertices.size(); i++)
+	{
+		if(testHeight != this->vertices[i]->GetHeight())
+		{
+			isFlat = false;
+		}
+	}
+	return isFlat;
+}
+
 void Patch::EnableDebug(bool debug)
 {
 	this->debug = debug;
@@ -258,6 +276,11 @@ void Patch::SetShader(Shader* s)
 	this->shader = s;
 }
 
+void Patch::SetTechnique(std::string technique)
+{
+	this->technique = technique;
+}
+
 const std::map<std::string, Patch*>& Patch::GetNeighbours()  const
 {
 	return this->neighbours;
@@ -276,4 +299,30 @@ const DETAILLEVEL& Patch::GetLod() const
 const std::vector<Vertex*>& Patch::GetVertices() const
 {
 	return this->vertices;
+}
+
+Shader* Patch::GetShader() const
+{
+	return this->shader;
+}
+
+const float Patch::GetAverageHeight() const
+{
+	return this->averageHeight;
+}
+
+void Patch::Flatten()
+{
+	//this->t_buffer->Release();
+	//float totalHeight = 0;
+	//for(int i = 0; i < this->vertices.size(); i++)
+	//{
+	//	totalHeight += this->vertices[i]->GetHeight();
+	//}
+
+	//for(int i = 0; i < this->vertices.size(); i++)
+	//{
+	//	this->vertices[i]->SetHeight(totalHeight/this->vertices.size());
+	//}
+	//this->Create(this->vertices);
 }

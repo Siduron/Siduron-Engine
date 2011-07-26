@@ -6,11 +6,12 @@ TerrainTest::TerrainTest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	this->terrain = new Terrain();
-	terrain->Create(4);
+	terrain->Create(8);
 	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
-	terrain->EnableDebug(true);
-	Scene* scene = Kernel::Instance()->GetScene();
 
+	terrain->EnableDebug(false);
+	Scene* scene = Kernel::Instance()->GetScene();
+		
 	scene->Add(camera);
 	scene->Add(terrain);
 
@@ -68,7 +69,7 @@ void TerrainTest::OnLButtonUp(int mX, int mY)
 	this->mLDown = false;
 }
 
-void TerrainTest::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
+void TerrainTest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 {
 	//Get the keystates
 	Uint8 *keystates = SDL_GetKeyState( NULL );
@@ -84,11 +85,12 @@ void TerrainTest::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
 }
 
-void TerrainTest::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
+void TerrainTest::OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 {
-	Logger::Instance()->Log("key down!", Info);
+
 }
 
-void TerrainTest::OnExit() {
-    Logger::Instance()->Log("event!", Info);
+void TerrainTest::OnExit() 
+{
+
 }

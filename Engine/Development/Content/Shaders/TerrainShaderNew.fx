@@ -1,6 +1,7 @@
 float4x4 wvp : WORLDVIEWPROJECTION;
 float4x4 itw : WorldInverseTranspose;
 float atmosphere = 1;
+float debug = 0;
 
 float AmbientIntensity = 0.0;
 float4 AmbientColor : AMBIENT = float4(.5,.5,.5,1);
@@ -14,7 +15,7 @@ float SpecularIntensity : Scalar = 1.0;
 float4 CameraPosition : CameraPosition;
 float3 LightDirection : Direction = float3(1,0.5,0);
 
-int size = 8;
+int size = 16;
 
 sampler2D ColormapSampler : register(s0) =
 sampler_state
@@ -62,6 +63,15 @@ sampler_state
     MipFilter = Linear;
 };
 sampler2D TextureSampler1_Alternate : register(s5) =
+sampler_state
+{
+    AddressU = Wrap;
+    AddressV = Wrap;
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
+sampler2D TextureSampler4 : register(s6) =
 sampler_state
 {
     AddressU = Wrap;
@@ -123,20 +133,30 @@ PS_OUT Terrain_High(VS_OUT input)
 	Color.rgb += (Rock*RockDetail/2)*ColorMap.b;
 	
 	input.Normal.r = NormalMap.r;
-    input.Normal.g = NormalMap.g;
-    input.Normal.b = NormalMap.b;
+	input.Normal.g = NormalMap.g;
+	input.Normal.b = NormalMap.b;
     
-    float3 Norm = normalize(input.Normal);
-    float3 LightDir = normalize(input.Light);
-    float4 Ambient = AmbientIntensity * AmbientColor;
-    float4 Diffuse = (DiffuseIntensity * DiffuseColor) * saturate(dot(LightDir,Norm));
-    float3 Half = normalize(LightDir + normalize(input.CamView));    
-    float specular = pow(saturate(dot(Norm,Half)),25);
+	float3 Norm = normalize(input.Normal);
+	float3 LightDir = normalize(input.Light);
+	float4 Ambient = AmbientIntensity * AmbientColor;
+	float4 Diffuse = (DiffuseIntensity * DiffuseColor) * saturate(dot(LightDir,Norm));
+	float3 Half = normalize(LightDir + normalize(input.CamView));    
+	float specular = pow(saturate(dot(Norm,Half)),25);
 	float4 finalLight = Ambient + (Diffuse) + ((SpecularColor * SpecularIntensity) * specular);
 	finalLight.a = 1.0;
-    output.Color = Color*pow(finalLight,3);
-    //output.Color = pow(finalLight,4);
+	//output.Color = Color;
+	output.Color = Color*pow(finalLight,2);
+	//output.Color = NormalMap;
+	//output.Color = pow(finalLight,4);
     return output;
+}
+
+PS_OUT Terrain_High_Concrete(VS_OUT input)
+{
+	PS_OUT output = (PS_OUT)0;
+	float4 Color = tex2D( TextureSampler4, input.Tex.xy/(8*size));
+	output.Color = Color;
+	return output;
 }
 
 PS_OUT Terrain_Low(VS_OUT input)
@@ -151,7 +171,7 @@ PS_OUT Terrain_Low(VS_OUT input)
 	float4 Color = float4(0,0,0,1);
 	float4 Tex1ColorFinal = lerp(Grass_Alternate,Grass,atmosphere);
 	//float4 Tex1ColorFinal_detail = lerp(GrassDetail_Alternate,GrassDetail,atmosphere);
-	Color.rgb += Tex1ColorFinal*ColorMap.r;
+	Color.rgb += Tex1ColorFinal*ColorMap.r;	
 	Color.rgb += Dirt*ColorMap.g;
 	Color.rgb += Rock*ColorMap.b;
 	
@@ -175,8 +195,16 @@ PS_OUT Terrain_Low(VS_OUT input)
 PS_OUT Terrain_Debug(VS_OUT input)
 {
 	PS_OUT output = (PS_OUT)0;
-	float4 Texture1 = tex2D( TextureSampler1, input.Tex.xy/8);
-	output.Color = Texture1;
+	if(!debug)
+	{	
+		float4 Texture1 = tex2D( TextureSampler1, input.Tex.xy/4);
+		output.Color = Texture1;
+	}
+	else
+	{
+		float4 Color = float4(0,1,0,1);
+		output.Color = Color;
+	}
 	return output;
 }
 
@@ -186,6 +214,16 @@ technique HighDetail
     {
         VertexShader = compile vs_1_1 VS();
         PixelShader = compile ps_2_0 Terrain_High();
+        ZEnable = TRUE;
+    }
+}
+
+technique HighDetail_Concrete
+{
+    pass p0
+    {
+        VertexShader = compile vs_1_1 VS();
+        PixelShader = compile ps_2_0 Terrain_High_Concrete();
         ZEnable = TRUE;
     }
 }
