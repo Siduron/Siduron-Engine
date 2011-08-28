@@ -7,51 +7,32 @@ Terrain::Terrain()
 	this->debug = false;
 	this->renderer = Kernel::Instance()->GetRenderer();
 	this->g_pD3DDevice = this->renderer->GetDevice();
-	//this->position = Vector(0.0f,0.0f,0.0f);
-	//this->rotation = Vector(0.0f,0.0f,0.0f);
 	this->scale = Vector(1.0f,1.0f,1.0f);
-	//this->cameraPosition = Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition();
 	this->worldViewProj = new D3DXMATRIX();
 	this->matWorldInverse = new D3DXMATRIX();
 	this->matWorldInverseTransponse = new D3DXMATRIX();
 	
 	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
-	this->greenWorld.Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
-	this->greenWorld.Texture2 = resourceManager->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
-	this->greenWorld.Texture3 = resourceManager->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
-	this->greenWorld.Texture4 = resourceManager->GetTexture("Content/Textures/Terrain/Concrete tile.jpg");
-	this->greenWorld.alt_Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
+	this->greenWorld.Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Grass0027_13_S.jpg");
+	this->greenWorld.Texture2 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/sandtexture.jpg");
+	this->greenWorld.Texture3 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Cliffs0074_2_S.jpg");
+	this->greenWorld.Texture4 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Concrete tile.jpg");
 	this->greenWorld.debug = resourceManager->GetTexture("Content/Textures/Terrain/devtexture.bmp");
 	this->currentSet = this->greenWorld;
 }
 
 void Terrain::Create(int mapSize)
 {
-	this->CreateNoise();
-	//this->texture_map = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/texturemap.png");
-	//this->texture_normal = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/normalmap.png");
-	//this->texture_alphamap_detail1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_0.png");
-	//this->texture_alphamap_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_1.png");
-	//this->texture_alphamap_lava = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Maps/"+mapName+"/alphamap_2.png");
-
-	//this->texture_detail1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Grass0027_13_S.jpg");
-	//this->texture_detail1_alternate = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/SoilMud0103_2_S.jpg");
-	//this->texture_detail2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/sandtexture.jpg");
-	//this->texture_detail3 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/Cliffs0074_2_S.jpg");
-	
-	//this->texture_lava = Kernel::Instance()->GetResourceManager()->GetTexture("Textures/Terrain/4278406515_9a31c37ff5.jpg");
-	
+	this->CreateNoise();	
 	this->texture_water1 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/3020_bump.jpg");
 	this->texture_water2 = Kernel::Instance()->GetResourceManager()->GetTexture("Content/Textures/Terrain/3020.jpg");
-	//this->texture_height = Kernel::Instance()->GetResourceManager()->GetTexture("hm_tropical.bmp");
 	
 	this->terrainshader = Kernel::Instance()->GetResourceManager()->GetShader("Content/Shaders/TerrainShaderNew.fx");
+	//this->terrainshader->GetD3DEffect()->SetFloat( "LightPosX", 0);
+	//this->terrainshader->GetD3DEffect()->SetFloat( "LightPosY", 50);	
+	//this->terrainshader->GetD3DEffect()->SetFloat( "LightPosZ", -10);
 	this->watershader = Kernel::Instance()->GetResourceManager()->GetShader("Content/Shaders/WaterNew.fx");
 	Logger::Instance()->Log("Loading Heightmap..", Info);
-
-	//this->LoadBMP("Content/Maps/"+mapName+"/heightmap.bmp");
-	//this->LoadBMP("tutorial.bmp");
-	//this->SmoothHeightData(0); //Smooth the height data
 	
 	//Create vertices, 34*34 for the first region. 32*32 vertices for all other regions
 	Logger::Instance()->Log("Creating Vertices..", Info);
@@ -114,13 +95,6 @@ void Terrain::Create(int mapSize)
 			temppatch->indexbufferLow_stitchtopright = this->indexbufferLow_stitchtopright;
 			temppatch->indexbufferLow_stitchbottomright = this->indexbufferLow_stitchbottomright;
 			
-			//temppatch->texture_alphamap_detail1 = this->texture_alphamap_detail1;
-			//temppatch->texture_alphamap_detail2 = this->texture_alphamap_detail2;
-			/*temppatch->texture_detail1 = this->texture_detail1;
-			temppatch->texture_detail1_alternate = this->texture_detail1_alternate;
-			temppatch->texture_detail2 = this->texture_detail2;
-			temppatch->texture_map = this->texture_map;
-			temppatch->texture_normal = this->texture_normal;*/
 			temppatch->SetShader(this->terrainshader);
 			temppatch->worldViewProj = this->worldViewProj;
 			temppatch->matWorldInverse = this->matWorldInverse;
@@ -171,10 +145,6 @@ void Terrain::Create(int mapSize)
 
 void Terrain::Render()
 {
-	////this->g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	//this->g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, D3DZB_TRUE);
-	//this->g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE,FALSE);
-	//this->g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	Vector camPos = this->renderer->GetCamera()->GetPosition();
 
 	//D3DXMatrixRotationX( &this->matRotateX, this->rotation.x );        // Pitch
@@ -201,8 +171,8 @@ void Terrain::Render()
 		this->g_pD3DDevice->SetTexture(2,this->currentSet.Texture2->GetD3DTexture() );
 		this->g_pD3DDevice->SetTexture(3,this->currentSet.Texture3->GetD3DTexture() );
 		this->g_pD3DDevice->SetTexture(4,this->texture_normal->GetD3DTexture() );
-		this->g_pD3DDevice->SetTexture(5,this->currentSet.alt_Texture1->GetD3DTexture() );
-		this->g_pD3DDevice->SetTexture(6,this->currentSet.Texture4->GetD3DTexture() );
+		//this->g_pD3DDevice->SetTexture(5,this->currentSet.alt_Texture1->GetD3DTexture() );
+		this->g_pD3DDevice->SetTexture(5,this->currentSet.Texture4->GetD3DTexture() );
 	}
 	else
 	{
@@ -210,8 +180,19 @@ void Terrain::Render()
 	}
 	
 	//Render
-	this->quadtree->GetMasterNode()->CalcLod(Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition());
+	this->quadtree->GetMasterNode()->CalcLod();
+	UINT passes;
+	this->terrainshader->GetD3DEffect()->SetFloat( "time", timeGetTime());	
+	this->terrainshader->GetD3DEffect()->SetVector( "CameraPosition", &D3DXVECTOR4(camPos.x,camPos.y,camPos.z,1));
+	this->terrainshader->GetD3DEffect()->SetMatrix( "wvp", this->worldViewProj);
+	this->terrainshader->GetD3DEffect()->SetMatrix( "itw", this->matWorldInverseTransponse);
+	this->terrainshader->GetD3DEffect()->Begin(&passes,0);
+	this->terrainshader->GetD3DEffect()->BeginPass(0);
+	this->terrainshader->GetD3DEffect()->Begin(&passes,0);
+	this->g_pD3DDevice->SetFVF(CUSTOMFVF);
 	this->quadtree->GetMasterNode()->Render(Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition());
+	this->terrainshader->GetD3DEffect()->EndPass();
+	this->terrainshader->GetD3DEffect()->End();
 
 	//this->renderer->GetDevice()->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE);
 	//this->renderer->GetDevice()->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -1188,7 +1169,7 @@ Terrain::~Terrain()
 	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
 	resourceManager->DeleteTexture(this->texture_map->GetPath());
 	resourceManager->DeleteTexture(this->currentSet.Texture1->GetPath());
-	resourceManager->DeleteTexture(this->currentSet.alt_Texture1->GetPath());
+	//resourceManager->DeleteTexture(this->currentSet.alt_Texture1->GetPath());
 	resourceManager->DeleteTexture(this->currentSet.Texture2->GetPath());
 	resourceManager->DeleteTexture(this->currentSet.Texture3->GetPath());
 	resourceManager->DeleteTexture(this->texture_water1->GetPath());

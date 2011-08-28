@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="SDLmain.lib SDL.lib"
+				AdditionalDependencies="SDL.lib SDLmain.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -123,7 +123,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="SDLmain.lib SDL.lib"
+				AdditionalDependencies="SDL.lib SDLmain.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

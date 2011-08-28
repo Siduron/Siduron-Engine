@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include"
+				AdditionalIncludeDirectories="&quot;D:\Program Files\lua-5.1.4\src&quot;;&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\cegui\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -124,8 +124,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="&quot;CEGUIBase.lib  CEGUIDirect3D9Renderer.lib"
-				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.1-vc8\lib&quot;"
+				AdditionalDependencies="CEGUIBase.lib CEGUIDirect3D9Renderer.lib CEGUILuaScriptModule.lib"
+				AdditionalLibraryDirectories="&quot;D:\Program Files\CEGUI\Temp\CEGUI-SDK-0.7.5-vc8\lib&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"

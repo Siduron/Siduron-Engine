@@ -62,16 +62,16 @@ sampler_state
     MagFilter = Linear;
     MipFilter = Linear;
 };
-sampler2D TextureSampler1_Alternate : register(s5) =
-sampler_state
-{
-    AddressU = Wrap;
-    AddressV = Wrap;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;
-};
-sampler2D TextureSampler4 : register(s6) =
+//sampler2D TextureSampler1_Alternate : register(s5) =
+//sampler_state
+//{
+ //   AddressU = Wrap;
+//    AddressV = Wrap;
+//    MagFilter = Linear;
+//    MipFilter = Linear;
+//};
+
+sampler2D TextureSampler4 : register(s5) =
 sampler_state
 {
     AddressU = Wrap;
@@ -118,19 +118,14 @@ PS_OUT Terrain_High(VS_OUT input)
 	float4 NormalMap = tex2D( NormalSampler, input.Tex.xy/(32*size));
 	float4 Grass = tex2D( TextureSampler1, input.Tex.xy/32);
 	float4 GrassDetail = tex2D( TextureSampler1, input.Tex.xy/2);
-	float4 Grass_Alternate = tex2D( TextureSampler1_Alternate, input.Tex.xy/32);
-	float4 GrassDetail_Alternate = tex2D( TextureSampler1_Alternate, input.Tex.xy/2);
+	//float4 GrassDetail_Alternate = tex2D( TextureSampler1_Alternate, input.Tex.xy/2);
 	float4 Dirt = tex2D( TextureSampler2, input.Tex.xy/32);
 	float4 DirtDetail = tex2D( TextureSampler2, input.Tex.xy/2);
 	float4 Rock = tex2D( TextureSampler3, input.Tex.xy/32);
 	float4 RockDetail = tex2D( TextureSampler3, input.Tex.xy/2);
 	
 	float4 Color = float4(0,0,0,1);
-	float4 Tex1ColorFinal = lerp(Grass_Alternate,Grass,atmosphere);
-	float4 Tex1ColorFinal_detail = lerp(GrassDetail_Alternate,GrassDetail,atmosphere);
-	Color.rgb += (Tex1ColorFinal*Tex1ColorFinal_detail/2)*ColorMap.r;
-	Color.rgb += (Dirt*DirtDetail/2)*ColorMap.g;
-	Color.rgb += (Rock*RockDetail/2)*ColorMap.b;
+	Color.rgb += ((Grass*GrassDetail/2)*ColorMap.r) + ((Dirt*DirtDetail/2)*ColorMap.g) + ((Rock*RockDetail/2)*ColorMap.b);
 	
 	input.Normal.r = NormalMap.r;
 	input.Normal.g = NormalMap.g;
@@ -154,7 +149,7 @@ PS_OUT Terrain_High(VS_OUT input)
 PS_OUT Terrain_High_Concrete(VS_OUT input)
 {
 	PS_OUT output = (PS_OUT)0;
-	float4 Color = tex2D( TextureSampler4, input.Tex.xy/(8*size));
+	float4 Color = tex2D( TextureSampler4, input.Tex.xy/4);
 	output.Color = Color;
 	return output;
 }
@@ -165,13 +160,13 @@ PS_OUT Terrain_Low(VS_OUT input)
 	float4 ColorMap = tex2D( ColormapSampler, input.Tex.xy/(32*size));
 	float4 NormalMap = tex2D( NormalSampler, input.Tex.xy/(32*size));
 	float4 Grass = tex2D( TextureSampler1, input.Tex.xy/8);
-	float4 Grass_Alternate = tex2D( TextureSampler1_Alternate, input.Tex.xy/8);
+	//float4 Grass_Alternate = tex2D( TextureSampler1_Alternate, input.Tex.xy/8);
 	float4 Dirt = tex2D( TextureSampler2, input.Tex.xy/8);
 	float4 Rock = tex2D( TextureSampler3, input.Tex.xy/8);	
 	float4 Color = float4(0,0,0,1);
-	float4 Tex1ColorFinal = lerp(Grass_Alternate,Grass,atmosphere);
+	//float4 Tex1ColorFinal = lerp(Grass_Alternate,Grass,atmosphere);
 	//float4 Tex1ColorFinal_detail = lerp(GrassDetail_Alternate,GrassDetail,atmosphere);
-	Color.rgb += Tex1ColorFinal*ColorMap.r;	
+	Color.rgb += Grass*ColorMap.r;	
 	Color.rgb += Dirt*ColorMap.g;
 	Color.rgb += Rock*ColorMap.b;
 	
@@ -184,8 +179,8 @@ PS_OUT Terrain_Low(VS_OUT input)
     float4 Ambient = AmbientIntensity * AmbientColor;
     float4 Diffuse = (DiffuseIntensity * DiffuseColor) * saturate(dot(LightDir,Norm));
     float3 Half = normalize(LightDir + normalize(input.CamView));    
-    //float specular = pow(saturate(dot(Norm,Half)),25);
-	float4 finalLight = Ambient + (Diffuse);
+    float specular = pow(saturate(dot(Norm,Half)),25);
+	float4 finalLight = Ambient + (Diffuse) + ((SpecularColor * SpecularIntensity) * specular);
 	finalLight.a = 1.0;
     output.Color = Color*finalLight;
 
@@ -233,7 +228,7 @@ technique LowDetail
     pass p0
     {
         VertexShader = compile vs_1_1 VS();
-        PixelShader = compile ps_2_0 Terrain_High();
+        PixelShader = compile ps_2_0 Terrain_Low();
         ZEnable = TRUE;
     }
 }

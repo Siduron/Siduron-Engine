@@ -8,45 +8,44 @@ RTStest::RTStest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	Terrain* terrain = new Terrain();
-	terrain->Create(4);
+	terrain->Create(16);
 	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
 	Scene* scene = Kernel::Instance()->GetScene();
-	//
-	//EntityModel* generator = new EntityModel();
-	//generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
-	//generator->SetShader("Content/Shaders/Model.fx");
-	//generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
-	//generator->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
-	//generator->SetScale(0.05f,0.05f,0.05f);
-	//terrain->GetQuadtree()->GetMasterNode()->CurrentNode(generator->GetPosition())->GetPatch()->EnableWireframe(true);
+	
+	EntityModel* generator = new EntityModel();
+	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
+	generator->SetShader("Content/Shaders/Model.fx");
+	generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
+	generator->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
+	generator->SetScale(0.05f,0.05f,0.05f);
 
-	//EntityModel* dome = new EntityModel();
-	//dome->SetModel("Content/Models/Dome/","hollowsphere.X");
-	//dome->SetShader("Content/Shaders/Dome.fx");
-	//dome->SetPosition(generator->GetPosition());
-	//dome->SetScale(3.0,3.0,3.0);
+	EntityModel* dome = new EntityModel();
+	dome->SetModel("Content/Models/Dome/","hollowsphere.X");
+	dome->SetShader("Content/Shaders/Dome.fx");
+	dome->SetPosition(generator->GetPosition());
+	dome->SetScale(3.0,3.0,3.0);
 
-	//EntityModel* powerstation1 = new EntityModel();
-	//powerstation1->SetModel("Content/Models/Powerstation/","powerstation.3DS");
-	//powerstation1->SetShader("Content/Shaders/Model.fx");
-	//powerstation1->SetPosition(terrainCenter[0]-5, 0, terrainCenter[1]);
-	//powerstation1->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation1->GetPosition()));
-	//powerstation1->SetScale(0.05f,0.05f,0.05f);
+	EntityModel* powerstation1 = new EntityModel();
+	powerstation1->SetModel("Content/Models/Powerstation/","powerstation.3DS");
+	powerstation1->SetShader("Content/Shaders/Model.fx");
+	powerstation1->SetPosition(terrainCenter[0]-5, 0, terrainCenter[1]);
+	powerstation1->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation1->GetPosition()));
+	powerstation1->SetScale(0.05f,0.05f,0.05f);
 
-	//EntityModel* powerstation2 = new EntityModel();
-	//powerstation2->SetModel("Content/Models/Powerstation/","powerstation.3DS");
-	//powerstation2->SetShader("Content/Shaders/Model.fx");
-	//powerstation2->SetPosition(terrainCenter[0]-6, 0, terrainCenter[1]);
-	//powerstation2->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation2->GetPosition()));
-	//powerstation2->SetScale(0.05f,0.05f,0.05f);
+	EntityModel* powerstation2 = new EntityModel();
+	powerstation2->SetModel("Content/Models/Powerstation/","powerstation.3DS");
+	powerstation2->SetShader("Content/Shaders/Model.fx");
+	powerstation2->SetPosition(terrainCenter[0]-6, 0, terrainCenter[1]);
+	powerstation2->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation2->GetPosition()));
+	powerstation2->SetScale(0.05f,0.05f,0.05f);
 
 
 	scene->Add(camera);
 	scene->Add(terrain);
-	//scene->Add(generator);
-	//scene->Add(dome);
-	//scene->Add(powerstation1);
-	//scene->Add(powerstation2);
+	scene->Add(generator);
+	scene->Add(dome);
+	scene->Add(powerstation1);
+	scene->Add(powerstation2);
 	
 	camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
 	camera->Pitch(80);

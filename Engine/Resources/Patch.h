@@ -80,7 +80,7 @@ class Patch
 		Patch* right;
 		Patch* up;
 		Patch* down;
-		
+
 		//Terrain Matrices
 		//D3DXMATRIX matWorld, matTranslate, matScale, matRotateX, matRotateY, matRotateZ;
 		D3DXMATRIX *matWorldInverseTransponse, *matWorldInverse, *worldViewProj;
@@ -103,6 +103,10 @@ class Patch
 		Shader* shader;
 		std::string technique;
 		float averageHeight;
+
+		unsigned int primitive_count;
+		unsigned bool is_flat;
+
 };
 
 #endif

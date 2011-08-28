@@ -23,6 +23,11 @@ ModelTest::ModelTest()
 
 bool ModelTest::Run()
 {
+	SDL_Event Event;
+	while(SDL_PollEvent(&Event)) 
+	{
+		OnEvent(&Event);
+    }
 	/*if(Kernel::Instance()->GetWindow()->IsFocused())
 	{
 		std::queue<Input>* queue = Kernel::Instance()->GetInputManager()->GetKeyboardInput();
@@ -40,4 +45,44 @@ bool ModelTest::Run()
 	}*/
 	generator->Yaw(0.1f);
 	return true;
+}
+
+void ModelTest::OnEvent(SDL_Event* Event)
+{
+    CEvent::OnEvent(Event);
+}
+
+void ModelTest::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
+{
+
+}
+
+void ModelTest::OnMouseWheel(bool Up, bool Down)
+{
+
+}
+
+void ModelTest::OnLButtonDown(int mX, int mY)
+{
+
+}
+
+void ModelTest::OnLButtonUp(int mX, int mY)
+{
+
+}
+
+void ModelTest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
+{
+
+}
+
+void ModelTest::OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
+{
+
+}
+
+void ModelTest::OnExit() 
+{
+
 }

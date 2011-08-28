@@ -96,26 +96,8 @@ void QuadtreeNode::Render(Vector cameraPosition)
 	else
 	{
 		cameraPosition.y = this->GetPatch()->GetCenter().y;
-		if(this->patch->GetCenter().Proximity(cameraPosition) < 30.0f)
+		if(this->patch->GetCenter().Proximity(cameraPosition) < 60.0f)
 		{
-			Scene* scene = Kernel::Instance()->GetScene();
-			//dirty hax
-			//float proximity = scene->atmosGen->Proximity(this->patch->GetCenter());
-			//if(proximity <= scene->atmosRange)
-			//{
-			//	//if(proximity >= scene->atmosRange-(scene->atmosRange/3))
-			//	//{
-			//	//	this->patch->atmosphere = 1.0-((proximity / scene->atmosRange)/3);
-			//	//}
-			//	//else
-			//	//{
-			//		this->patch->atmosphere = 1.0;
-			//	//}
-			//}
-			//else
-			//{
-			//	this->patch->atmosphere = 0.0;
-			//}
 			this->patch->Render();
 		}
 	}
@@ -222,14 +204,15 @@ Vector QuadtreeNode::Collide(Vector vec)
 }	
 
 //Calculate the level of detail to be used.
-void QuadtreeNode::CalcLod(Vector cameraPosition)
+void QuadtreeNode::CalcLod()
 {
+	Vector cameraPosition = Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition();
 	if(this->hasNodes)
 	{
-		this->node0->CalcLod(cameraPosition);
-		this->node1->CalcLod(cameraPosition);
-		this->node2->CalcLod(cameraPosition);
-		this->node3->CalcLod(cameraPosition);
+		this->node0->CalcLod();
+		this->node1->CalcLod();
+		this->node2->CalcLod();
+		this->node3->CalcLod();
 	}
 	else
 	{
@@ -241,16 +224,28 @@ void QuadtreeNode::CalcLod(Vector cameraPosition)
 			{
 				if(proximity < 6)
 				{
-					this->patch->SetLod(HIGH); //HIGH
+					//Prevent expensive calls by not setting the same detail level.
+					//if(this->patch->GetLod() != HIGH)
+					//{
+						this->patch->SetLod(HIGH); //HIGH
+					//}
 				}
 				else
 				{
-					this->patch->SetLod(MEDIUM); //MEDIUM
+					//Prevent expensive calls by not setting the same detail level.
+					//if(this->patch->GetLod() != MEDIUM)
+					//{
+						this->patch->SetLod(MEDIUM); //MEDIUM
+					//}
 				}
 			}
 			else
 			{
-				this->patch->SetLod(LOW); //LOW
+				//Prevent expensive calls by not setting the same detail level.
+				//if(this->patch->GetLod() != LOW)
+				//{
+					this->patch->SetLod(LOW); //LOW
+				//}
 			}
 		}
 	}

@@ -35,7 +35,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
-	d3dpp.MultiSampleType = D3DMULTISAMPLE_8_SAMPLES;
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
 	LPDIRECT3DSURFACE9 newDepthStencil	= NULL;
 
 	//d3dpp.MultiSampleQuality = 0;
@@ -50,9 +50,28 @@ bool Renderer::InitDirect3D(HWND hWnd)
 	//	d3dpp.MultiSampleQuality = total - 1;
 	//  }
 
+	// Look for 'NVIDIA PerfHUD' adapter
+	// If it is present, override default settings
+
+	UINT AdapterToUse=D3DADAPTER_DEFAULT;
+	D3DDEVTYPE DeviceType=D3DDEVTYPE_HAL;
+
+	for (UINT Adapter=0;Adapter<g_pD3D->GetAdapterCount();Adapter++) 
+	{
+		D3DADAPTER_IDENTIFIER9  Identifier;
+		HRESULT  Res;
+		Res = g_pD3D->GetAdapterIdentifier(Adapter,0,&Identifier);
+		if (strstr(Identifier.Description,"PerfHUD") != 0)
+		{
+			AdapterToUse=Adapter;
+			DeviceType=D3DDEVTYPE_REF;
+			break;
+		}
+	}
+
 	Logger::Instance()->Log("Creating Direct3D Device..", Info);
 	// Creër Direct3D device
-	HRESULT createDevice = this->g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice);
+	HRESULT createDevice = this->g_pD3D->CreateDevice(AdapterToUse, DeviceType, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice);
 	this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL );
 	this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );
 	if(createDevice != 0)

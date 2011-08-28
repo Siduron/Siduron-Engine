@@ -57,7 +57,7 @@ class Terrain : public SceneManagement::Node
 		Vector scale;
 
 		//std::vector<std::vector<Patch*>> patches; //vector<vertical><horizontal>
-		float hmap[530][530];
+		float hmap[1060][1060];
 		std::vector<std::vector<Patch*>> patches; //vector<vertical><horizontal>
 		std::vector<std::vector<Vertex*>> verts2; //vector<vertical><horizontal>
 		Quadtree* quadtree;
@@ -65,15 +65,7 @@ class Terrain : public SceneManagement::Node
 		TextureSet currentSet;
 		TextureSet greenWorld;
 		Texture* texture_map;
-		//Texture* texture_detail1;
-		//Texture* texture_detail1_alternate;
-		//Texture* texture_detail2;
-		//Texture* texture_detail3;
-		//Texture* texture_lava;
-		//Texture* texture_lightmap;
-		//Texture* texture_alphamap_detail1;
-		//Texture* texture_alphamap_detail2;
-		//Texture* texture_alphamap_lava;	
+	
 		Texture* texture_normal;
 		Texture* texture_water1;
 		Texture* texture_water2;

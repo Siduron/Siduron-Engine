@@ -6,7 +6,7 @@ TerrainTest::TerrainTest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	this->terrain = new Terrain();
-	terrain->Create(8);
+	terrain->Create(4);
 	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
 
 	terrain->EnableDebug(false);

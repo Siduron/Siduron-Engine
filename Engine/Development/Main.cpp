@@ -15,9 +15,9 @@ bool SetupEngine();
 bool EngineLoop();
 
 //ScenegraphTest* graphTest;
-//RTStest* rtsTest;
+RTStest* rtsTest;
 //ModelTest* modelTest;
-TerrainTest* terrainTest;
+//TerrainTest* terrainTest;
 
 int main(int argc, char *argv[])
 {
@@ -61,9 +61,9 @@ bool SetupEngine()
 	//LoadingScreen();
 
 	Kernel::Instance();
-	//rtsTest = new RTStest();
+	rtsTest = new RTStest();
 	//modelTest = new ModelTest();
-	terrainTest = new TerrainTest();
+	//terrainTest = new TerrainTest();
 	//Logger::Instance()->Log("Running..", Info);
 	return true;
 }
@@ -144,7 +144,7 @@ bool EngineLoop()
 	//	}
 	//}
 	//graphTest->Run();
-	if(!terrainTest->Run())
+	if(!rtsTest->Run())
 		return false;
 	//Kernel::Instance()->GetWindow()->Update();
 	//Kernel::Instance()->GetGUI()->Render();
