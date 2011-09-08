@@ -77,7 +77,6 @@ bool Terrain::Create(unsigned int size)
 
 	//Calculate size of index buffer.
 	this->index_buffer_size = ( this->vertex_buffer_size * 2 ) - 4;
-	int amount = 0;
 	if( !FAILED( Kernel::Instance()->GetRenderer()->GetDevice()->CreateIndexBuffer( this->index_buffer_size * sizeof( unsigned short ), D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &this->index_buffer, NULL ) ) )
 	{
 		unsigned short *indices = NULL;
@@ -96,7 +95,6 @@ bool Terrain::Create(unsigned int size)
 				indices[ 1 + current_index * 2 ] = 0 + current_vertex;
 				current_index++;
 				current_vertex++;
-				amount+=2;
 
 				//Check if the end of the column is reached to set a degenerated triangle so there won't be a triangle towards the next column.
 				//Ignore the last column, since it won't have to jump to a new column.
@@ -105,7 +103,6 @@ bool Terrain::Create(unsigned int size)
 					indices[ 0 + current_index * 2 ] = indices[ ( 0 + current_index * 2 ) - 1 ];
 					indices[ 1 + current_index * 2 ] = current_vertex + this->size;
 					current_index++;
-				amount+=2;
 				}
 				
 			}
