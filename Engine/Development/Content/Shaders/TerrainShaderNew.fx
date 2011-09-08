@@ -3,19 +3,19 @@ float4x4 itw : WorldInverseTranspose;
 float atmosphere = 1;
 float debug = 0;
 
-float AmbientIntensity = 0.0;
+float AmbientIntensity = 1.25;
 float4 AmbientColor : AMBIENT = float4(.5,.5,.5,1);
 
 float DiffuseIntensity = 2.5;
 float4 DiffuseColor : Diffuse = float4(1,1,1,1);
 
 float4 SpecularColor : Specular = float4(1,1,1,1);
-float SpecularIntensity : Scalar = 1.0;
+float SpecularIntensity : Scalar = 2.0;
 
 float4 CameraPosition : CameraPosition;
 float3 LightDirection : Direction = float3(1,0.5,0);
 
-int size = 16;
+int size = 8;
 
 sampler2D ColormapSampler : register(s0) =
 sampler_state
@@ -140,7 +140,7 @@ PS_OUT Terrain_High(VS_OUT input)
 	float4 finalLight = Ambient + (Diffuse) + ((SpecularColor * SpecularIntensity) * specular);
 	finalLight.a = 1.0;
 	//output.Color = Color;
-	output.Color = Color*pow(finalLight,2);
+	output.Color = Color*finalLight;
 	//output.Color = NormalMap;
 	//output.Color = pow(finalLight,4);
     return output;

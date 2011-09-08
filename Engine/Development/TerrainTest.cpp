@@ -6,16 +6,16 @@ TerrainTest::TerrainTest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	this->terrain = new Terrain();
-	terrain->Create(4);
-	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
+	terrain->Create( 250 );
+	//std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
 
-	terrain->EnableDebug(false);
+	//terrain->EnableDebug(false);
 	Scene* scene = Kernel::Instance()->GetScene();
 		
 	scene->Add(camera);
 	scene->Add(terrain);
 
-	camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
+	//camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
 	camera->Pitch(90);
 	this->running = true;
 	this->mLDown = false;

@@ -182,14 +182,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Quadtree.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\QuadtreeNode.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Resource.cpp"
 				>
 			</File>
@@ -253,14 +245,6 @@
 			</File>
 			<File
 				RelativePath=".\Patch.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Quadtree.h"
-				>
-			</File>
-			<File
-				RelativePath=".\QuadtreeNode.h"
 				>
 			</File>
 			<File

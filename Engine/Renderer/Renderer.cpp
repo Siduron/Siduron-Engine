@@ -9,6 +9,7 @@ Renderer::Renderer()
 
 bool Renderer::InitDirect3D(HWND hWnd)
 {
+	bool success = true;
 	this->window = hWnd;
 	Logger::Instance()->Log("Creating Direct3D Interface", Info);
 	this->g_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
@@ -34,7 +35,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
     d3dpp.EnableAutoDepthStencil = TRUE;  
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
+	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
 	d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
 	LPDIRECT3DSURFACE9 newDepthStencil	= NULL;
 
@@ -71,43 +72,54 @@ bool Renderer::InitDirect3D(HWND hWnd)
 
 	Logger::Instance()->Log("Creating Direct3D Device..", Info);
 	// Creër Direct3D device
-	HRESULT createDevice = this->g_pD3D->CreateDevice(AdapterToUse, DeviceType, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice);
-	this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL );
-	this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );
-	if(createDevice != 0)
-		return false;
-	//Logger::Instance()->Log("Initializing Direct3D Device..", Info);	
-	this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	this->g_pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	
-	this->g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
-	this->g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(255, 255, 255));    // ambient light
+	if( !FAILED( this->g_pD3D->CreateDevice(AdapterToUse, DeviceType, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &this->g_pD3DDevice)))
+	{
+		if( !FAILED( this->g_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, d3dpp.AutoDepthStencilFormat, d3dpp.MultiSampleType, d3dpp.MultiSampleQuality, FALSE, &newDepthStencil, NULL )))
+		{
+			this->g_pD3DDevice->SetDepthStencilSurface( newDepthStencil );
+		}
+		else
+		{
+			Logger::Instance()->Log("Unable to create stencil surface", Error);
+			success = false;		
+		}
+		//Logger::Instance()->Log("Initializing Direct3D Device..", Info);	
+		this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		this->g_pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+		
+		this->g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+		this->g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(255, 255, 255));    // ambient light
 
-	//Texture filtering
-	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);
-	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_ANISOTROPIC);
-	//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_ANISOTROPIC);
+		//Texture filtering
+		//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);
+		//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_ANISOTROPIC);
+		//this->g_pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_ANISOTROPIC);
 
-	// Save transformation matrices of the device
-    //this->g_pD3DDevice->GetTransform(D3DTS_VIEW,       &this->matViewSave) ;
-    //this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &this->matProjSave);
+		// Save transformation matrices of the device
+		//this->g_pD3DDevice->GetTransform(D3DTS_VIEW,       &this->matViewSave) ;
+		//this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &this->matProjSave);
 
-	this->backBufferTarget = new RenderTarget();
-	this->renderTarget = new RenderTarget();
+		this->backBufferTarget = new RenderTarget();
+		this->renderTarget = new RenderTarget();
 
-	D3DXMATRIX tempProj;
-	this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &tempProj);
-	this->backBufferTarget->SetProjectionMatrix(tempProj);
-	LPDIRECT3DSURFACE9 tempSurface;
-	this->g_pD3DDevice->GetRenderTarget(0,&tempSurface);
-	this->backBufferTarget->SetSurface(tempSurface);
+		D3DXMATRIX tempProj;
+		this->g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &tempProj);
+		this->backBufferTarget->SetProjectionMatrix(tempProj);
+		LPDIRECT3DSURFACE9 tempSurface;
+		this->g_pD3DDevice->GetRenderTarget(0,&tempSurface);
+		this->backBufferTarget->SetSurface(tempSurface);
 
-	this->renderTarget->Create();
-	//Multisampled backbuffer
-	this->g_pD3DDevice->CreateRenderTarget( SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_A8R8G8B8, 
-                                  D3DMULTISAMPLE_8_SAMPLES, 0,
-                                  false, &this->multisampleSurface, NULL );	
-
+		this->renderTarget->Create();
+		//Multisampled backbuffer
+		this->g_pD3DDevice->CreateRenderTarget( SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_A8R8G8B8, 
+									  D3DMULTISAMPLE_8_SAMPLES, 0,
+									  false, &this->multisampleSurface, NULL );	
+	}
+	else
+	{
+		Logger::Instance()->Log("Unable to create device", Error);
+		success = false;
+	}
 	//Rendering quad
  //	CUSTOMVERTEX_UNTRANSFORMED Quad[] = {
 	//{0.0f,SCREEN_HEIGHT,0.0f,1.0f,0.0f,1.0f},
@@ -130,7 +142,12 @@ bool Renderer::InitDirect3D(HWND hWnd)
 	//D3DXCreateTextureFromFile(this->g_pD3DDevice, "Textures/errortexture.bmp", &this->testtexture);
 	//this->postprocessTexture1 = Kernel::Instance()->GetResourceManager()->GetTexture("Textures/Terrain/dust.jpg");
 
-	return true;
+	if( success == false )
+	{
+		this->g_pD3DDevice->Release();
+		this->g_pD3D->Release();
+	}
+	return success;
 }
 void Renderer::BeginScene()
 {

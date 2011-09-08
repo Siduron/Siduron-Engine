@@ -13,14 +13,17 @@ class RTStest : public CEvent
 		void OnEvent(SDL_Event* Event);
 		void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 		void OnMouseWheel(bool Up, bool Down);
-		void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
-		void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+		void OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode);
+		void OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode);
 		void OnExit();
 		bool scrollingLeft, scrollingRight, scrollingUp, scrollingDown;
+		bool yawLeft, yawRight, forward;
 		bool running;
 
 		float timer;
 		float keyTimer;
 		Camera* camera;
+		EntityModel* generator;
+		Terrain* terrain;
 };
 #endif

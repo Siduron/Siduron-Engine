@@ -7,16 +7,16 @@
 RTStest::RTStest()
 {
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
-	Terrain* terrain = new Terrain();
-	terrain->Create(16);
-	std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
+	this->terrain = new Terrain();
+	this->terrain->Create( 250 );
+	//std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
 	Scene* scene = Kernel::Instance()->GetScene();
 	
-	EntityModel* generator = new EntityModel();
+	this->generator = new EntityModel();
 	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
 	generator->SetShader("Content/Shaders/Model.fx");
-	generator->SetPosition(terrainCenter[0], 0, terrainCenter[1]);
-	generator->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(generator->GetPosition()));
+	generator->SetPosition(125.75, 0, -125);
+	generator->SetPosition(terrain->Collide(generator->GetPosition()));
 	generator->SetScale(0.05f,0.05f,0.05f);
 
 	EntityModel* dome = new EntityModel();
@@ -28,32 +28,34 @@ RTStest::RTStest()
 	EntityModel* powerstation1 = new EntityModel();
 	powerstation1->SetModel("Content/Models/Powerstation/","powerstation.3DS");
 	powerstation1->SetShader("Content/Shaders/Model.fx");
-	powerstation1->SetPosition(terrainCenter[0]-5, 0, terrainCenter[1]);
-	powerstation1->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation1->GetPosition()));
+	powerstation1->SetPosition(120, 0, 125);
 	powerstation1->SetScale(0.05f,0.05f,0.05f);
 
 	EntityModel* powerstation2 = new EntityModel();
 	powerstation2->SetModel("Content/Models/Powerstation/","powerstation.3DS");
 	powerstation2->SetShader("Content/Shaders/Model.fx");
-	powerstation2->SetPosition(terrainCenter[0]-6, 0, terrainCenter[1]);
-	powerstation2->SetPosition(terrain->GetQuadtree()->GetMasterNode()->Collide(powerstation2->GetPosition()));
+	powerstation2->SetPosition(119, 0, 0);
 	powerstation2->SetScale(0.05f,0.05f,0.05f);
 
 
 	scene->Add(camera);
-	scene->Add(terrain);
-	scene->Add(generator);
+	scene->Add(this->terrain);
+	scene->Add(this->generator);
 	scene->Add(dome);
 	scene->Add(powerstation1);
 	scene->Add(powerstation2);
 	
-	camera->SetPosition(terrainCenter[0],15,terrainCenter[1]);
-	camera->Pitch(80);
+	camera->SetPosition(125,10,-125);
+	camera->Pitch(90);
 
 	this->scrollingLeft = false;
 	this->scrollingRight = false;
 	this->scrollingUp = false;
 	this->scrollingDown = false;
+
+	this->yawLeft = false;
+	this->yawRight = false;
+	this->forward = false;
 	this->running = true;
 
 }
@@ -81,6 +83,20 @@ bool RTStest::Run()
 	else if(this->scrollingDown)
 	{
 		camera->MoveZ(0.10f);
+	}
+
+	if( this->yawLeft )
+	{
+		this->camera->Yaw(0.5f);
+	}
+	else if( this->yawRight )
+	{
+		this->camera->Yaw(-0.5f);
+	}
+
+	if( this->forward )
+	{
+		this->camera->MoveForward(0.05f);
 	}
 	//if(Kernel::Instance()->GetWindow()->IsFocused())
 	//{
@@ -238,7 +254,7 @@ void RTStest::OnMouseWheel(bool Up, bool Down)
 		camera->MoveY(0.5f);
 	}
 }
-void RTStest::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
+void RTStest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 {
 	//Get the keystates
 	Uint8 *keystates = SDL_GetKeyState( NULL );
@@ -251,14 +267,39 @@ void RTStest::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 	{
 		Logger::Instance()->Log("ctrl 1", Info);
 	}
+	if(keystates[SDLK_w])
+	{
+		this->forward = true;
+	}
+	if(keystates[SDLK_d])
+	{
+		this->yawLeft = true;
+	}
+	if(keystates[SDLK_a])
+	{
+		this->yawRight = true;
+	}
 
 }
 
-void RTStest::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
+void RTStest::OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 {
-	Logger::Instance()->Log("key down!", Info);
+	//Get the keystates
+	Uint8 *keystates = SDL_GetKeyState( NULL );
+	if(!keystates[SDLK_w])
+	{
+		this->forward = false;
+	}
+	if(!keystates[SDLK_d])
+	{
+		this->yawLeft = false;
+	}
+	if(!keystates[SDLK_a])
+	{
+		this->yawRight = false;
+	}
 }
 
 void RTStest::OnExit() {
-    Logger::Instance()->Log("event!", Info);
+
 }

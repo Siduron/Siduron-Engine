@@ -30,22 +30,25 @@ Kernel* Kernel::Instance()
 		{
 			Logger::Instance()->Log("Failed initializing Renderer", Error);
 		}
-		Logger::Instance()->Log("Initializing GUI..", Info);
-		Kernel::Instance()->GetGUI()->Init();
+		else
+		{
+			Logger::Instance()->Log("Initializing GUI..", Info);
+			Kernel::Instance()->GetGUI()->Init();
 
-		//Kernel::Instance()->GetRenderer()->SetCamera(camera);
-		/*Logger::Instance()->Log("Initializing Input..", Info);
-		if(!Kernel::Instance()->GetInputManager()->InitInput(GetModuleHandle (0),Kernel::Instance()->GetWindow()->GetHWND()))
-		{
-			Logger::Instance()->Log("Failed initializing Input", Error);
-		}*/
-		Logger::Instance()->Log("Initializing Scene..", Info);
-		if(!Kernel::Instance()->GetScene()->Init())
-		{
-			Logger::Instance()->Log("Failed initializing Scene", Error);
+			//Kernel::Instance()->GetRenderer()->SetCamera(camera);
+			/*Logger::Instance()->Log("Initializing Input..", Info);
+			if(!Kernel::Instance()->GetInputManager()->InitInput(GetModuleHandle (0),Kernel::Instance()->GetWindow()->GetHWND()))
+			{
+				Logger::Instance()->Log("Failed initializing Input", Error);
+			}*/
+			Logger::Instance()->Log("Initializing Scene..", Info);
+			if(!Kernel::Instance()->GetScene()->Init())
+			{
+				Logger::Instance()->Log("Failed initializing Scene", Error);
+			}
+
+			Logger::Instance()->Log("Engine running..", Info);
 		}
-
-		Logger::Instance()->Log("Engine running..", Info);
 	}
 	return pInstance;
 }
