@@ -8,10 +8,11 @@
 struct CUSTOMVERTEX
 {
 	FLOAT X, Y, Z;
-	FLOAT R, G, B; // Vertex normal
+	FLOAT n_R, n_G, n_B; // Vertex normal
+	DWORD color;
 	FLOAT U, V;
 };
-#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 )
+#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1 )
 
 struct CUSTOMVERTEX_UNTRANSFORMED
 {
@@ -23,7 +24,7 @@ struct CUSTOMVERTEX_UNTRANSFORMED
 class Vertex
 {
 	public:
-		Vertex(float xValue, float yValue, float zValue, float r, float g, float b,float uValue, float vValue);
+		Vertex(float xValue, float yValue, float zValue, int r, int g, int b, float n_r, float n_g, float n_b, float uValue, float vValue);
 		void SetHeight(float value);
 		CUSTOMVERTEX* GetCustomVertex();
 		Vector GetPosition();

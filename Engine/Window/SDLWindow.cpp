@@ -4,6 +4,8 @@
 
 SDLWindow::SDLWindow(int width, int height)
 {
+	putenv("SDL_VIDEO_WINDOW_POS=center");
+	putenv("SDL_VIDEO_CENTERED=1");
 	SDL_Init(SDL_INIT_VIDEO);
 	if(FULLSCREEN)
 		this->surface = SDL_SetVideoMode(width, height, 24, SDL_SWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);

@@ -134,9 +134,9 @@ void Scene::Add(SceneManagement::Node* node)
 
 void Scene::Render()
 {
-	//this->skybox->Render();
 	this->GetMasterNode()->Update();
 	this->GetMasterNode()->Render();
+	//this->skybox->Render();
 	//this->generator->MoveForward(0.01f);
 	//this->generator->Yaw(0.01f);
 	//this->tehCube->MoveX(-0.01f);
@@ -214,6 +214,11 @@ Camera* Scene::GetActiveCamera()
 SceneManagement::Node* Scene::GetMasterNode()
 {
 	return this->masterNode;
+}
+
+void Scene::SetSkybox( EntityModel* skybox )
+{
+	this->skybox = skybox;
 }
 
 

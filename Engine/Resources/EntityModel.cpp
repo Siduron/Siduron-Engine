@@ -18,18 +18,6 @@ void EntityModel::Render()
 
 void EntityModel::Update()
 {
-	Renderer* renderer = Kernel::Instance()->GetRenderer();
-	Camera* cam = renderer->GetCamera();
-		
-	//D3DXMatrixRotationX( &this->matRotateX, this->rotation->x );        // Pitch
-	//D3DXMatrixRotationY( &this->matRotateY, this->rotation->y );        // Yaw
-	//D3DXMatrixRotationZ( &this->matRotateZ, this->rotation->z );        // Roll
-	//D3DXMatrixTranslation( &this->matTranslate, this->position->x,this->position->y,this->position->z );
-	//D3DXMatrixScaling( &this->matScale, this->scale->x,this->scale->y,this->scale->z);
-
-	//this->matRotation = this->matRotateZ*this->matRotateX*this->matRotateY;
-	//this->matWorld = this->matRotation * this->matScale * this->matTranslate;
-	//this->matWorld = this->matTranslate;
 	Entity::Update();
 }
 

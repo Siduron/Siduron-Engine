@@ -2,7 +2,9 @@
 #define RTSTEST_H
 #include "../Input/CEvent.h"
 #include "../Core/Kernel.h"
+#include "irrKlang.h"
 
+using namespace irrklang;
 class RTStest : public CEvent
 {
 	public: 
@@ -25,5 +27,6 @@ class RTStest : public CEvent
 		Camera* camera;
 		EntityModel* generator;
 		Terrain* terrain;
+		ISoundEngine* engine;
 };
 #endif

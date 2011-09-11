@@ -38,7 +38,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -135,6 +139,10 @@
 				RelativePath=".\Logger.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Util.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -143,6 +151,10 @@
 			>
 			<File
 				RelativePath=".\Logger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Util.h"
 				>
 			</File>
 		</Filter>

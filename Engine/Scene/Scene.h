@@ -27,6 +27,7 @@ class Scene
 		void CreateLoadingScreen();
 		Terrain* GetTerrain();
 		Camera* GetActiveCamera();
+		void SetSkybox( EntityModel* skybox );
 		//Skybox* GetSkybox();
 		SceneManagement::Node* GetMasterNode();
 		Vector* atmosGen;
@@ -43,8 +44,6 @@ class Scene
 		Camera* camera;
 		int terrainSize;
 		EntityModel* skybox;
-		EntityModel* tehCube;
-		EntityModel* leftCube;
 		Shader* domeshader;
 		Texture* domeTexture;
 

@@ -6,12 +6,18 @@
 
 RTStest::RTStest()
 {
+	this->engine = createIrrKlangDevice();
+	this->engine->setSoundVolume( 0.5f );
+	this->engine->play2D("Content/Sound/crucial_frogs_loop1.wav", true);
+
 	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	this->terrain = new Terrain();
 	this->terrain->Create( 250 );
-	//std::vector<int> terrainCenter = terrain->GetQuadtree()->GetMasterNode()->GetCenter();
+
 	Scene* scene = Kernel::Instance()->GetScene();
-	
+	Skybox* skybox = new Skybox();
+	skybox->SetModel("Content/Models/skybox/", "skybox.3DS");
+	skybox->SetShader("Content/Shaders/Skybox.fx");
 	this->generator = new EntityModel();
 	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
 	generator->SetShader("Content/Shaders/Model.fx");
@@ -38,6 +44,7 @@ RTStest::RTStest()
 	powerstation2->SetScale(0.05f,0.05f,0.05f);
 
 
+	scene->Add( skybox );
 	scene->Add(camera);
 	scene->Add(this->terrain);
 	scene->Add(this->generator);
@@ -45,6 +52,7 @@ RTStest::RTStest()
 	scene->Add(powerstation1);
 	scene->Add(powerstation2);
 	
+	skybox->SetPosition(125,10,-125);
 	camera->SetPosition(125,10,-125);
 	camera->Pitch(90);
 
@@ -58,6 +66,13 @@ RTStest::RTStest()
 	this->forward = false;
 	this->running = true;
 
+	ISound* domesound = this->engine->play3D("Content/Sound/wormhole_loop.wav", vec3df(dome->GetPosition().x,dome->GetPosition().y,dome->GetPosition().z), true, false, true);
+	if (domesound)
+	{
+		domesound->setMinDistance(5.0f);
+	}
+	float posOnCircle = 0;
+    const float radius = 5;
 }
 
 bool RTStest::Run()
@@ -278,6 +293,22 @@ void RTStest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 	if(keystates[SDLK_a])
 	{
 		this->yawRight = true;
+	}
+	if(keystates[SDLK_1])
+	{
+		this->terrain->GetTerrainShader()->GetD3DEffect()->SetInt( "render_mode", 0 );
+	}
+	else if(keystates[SDLK_2])
+	{
+		this->terrain->GetTerrainShader()->GetD3DEffect()->SetInt( "render_mode", 1 );
+	}
+	else if(keystates[SDLK_3])
+	{
+		this->terrain->GetTerrainShader()->GetD3DEffect()->SetInt( "render_mode", 2 );
+	}
+	else if(keystates[SDLK_4])
+	{
+		this->terrain->GetTerrainShader()->GetD3DEffect()->SetInt( "render_mode", 3 );
 	}
 
 }

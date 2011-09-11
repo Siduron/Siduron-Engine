@@ -18,11 +18,11 @@ Mesh::Mesh(aiMesh* m, Texture* t)
 		//Set UV data if the current vertex has them, or else set them to 0.
 		if(m->HasTextureCoords(0))
 		{
-			v = new Vertex(vector.x,vector.y,vector.z,m->mNormals[i].x,m->mNormals[i].y,m->mNormals[i].z,m->mTextureCoords[0][i].x,m->mTextureCoords[0][i].y);
+			v = new Vertex(vector.x,vector.y,vector.z,0,0,0,m->mNormals[i].x,m->mNormals[i].y,m->mNormals[i].z,m->mTextureCoords[0][i].x,m->mTextureCoords[0][i].y);
 		}
 		else
 		{
-			v = new Vertex(vector.x,vector.y,vector.z,0,0,0,0,0);
+			v = new Vertex(vector.x,vector.y,vector.z,0,0,0,0,0,0,0,0);
 		}
 		this->verts.push_back(v);
 	}

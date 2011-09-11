@@ -1,6 +1,6 @@
 #include "Vertex.h"
 
-Vertex::Vertex(float xValue, float yValue, float zValue, float r, float g, float b,float uValue, float vValue)
+Vertex::Vertex(float xValue, float yValue, float zValue, int r, int g, int b, float n_r, float n_g, float n_b, float uValue, float vValue)
 {
 	this->position = Vector(xValue, yValue, zValue);
 	this->u = uValue;
@@ -10,9 +10,10 @@ Vertex::Vertex(float xValue, float yValue, float zValue, float r, float g, float
 	tempVertex->X = this->position.x;
 	tempVertex->Y = this->position.y;
 	tempVertex->Z = this->position.z;
-	tempVertex->R = r;
-	tempVertex->G = g;
-	tempVertex->B = b;
+	tempVertex->color = D3DCOLOR_XRGB(r, g, b);
+	tempVertex->n_R = n_r;
+	tempVertex->n_G = n_g;
+	tempVertex->n_B = n_b;
 	tempVertex->U = uValue;
 	tempVertex->V = vValue;
 	this->vertex = tempVertex;

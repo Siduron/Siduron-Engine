@@ -54,9 +54,8 @@ technique D3D
 {
     pass p0
     {
-		CULLMODE = CW;
         VertexShader = compile vs_1_1 VS();
         PixelShader = compile ps_2_0 PS();
-        ZEnable = TRUE;
+        ZEnable = FALSE;
     }
 }

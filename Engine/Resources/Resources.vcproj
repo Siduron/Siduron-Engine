@@ -306,6 +306,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Development\Content\Shaders\Skybox.fx"
+				>
+			</File>
+			<File
 				RelativePath="..\Development\Content\Shaders\TerrainShaderNew.fx"
 				>
 			</File>

@@ -35,7 +35,7 @@ bool Renderer::InitDirect3D(HWND hWnd)
     d3dpp.EnableAutoDepthStencil = TRUE;  
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; // vsync
 	d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
 	LPDIRECT3DSURFACE9 newDepthStencil	= NULL;
 
@@ -86,7 +86,8 @@ bool Renderer::InitDirect3D(HWND hWnd)
 		//Logger::Instance()->Log("Initializing Direct3D Device..", Info);	
 		this->g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 		this->g_pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-		
+		this->g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		this->g_pD3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 		this->g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 		this->g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(255, 255, 255));    // ambient light
 
@@ -188,7 +189,7 @@ void Renderer::Present()
 	
 	Vector* lookAt = this->camera->GetLookAt();
 	D3DXMatrixLookAtLH( &this->matViewSave, &D3DXVECTOR3( this->camera->GetPosition().x, this->camera->GetPosition().y, this->camera->GetPosition().z), &D3DXVECTOR3(lookAt->x, lookAt->y, lookAt->z), &D3DXVECTOR3( 0.0f, 1.0f, 0.0f) );
-	D3DXMatrixPerspectiveFovLH( &this->matProjSave, D3DX_PI/2, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 0.1f, 145.0f );
+	D3DXMatrixPerspectiveFovLH( &this->matProjSave, D3DX_PI/2, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 2.0f, 1000.0f );
 	this->g_pD3DDevice->SetTransform( D3DTS_VIEW, &this->matViewSave);
 	this->g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &this->matProjSave);
 

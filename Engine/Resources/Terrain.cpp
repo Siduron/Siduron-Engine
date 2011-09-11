@@ -2,6 +2,7 @@
 #include "../Core/Kernel.h"
 #include "noiseutils.h"
 
+
 Terrain::Terrain()
 {
 	this->worldViewProj = new D3DXMATRIX();
@@ -9,7 +10,6 @@ Terrain::Terrain()
 	this->matWorldInverseTransponse = new D3DXMATRIX();
 
 	this->index_buffer_size = 0;
-	this->vertex_buffer_size = 0;
 
 	ResourceManager* resourceManager = Kernel::Instance()->GetResourceManager();
 	this->greenWorld.Texture1 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Grass0027_13_S.jpg");
@@ -17,6 +17,8 @@ Terrain::Terrain()
 	this->greenWorld.Texture3 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Cliffs0074_2_S.jpg");
 	this->greenWorld.Texture4 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Concrete tile.jpg");
 	this->greenWorld.debug = resourceManager->GetTexture("Content/Textures/Terrain/devtexture.bmp");
+	this->greenWorld.water = resourceManager->GetTexture("Content/Textures/Terrain/2987042594_e9968cd001.jpg");
+	this->greenWorld.water1 = resourceManager->GetTexture("Content/Textures/Terrain/3020.jpg");
 	this->currentSet = this->greenWorld;
 	this->size = 0;
 }
@@ -28,55 +30,46 @@ bool Terrain::Create(unsigned int size)
 {
 	this->size = size;
 	this->CreateNoise();
+
 	this->terrain_shader = Kernel::Instance()->GetResourceManager()->GetShader("Content/Shaders/TerrainShaderNew.fx");
+	this->water_shader = Kernel::Instance()->GetResourceManager()->GetShader("Content/Shaders/WaterNew.fx");
 	Logger::Instance()->Log("Creating Vertices..", Info);
 	bool success = true;
 
 	vector< vector< Vertex* > > vertices;
-	//Create vertices in a 2d grid.
+	this->color_map = Util::BitmapToColormap( "colormap.bmp" );
+	this->normal_map = Util::BitmapToColormap( "normalmap.bmp" );
+
+	//Create vertices in a 2d grid for the terrain.
 	for( unsigned int a = 0; a < size; a++ )
 	{
 		vector< Vertex* > column;
 		for( unsigned int b = 0; b < size; b++ )
 		{
-			column.push_back( new Vertex ( ( 1.0f * b ), this->hmap[ b ][ a ], ( -1.0f * a ) , 1, 1, 1, b, a ) );
+			column.push_back( new Vertex ( ( 1.0f * b ), this->heightmap[ b ][ a ] * 0.06, ( -1.0f * a ), this->color_map[ b ][ a ].r, this->color_map[ b ][ a ].g, this->color_map[ b ][ a ].b, this->normal_map[ b ][ a ].r, this->normal_map[ b ][ a ].g, this->normal_map[ b ][ a ].b, b, a ) );
 		}
 		vertices.push_back( column );
 	}
 	this->vertices = vertices;
 
-	//Convert the 2d array to a 1d array, just for comfort.
-	vector< Vertex* > vertices_1d;
-	for( int a = 0; a < vertices.size(); a++)
+	this->vertex_buffer_terrain = this->CreateVertexBuffer( vertices, size );
+	this->vertex_buffer_terrain_size = size * size;
+
+	vector< vector< Vertex* > > vertices_water;
+	//Create vertices in a 2d grid for the water.
+	for( unsigned int a = 0; a < size; a++ )
 	{
-		for( int b = 0; b < vertices[ a ].size(); b++)
+		vector< Vertex* > column;
+		for( unsigned int b = 0; b < size; b++ )
 		{
-			vertices_1d.push_back( vertices[ a ][ b ] );
+			column.push_back( new Vertex ( ( 1.0f * b ), 2, ( -1.0f * a ), 255, 255, 255, 0, 0, 0, b, a ) );
 		}
+		vertices_water.push_back( column );
 	}
-	this->vertex_buffer_size = vertices_1d.size();
-
-	//Creates the vertex buffer and copies the 1d vertices array to it.
-	if( !FAILED( Kernel::Instance()->GetRenderer()->GetDevice()->CreateVertexBuffer( this->vertex_buffer_size * sizeof( CUSTOMVERTEX ), D3DUSAGE_WRITEONLY, CUSTOMFVF, D3DPOOL_MANAGED, &this->vertex_buffer, NULL ) ) )
-	{
-		CUSTOMVERTEX *vertices_fvf=NULL;
-
-		this->vertex_buffer->Lock( 0, this->vertex_buffer_size, (void**)&vertices_fvf, 0 );
-
-		//Copy the vertices to an array suitable for the vertex buffer.
-		for( unsigned int i = 0; i < this->vertex_buffer_size; i++ )
-		{
-			vertices_fvf[ i ] = *vertices_1d[ i ]->GetCustomVertex();
-		}
-		this->vertex_buffer->Unlock();
-	}
-	else
-	{
-		success = false;
-	}
+	this->vertex_buffer_water = this->CreateVertexBuffer( vertices_water, size );
 
 	//Calculate size of index buffer.
-	this->index_buffer_size = ( this->vertex_buffer_size * 2 ) - 4;
+	this->index_buffer_size = ( ( size * size ) * 2 ) - 4;
 	if( !FAILED( Kernel::Instance()->GetRenderer()->GetDevice()->CreateIndexBuffer( this->index_buffer_size * sizeof( unsigned short ), D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &this->index_buffer, NULL ) ) )
 	{
 		unsigned short *indices = NULL;
@@ -129,13 +122,13 @@ void Terrain::Render()
 	D3DXMatrixTranspose(this->matWorldInverseTransponse, &this->matWorld);
 	D3DXMatrixInverse(this->matWorldInverseTransponse, NULL, matWorldInverseTransponse);
 
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(0,this->texture_map->GetD3DTexture() );
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(1,this->currentSet.Texture1->GetD3DTexture() );
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(2,this->currentSet.Texture2->GetD3DTexture() );
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(3,this->currentSet.Texture3->GetD3DTexture() );
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(4,this->texture_normal->GetD3DTexture() );
+	
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(0,this->currentSet.Texture1->GetD3DTexture() );
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(1,this->currentSet.Texture2->GetD3DTexture() );
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(2,this->currentSet.Texture3->GetD3DTexture() );
+
 	//this->g_pD3DDevice->SetTexture(5,this->currentSet.alt_Texture1->GetD3DTexture() );
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(5,this->currentSet.Texture4->GetD3DTexture() );
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(3,this->currentSet.Texture4->GetD3DTexture() );
 
 	UINT passes;
 	this->terrain_shader->GetD3DEffect()->SetFloat( "time", timeGetTime());	
@@ -148,99 +141,31 @@ void Terrain::Render()
 	this->terrain_shader->GetD3DEffect()->Begin(&passes,0);
 
 	Kernel::Instance()->GetRenderer()->GetDevice()->SetFVF(CUSTOMFVF);
-	Kernel::Instance()->GetRenderer()->GetDevice()->SetStreamSource(0, this->vertex_buffer, 0, sizeof(CUSTOMVERTEX));
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetStreamSource(0, this->vertex_buffer_terrain, 0, sizeof(CUSTOMVERTEX));
 	Kernel::Instance()->GetRenderer()->GetDevice()->SetIndices(this->index_buffer);
-	Kernel::Instance()->GetRenderer()->GetDevice()->DrawIndexedPrimitive( D3DPT_TRIANGLESTRIP,0,0,this->vertex_buffer_size,0,this->index_buffer_size - 2 );
+	Kernel::Instance()->GetRenderer()->GetDevice()->DrawIndexedPrimitive( D3DPT_TRIANGLESTRIP,0,0,this->vertex_buffer_terrain_size,0,this->index_buffer_size - 2 );
+	
 	this->terrain_shader->GetD3DEffect()->EndPass();
 	this->terrain_shader->GetD3DEffect()->End();
 
+	//Water HAX HAX HAX
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(0,this->currentSet.water->GetD3DTexture() );
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetTexture(1,this->currentSet.water1->GetD3DTexture() );
+	UINT passes2;
+	this->water_shader->GetD3DEffect()->SetFloat( "time", timeGetTime());
+	this->water_shader->GetD3DEffect()->SetVector( "CameraPosition", &D3DXVECTOR4( camera_position.x, camera_position.y, camera_position.z, 1 ) );
+	this->water_shader->GetD3DEffect()->SetMatrix( "wvp", this->worldViewProj);
+	this->water_shader->GetD3DEffect()->SetMatrix( "itw", this->matWorldInverseTransponse);
+	this->water_shader->GetD3DEffect()->Begin(&passes2,0);
+	this->water_shader->GetD3DEffect()->BeginPass(0);
+	this->water_shader->GetD3DEffect()->Begin(&passes2,0);
+	Kernel::Instance()->GetRenderer()->GetDevice()->SetStreamSource(0, this->vertex_buffer_water, 0, sizeof(CUSTOMVERTEX));
+	Kernel::Instance()->GetRenderer()->GetDevice()->DrawIndexedPrimitive( D3DPT_TRIANGLESTRIP,0,0,this->vertex_buffer_terrain_size,0,this->index_buffer_size - 2 );
+	this->water_shader->GetD3DEffect()->EndPass();
+	this->water_shader->GetD3DEffect()->End();
+
 		
 	Node::Render();
-}
-
-bool Terrain::LoadBMP(std::string argFileName)
-{
-	//Logger::Instance()->Log("Loading Heightmap..", Info);
-	//Load image from file
-	HDC lhdcDest;	//Handle to Device Context (Windows GDI)
-	HANDLE hbmp;	//Handle to an object (standard handle)
-	HINSTANCE* hInst = new HINSTANCE();//Handle to an instance (instance of the window)
-
-	//Create a memory device context compatible with the specified device (NULL)
-	lhdcDest = CreateCompatibleDC(NULL);
-	if (lhdcDest == NULL)	 
-	{		  
-		DeleteDC(lhdcDest);	//Delete the DC (prevents a memory leak!)
-		return false;		//Jump out of the function
-	}
-
-	//Windows GDI load image of type BMP (fileformat)
-	hbmp = LoadImage(*hInst, argFileName.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	if (hbmp == NULL)	//Give a visual warning if the loading of the image failed
-	{
-		char s[100];
-		wsprintf(s, "Can't find HeightMask %s", argFileName);
-		MessageBox(NULL, s, "ERROR ERROR ERROR", MB_OK);
-		return false;		//Jump out of the function
-	}
-	//At this point it is sure that lhdcDest & hbmp are valid.
-
-	//Load the bmp into the device context (memory space)
-	SelectObject(lhdcDest, hbmp);
-
-	//The BITMAP structure defines the type, width, height, color format, and bit values of a bitmap
-	BITMAP bm;
-	//The GetObject function retrieves information for the specified graphics object
-	//bm is cast to a "void*" because GetObject function doesn't 'know' it's format 
-	//(don't know what it is, but just put it in that buffer)
-	GetObject(hbmp, sizeof(BITMAP), (void*)&bm);
-
-	//Store the width and height of the heightmap
-	int width = bm.bmWidth;
-	int height = bm.bmHeight;
-
-	//Check if the bitmap's dimensions are dividable by 2
-	//if (width % 2 > 0 || height % 2 > 0)
-	//{
-	//	Logger::Instance()->Log("Incorrect heightmap dimensions, must be dividable by 2..", Error);
-	//	return false;
-	//}
-
-	//Create an array to hold all the heightdata
-	//WHY is a BYTE array used, and not e.g. a INT array?
-	//WHY "*3"?
-	BYTE* tempheightData = new BYTE[width*width*3];
-
-	//Iterate through the BMP-file and fill the heightdata-array
-	for (int lHeight = 0; lHeight < width; lHeight++)
-	{
-		for (int lWidth = 0; lWidth < width; lWidth++)
-		{
-			tempheightData[(lWidth*width*3)+lHeight*3+0] = GetRValue(GetPixel(lhdcDest, lHeight, lWidth));
-			tempheightData[(lWidth*width*3)+lHeight*3+1] = GetGValue(GetPixel(lhdcDest, lHeight, lWidth));
-			tempheightData[(lWidth*width*3)+lHeight*3+2] = GetBValue(GetPixel(lhdcDest, lHeight, lWidth));
-		}
-	}
-	//Check if the bitmap is greyscale
-	if( (tempheightData[0] + tempheightData[1] + tempheightData[2]) / 3  != tempheightData[0])
-	{
-		Logger::Instance()->Log("Heightmap is not greyscale..", Error);
-		return false;
-	}
-
-	//Fill the heightmap array for the terrain. b is width or x, a is height or z
-	int counter = 0;
-	for(int a=0; a < 250; a++)
-	{
-		for(int b=0; b < 250; b++)
-		{
-			this->hmap[b][a] = tempheightData[counter*3]*0.04f;
-			counter++;
-		}
-	}
-
-	delete hInst;
-	return true;
 }
 
 void Terrain::CreateNoise()
@@ -293,7 +218,7 @@ void Terrain::CreateNoise()
 	module::Perlin terrainType;
 	terrainType.SetFrequency (0.5);
 	terrainType.SetPersistence (0.125);
-	terrainType.SetSeed(84);
+	terrainType.SetSeed(758);
 
 	module::Select terrainSelector;
 	terrainSelector.SetSourceModule (0, flatTerrain);
@@ -324,39 +249,38 @@ void Terrain::CreateNoise()
 	renderer.Render ();
 	noise::utils::WriterBMP writer;
 	writer.SetSourceImage (image);
-	writer.SetDestFilename ("tutorial.bmp");
+	writer.SetDestFilename ("heightmap.bmp");
 	writer.WriteDestFile ();
 
-	this->LoadBMP("tutorial.bmp");
+	//this->LoadBMP("tutorial.bmp");
+	this->heightmap = Util::BitmapToHeightmap( "heightmap.bmp" );
 	renderer.SetDestImage (image);
 	renderer.ClearGradient ();
 	//renderer.AddGradientPoint (-1.00, utils::Color (0, 225, 0, 255)); // dirt
 	//renderer.AddGradientPoint (-0.55, utils::Color (0, 225, 0, 255)); // dirt
 	//renderer.AddGradientPoint (-0.45, utils::Color (255, 0, 0, 255)); // grass
 
-	renderer.AddGradientPoint (-1.00, utils::Color ( 160, 32,   0, 255)); // grass
-	renderer.AddGradientPoint (-0.25, utils::Color (124, 224,   0, 255)); // dirt
-	renderer.AddGradientPoint ( 0.25, utils::Color (32, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 1.00, utils::Color (124, 0, 255, 255)); // snow
+	renderer.AddGradientPoint ( -1.00, utils::Color ( 0, 225,   0, 255 ) ); // grass
+	renderer.AddGradientPoint ( -0.25, utils::Color ( 160, 32,   0, 255 ) ); // dirt
+	renderer.AddGradientPoint ( 0.25, utils::Color ( 32, 128, 128, 255 ) ); // rock
+	renderer.AddGradientPoint ( 1.00, utils::Color ( 50, 0, 255, 255 ) ); // snow
 	renderer.Render ();
 	writer.SetSourceImage (image);
-	writer.SetDestFilename ("tutorialColor.bmp");
+	writer.SetDestFilename ("colormap.bmp");
 	writer.WriteDestFile ();
 
-	this->texture_map = Kernel::Instance()->GetResourceManager()->GetTexture("tutorialColor.bmp");
+	noise::utils::RendererNormalMap normalMapRenderer;
+	noise::utils::Image normalImage;
+	normalImage.SetSize( this->size, this->size );
+	normalMapRenderer.SetSourceNoiseMap(heightMap);
+	normalMapRenderer.SetDestImage(normalImage);
+	normalMapRenderer.SetBumpHeight(6);
+	normalMapRenderer.Render();                   
+	noise::utils::WriterBMP normalMapWriter;
+	normalMapWriter.SetSourceImage (normalImage);
+	normalMapWriter.SetDestFilename ("normalmap.bmp");
+	normalMapWriter.WriteDestFile ();
 
-   noise::utils::RendererNormalMap normalMapRenderer;
-   noise::utils::Image normalImage;
-   normalImage.SetSize( this->size, this->size );
-   normalMapRenderer.SetSourceNoiseMap(heightMap);
-   normalMapRenderer.SetDestImage(normalImage);
-   normalMapRenderer.SetBumpHeight(6);
-   normalMapRenderer.Render();                   
-   noise::utils::WriterBMP normalMapWriter;
-   normalMapWriter.SetSourceImage (normalImage);
-   normalMapWriter.SetDestFilename ("tutorialNormal.bmp");
-   normalMapWriter.WriteDestFile ();
-   this->texture_normal = Kernel::Instance()->GetResourceManager()->GetTexture("tutorialNormal.bmp");
 }
 
 Vector Terrain::Collide( Vector position )
@@ -373,31 +297,65 @@ Vector Terrain::Collide( Vector position )
 
 	float minX = Topleft.x; //0%
 	float maxX = Topright.x; //100%
-	float percentX = (((position.x-minX)/(maxX-minX)))*100; 
+	float percentX = ( ( ( position.x - minX) / ( maxX - minX ) ) ) * 100; 
 
 	float minZ = Topright.z; //0%
 	float maxZ = Bottomright.z; //100%
-	float percentZ = (((position.z-minZ)/(maxZ-minZ)))*100; 
+	float percentZ = ( ( ( position.z - minZ ) / ( maxZ - minZ ) ) ) * 100; 
 
 	float HeightTL = Topleft.y;
 	float HeightTR = Topright.y;
 	float HeightBL = Bottomleft.y;
 	float HeightBR = Bottomright.y;
 
-	float heightTLTR = Math::Inst()->LinearInterpolate(HeightTL,HeightTR,percentX/100);
-	float heightBLBR = Math::Inst()->LinearInterpolate(HeightBL,HeightBR,percentX/100);
-	float Xlerp = Math::Inst()->LinearInterpolate(heightTLTR,heightBLBR,percentZ/100);
-	float heightTLBL = Math::Inst()->LinearInterpolate(HeightTL,HeightBL,percentZ/100);
-	float heightTRBR = Math::Inst()->LinearInterpolate(HeightTR,HeightBR,percentZ/100);
-	float Zlerp = Math::Inst()->LinearInterpolate(heightTLBL,heightTRBR,percentX/100);
-	float final = (Xlerp + Zlerp)/2;
-	Vector newPosition = Vector(position.x,final,position.z);
+	float heightTLTR = Math::Inst()->LinearInterpolate( HeightTL, HeightTR, percentX / 100 );
+	float heightBLBR = Math::Inst()->LinearInterpolate( HeightBL, HeightBR, percentX / 100);
+	float Xlerp = Math::Inst()->LinearInterpolate( heightTLTR, heightBLBR, percentZ / 100);
+	float heightTLBL = Math::Inst()->LinearInterpolate( HeightTL, HeightBL, percentZ / 100);
+	float heightTRBR = Math::Inst()->LinearInterpolate( HeightTR, HeightBR, percentZ / 100);
+	float Zlerp = Math::Inst()->LinearInterpolate( heightTLBL, heightTRBR, percentX / 100);
+	float final = ( Xlerp + Zlerp ) / 2;
+	Vector newPosition = Vector( position.x, final, position.z );
 
 	return newPosition;
 }
 
+LPDIRECT3DVERTEXBUFFER9 Terrain::CreateVertexBuffer( vector< vector< Vertex* > > vertices, int terrain_size )
+{
+	LPDIRECT3DVERTEXBUFFER9 new_buffer;
+	//Creates the vertex buffer and copies the 1d vertices array to it.
+	if( !FAILED( Kernel::Instance()->GetRenderer()->GetDevice()->CreateVertexBuffer( ( terrain_size * terrain_size ) * sizeof( CUSTOMVERTEX ), D3DUSAGE_WRITEONLY, CUSTOMFVF, D3DPOOL_MANAGED, &new_buffer, NULL ) ) )
+	{
+		CUSTOMVERTEX *vertices_fvf=NULL;
+
+		new_buffer->Lock( 0, this->vertex_buffer_terrain_size, (void**)&vertices_fvf, 0 );
+
+		//Copy the vertices to an array suitable for the vertex buffer.
+		int i = 0;
+		for( int a = 0; a < vertices.size(); a++)
+		{
+			for( int b = 0; b < vertices[ a ].size(); b++)
+			{
+				vertices_fvf[ i ] = *vertices[ a ][ b ]->GetCustomVertex();
+				i++;
+			}
+		}
+		new_buffer->Unlock();
+	}
+	else
+	{
+		new_buffer = NULL;
+	}
+	return new_buffer;
+}
+
+Shader* Terrain::GetTerrainShader()
+{
+	return this->terrain_shader;
+}
+
 Terrain::~Terrain()
 {
-	this->vertex_buffer->Release();
+	this->vertex_buffer_terrain->Release();
 	this->index_buffer->Release();
 }
