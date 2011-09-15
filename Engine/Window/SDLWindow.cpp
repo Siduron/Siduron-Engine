@@ -17,6 +17,7 @@ SDLWindow::SDLWindow(int width, int height)
 	SDL_GetWMInfo(&pInfo); 
 	SDL_EnableUNICODE( 1 );
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
 	//MoveWindow(this->GetHandle(), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, NULL, NULL, NULL);
 }
 

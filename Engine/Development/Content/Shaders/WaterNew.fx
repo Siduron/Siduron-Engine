@@ -72,25 +72,25 @@ PS_OUT PS(VS_OUT input)
 	Tex1.x = input.Tex.x + (time/2000)/40;
 	Tex2.x = input.Tex.x - (time/2500)/40;
 			 
-	Tex1.y = input.Tex.y + (time/2500)/20;
-	Tex2.y = input.Tex.y - (time/2000)/30;
+	Tex1.y = input.Tex.y + (time/2200)/20;
+	Tex2.y = input.Tex.y - (time/2800)/30;
 			
-	Tex1.x = Tex1.x + (sin(Tex1.y*5)*sin(time/1010)/6);
+	Tex1.x = Tex1.x + (sin(Tex1.y*5)*sin(time/1010)/60);
 	Tex1.x = Tex1.x + (sin(Tex1.y*50)*sin(time/800)/10);
 	Tex1.x = Tex1.x + (sin(Tex1.y*75)*sin(time/400)/19);
 	Tex1.x = Tex1.x + (sin(Tex1.y*117)*sin(time/300)/50);
 	
-	Tex1.y = Tex1.y + (sin(Tex1.x*5)*sin(time/1020)/6);
+	Tex1.y = Tex1.y + (sin(Tex1.x*5)*sin(time/1020)/60);
 	Tex1.y = Tex1.y + (sin(Tex1.x*50)*sin(time/800)/10);
 	Tex1.y = Tex1.y + (sin(Tex1.x*75)*sin(time/400)/19);
 	Tex1.y = Tex1.y + (sin(Tex1.x*113)*sin(time/310)/50);
 			
-	Tex2.x = Tex2.x + (cos(Tex2.y*5)*cos(time/990)/6);
+	Tex2.x = Tex2.x + (cos(Tex2.y*5)*cos(time/990)/60);
 	Tex2.x = Tex2.x + (cos(Tex2.y*50)*cos(time/800)/10);
 	Tex2.x = Tex2.x + (cos(Tex2.y*75)*cos(time/400)/19);
 	Tex2.x = Tex2.x + (cos(Tex2.y*112)*cos(time/290)/50);
 	
-	Tex2.y = Tex2.y + (cos(Tex2.x*5)*cos(time/980)/6);
+	Tex2.y = Tex2.y + (cos(Tex2.x*5)*cos(time/980)/60);
 	Tex2.y = Tex2.y + (cos(Tex2.x*50)*cos(time/800)/10);
 	Tex2.y = Tex2.y + (cos(Tex2.x*75)*cos(time/400)/19);
 	Tex2.y = Tex2.y + (cos(Tex2.x*118)*cos(time/320)/50);

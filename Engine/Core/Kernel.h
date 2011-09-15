@@ -7,8 +7,8 @@
 #include "../Input/InputManager.h"
 #include "../Scene/Scene.h"
 #include "../GUI/GUI.H"
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1200	
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 800	
 #define FULLSCREEN false
 
 class Kernel

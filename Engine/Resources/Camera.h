@@ -7,12 +7,12 @@ class Camera : public Entity
 	public:
 		void MoveForward(float amount);
 		Camera();
-		Vector* GetLookAt();
+		const Vector& GetLookAt();
 		void Update();
 		void Pitch(float amount);
 
 	private:
-		  Vector* lookAt;
+		Vector lookAt;
 };
 
 #endif

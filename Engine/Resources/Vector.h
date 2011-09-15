@@ -6,10 +6,11 @@ class Vector
 {
 	public:
 	Vector();
-	Vector(float xValue,float yValue,float zValue);
+	Vector( float xValue,float yValue,float zValue );
 	float x, y, z;
-	float Proximity(Vector v);
+	float Proximity( Vector v );
 	Vector Add(Vector v);
+	Vector Subtract( Vector v );
 	private:
 		
 };

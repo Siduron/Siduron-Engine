@@ -187,8 +187,8 @@ void Renderer::Present()
 	//this->postprocess->GetD3DEffect()->EndPass();
 	//this->postprocess->GetD3DEffect()->End();
 	
-	Vector* lookAt = this->camera->GetLookAt();
-	D3DXMatrixLookAtLH( &this->matViewSave, &D3DXVECTOR3( this->camera->GetPosition().x, this->camera->GetPosition().y, this->camera->GetPosition().z), &D3DXVECTOR3(lookAt->x, lookAt->y, lookAt->z), &D3DXVECTOR3( 0.0f, 1.0f, 0.0f) );
+	Vector lookAt = this->camera->GetLookAt();
+	D3DXMatrixLookAtLH( &this->matViewSave, &D3DXVECTOR3( this->camera->GetPosition().x, this->camera->GetPosition().y, this->camera->GetPosition().z), &D3DXVECTOR3( lookAt.x, lookAt.y, lookAt.z ), &D3DXVECTOR3( 0.0f, 1.0f, 0.0f) );
 	D3DXMatrixPerspectiveFovLH( &this->matProjSave, D3DX_PI/2, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 2.0f, 1000.0f );
 	this->g_pD3DDevice->SetTransform( D3DTS_VIEW, &this->matViewSave);
 	this->g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &this->matProjSave);

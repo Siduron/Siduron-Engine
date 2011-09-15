@@ -18,7 +18,7 @@ Terrain::Terrain()
 	this->greenWorld.Texture4 = resourceManager->GetTexture("Content/Textures/Terrain/Green World/Concrete tile.jpg");
 	this->greenWorld.debug = resourceManager->GetTexture("Content/Textures/Terrain/devtexture.bmp");
 	this->greenWorld.water = resourceManager->GetTexture("Content/Textures/Terrain/2987042594_e9968cd001.jpg");
-	this->greenWorld.water1 = resourceManager->GetTexture("Content/Textures/Terrain/3020.jpg");
+	this->greenWorld.water1 = resourceManager->GetTexture("Content/Textures/Terrain/940.jpg");
 	this->currentSet = this->greenWorld;
 	this->size = 0;
 }
@@ -209,6 +209,7 @@ void Terrain::CreateNoise()
 	module::Billow mountainTerrain;
 	module::Billow baseFlatTerrain;
 	baseFlatTerrain.SetFrequency (2.0);
+	baseFlatTerrain.SetSeed( 4426);
 
 	module::ScaleBias flatTerrain;
 	flatTerrain.SetSourceModule (0, baseFlatTerrain);
@@ -218,19 +219,20 @@ void Terrain::CreateNoise()
 	module::Perlin terrainType;
 	terrainType.SetFrequency (0.5);
 	terrainType.SetPersistence (0.125);
-	terrainType.SetSeed(758);
+	terrainType.SetSeed(2678);
 
 	module::Select terrainSelector;
 	terrainSelector.SetSourceModule (0, flatTerrain);
 	terrainSelector.SetSourceModule (1, mountainTerrain);
 	terrainSelector.SetControlModule (terrainType);
-	terrainSelector.SetBounds (0.0, 1000.0);
-	terrainSelector.SetEdgeFalloff (0.1);
+	terrainSelector.SetBounds (-100.0, 3000.0);
+	terrainSelector.SetEdgeFalloff (0.4);
 
 	module::Turbulence finalTerrain;
 	finalTerrain.SetSourceModule (0, terrainSelector);
 	finalTerrain.SetFrequency (2);
 	finalTerrain.SetPower (0.125);
+	finalTerrain.SetSeed( 65426 );
 
 	noise::utils::NoiseMap heightMap;
 	noise::utils::NoiseMapBuilderPlane heightMapBuilder;
@@ -238,7 +240,7 @@ void Terrain::CreateNoise()
 	heightMapBuilder.SetSourceModule (finalTerrain);
 	heightMapBuilder.SetDestNoiseMap (heightMap);
 	heightMapBuilder.SetDestSize ( this->size, this->size );
-	heightMapBuilder.SetBounds (0.0, 4.0, -8.0, -4.0);
+	heightMapBuilder.SetBounds (4.0, 8.0, 3.0, 7.0);
 	heightMapBuilder.Build ();
 
 	noise::utils::RendererImage renderer;

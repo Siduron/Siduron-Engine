@@ -19,14 +19,18 @@ class RTStest : public CEvent
 		void OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode);
 		void OnExit();
 		bool scrollingLeft, scrollingRight, scrollingUp, scrollingDown;
-		bool yawLeft, yawRight, forward;
+		bool yawLeft, yawRight, forward, backward, strafeLeft, strafeRight;
 		bool running;
 
 		float timer;
 		float keyTimer;
 		Camera* camera;
 		EntityModel* generator;
+		EntityModel* dome;
 		Terrain* terrain;
 		ISoundEngine* engine;
+		ISound* ambientsound;
+		ISound* domesound;
+		ISound* watersound;
 };
 #endif

@@ -62,6 +62,7 @@ bool SetupEngine()
 
 	Kernel::Instance();
 	rtsTest = new RTStest();
+	Logger::Instance()->Log("Running..", Info);
 	//modelTest = new ModelTest();
 	//terrainTest = new TerrainTest();
 	//Logger::Instance()->Log("Running..", Info);

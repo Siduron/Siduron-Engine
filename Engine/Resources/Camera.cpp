@@ -3,19 +3,19 @@
 //
 Camera::Camera()
 {
-	this->lookAt = new Vector(0,0,1);
+	this->lookAt = Vector(0,0,1);
 }
 
-Vector* Camera::GetLookAt()
+const Vector& Camera::GetLookAt()
 {
 	this->Update();
 	return this->lookAt;
 }
 void Camera::Update()
 {
-	this->lookAt->x = (sinf(this->rotation.y)*cosf(this->rotation.x)) + this->position.x;
-	this->lookAt->y = sinf(-this->rotation.x) + this->position.y;
-	this->lookAt->z = (cosf(this->rotation.y)*cosf(this->rotation.x)) + this->position.z;
+	this->lookAt.x = (sinf(this->rotation.y)*cosf(this->rotation.x)) + this->position.x;
+	this->lookAt.y = sinf(-this->rotation.x) + this->position.y;
+	this->lookAt.z = (cosf(this->rotation.y)*cosf(this->rotation.x)) + this->position.z;
 }
 
 void Camera::Pitch(float amount)

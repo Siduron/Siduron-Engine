@@ -8,8 +8,8 @@ Skybox::Skybox()
 
 void Skybox::Update()
 {
-	this->SetPosition( Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition() );
 	EntityModel::Update();
+	this->SetPosition( Kernel::Instance()->GetRenderer()->GetCamera()->GetPosition() );	
 }
 
 Skybox::~Skybox()

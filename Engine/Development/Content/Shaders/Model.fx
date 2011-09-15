@@ -99,6 +99,6 @@ technique D3D
 		DestBlend = InvSrcAlpha;
         VertexShader = compile vs_1_1 VS();
         PixelShader = compile ps_2_0 PS();
-
+		ZWriteEnable = TRUE;
     }
 }

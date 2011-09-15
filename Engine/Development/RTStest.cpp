@@ -6,18 +6,26 @@
 
 RTStest::RTStest()
 {
+	Logger::Instance()->Log("Creating scene..", Info);
+	camera = Kernel::Instance()->GetRenderer()->GetCamera();
 	this->engine = createIrrKlangDevice();
 	this->engine->setSoundVolume( 0.5f );
-	this->engine->play2D("Content/Sound/crucial_frogs_loop1.wav", true);
+	
+	this->ambientsound = this->engine->play3D("Content/Sound/courtyard_birds_loop.wav", vec3df( camera->GetPosition().x, camera->GetPosition().y, camera->GetPosition().z ), true, false, true );
+	this->ambientsound->setVolume( 0.5f );
 
-	camera = Kernel::Instance()->GetRenderer()->GetCamera();
+	
+	Logger::Instance()->Log("Creating terrain..", Info);
 	this->terrain = new Terrain();
 	this->terrain->Create( 250 );
 
+	Logger::Instance()->Log("Creating Skybox..", Info);
 	Scene* scene = Kernel::Instance()->GetScene();
 	Skybox* skybox = new Skybox();
-	skybox->SetModel("Content/Models/skybox/", "skybox.3DS");
+	skybox->SetModel("Content/Models/skybox/", "sky.3DS");
 	skybox->SetShader("Content/Shaders/Skybox.fx");
+
+	Logger::Instance()->Log("Creating entities..", Info);
 	this->generator = new EntityModel();
 	generator->SetModel("Content/Models/Shieldgenerator2/","towerWIP1.3DS");
 	generator->SetShader("Content/Shaders/Model.fx");
@@ -28,6 +36,7 @@ RTStest::RTStest()
 	EntityModel* dome = new EntityModel();
 	dome->SetModel("Content/Models/Dome/","hollowsphere.X");
 	dome->SetShader("Content/Shaders/Dome.fx");
+	this->dome = dome;
 	dome->SetPosition(generator->GetPosition());
 	dome->SetScale(3.0,3.0,3.0);
 
@@ -44,6 +53,7 @@ RTStest::RTStest()
 	powerstation2->SetScale(0.05f,0.05f,0.05f);
 
 
+	Logger::Instance()->Log("Adding entities to scene..", Info);
 	scene->Add( skybox );
 	scene->Add(camera);
 	scene->Add(this->terrain);
@@ -53,7 +63,7 @@ RTStest::RTStest()
 	scene->Add(powerstation2);
 	
 	skybox->SetPosition(125,10,-125);
-	camera->SetPosition(125,10,-125);
+	camera->SetPosition(125,20,-125);
 	camera->Pitch(90);
 
 	this->scrollingLeft = false;
@@ -64,25 +74,40 @@ RTStest::RTStest()
 	this->yawLeft = false;
 	this->yawRight = false;
 	this->forward = false;
+	this->backward = false;
+	this->strafeLeft = false;
+	this->strafeRight = false;
 	this->running = true;
+	
+	Logger::Instance()->Log("Creating sounds..", Info);
+	this->domesound = this->engine->play3D("Content/Sound/iris_atlantis_loop.wav", vec3df( dome->GetPosition().x, dome->GetPosition().y, dome->GetPosition().z ), true, false, true );
+	this->domesound->setPlaybackSpeed( 0.5f );
+	this->watersound = this->engine->play3D("Content/Sound/rur5b_watersedgeamb.wav", vec3df( 0, 5, 0 ), true, false, true );
 
-	ISound* domesound = this->engine->play3D("Content/Sound/wormhole_loop.wav", vec3df(dome->GetPosition().x,dome->GetPosition().y,dome->GetPosition().z), true, false, true);
 	if (domesound)
 	{
 		domesound->setMinDistance(5.0f);
 	}
+	ambientsound->setMinDistance(25.0f);
 	float posOnCircle = 0;
     const float radius = 5;
 }
 
 bool RTStest::Run()
 {
+	Camera* cam = Kernel::Instance()->GetRenderer()->GetCamera();
+	Vector lookAt = cam->GetLookAt();
+	Vector relative_lookat = lookAt.Subtract( cam->GetPosition() );
+	this->engine->setListenerPosition( vec3df( cam->GetPosition().x, cam->GetPosition().y, cam->GetPosition() .z ), vec3df( relative_lookat.x, relative_lookat.y, relative_lookat.z ) );
+	this->watersound->setPosition( vec3df( cam->GetPosition().x, 5, cam->GetPosition().z ) );
+	this->ambientsound->setPosition( vec3df( cam->GetPosition().x, 0, cam->GetPosition().z ) );
+
 	SDL_Event Event;
 	while(SDL_PollEvent(&Event)) 
 	{
 		OnEvent(&Event);
     }
-	if(this->scrollingLeft)
+/*	if(this->scrollingLeft)
 	{
 		camera->MoveX(-0.10f);
 	}
@@ -104,14 +129,28 @@ bool RTStest::Run()
 	{
 		this->camera->Yaw(0.5f);
 	}
-	else if( this->yawRight )
-	{
-		this->camera->Yaw(-0.5f);
-	}
+*/
+	//else if( this->yawRight )
+	//{
+	//	this->camera->Yaw(-0.5f);
+	//}
 
 	if( this->forward )
 	{
 		this->camera->MoveForward(0.05f);
+	}
+	else if( this->backward )
+	{
+		this->camera->MoveForward(-0.05f);
+	}
+
+	if( this->strafeLeft )
+	{
+		this->camera->Strafe( -0.05f );
+	}
+	else if( this->strafeRight )
+	{
+		this->camera->Strafe( 0.05f );
 	}
 	//if(Kernel::Instance()->GetWindow()->IsFocused())
 	//{
@@ -196,6 +235,8 @@ void RTStest::OnEvent(SDL_Event* Event)
 
 void RTStest::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
+	this->camera->Yaw( relX );
+	this->camera->Pitch( relY );
 	if(mX <= 0+20)
 	{
 		this->scrollingLeft = true;
@@ -231,29 +272,6 @@ void RTStest::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Rig
 	{
 		this->scrollingDown = false;
 	}
-
-
-	//if(mX >= SCREEN_WIDTH-20)
-	//{
-	//	camera->MoveX(0.05f);
-	//	Logger::Instance()->Log("Right", Info);
-	//}
-	//else if(mX <= 0+20)
-	//{
-	//	camera->MoveX(-0.05f);
-	//	Logger::Instance()->Log("Left", Info);
-	//}
-
-	//if(mY >= SCREEN_HEIGHT-20)
-	//{
-	//	camera->MoveZ(-0.05f);
-	//	Logger::Instance()->Log("Down", Info);
-	//}
-	//else if(mY <= 0+20)
-	//{
-	//	camera->MoveZ(0.05f);
-	//	Logger::Instance()->Log("Up", Info);
-	//}
 }
 
 void RTStest::OnMouseWheel(bool Up, bool Down)
@@ -286,13 +304,19 @@ void RTStest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 	{
 		this->forward = true;
 	}
+	else if(keystates[SDLK_s])
+	{
+		this->backward = true;
+	}
 	if(keystates[SDLK_d])
 	{
 		this->yawLeft = true;
+		this->strafeRight = true;
 	}
 	if(keystates[SDLK_a])
 	{
 		this->yawRight = true;
+		this->strafeLeft = true;
 	}
 	if(keystates[SDLK_1])
 	{
@@ -310,6 +334,16 @@ void RTStest::OnKeyDown(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 	{
 		this->terrain->GetTerrainShader()->GetD3DEffect()->SetInt( "render_mode", 3 );
 	}
+	else if(keystates[SDLK_EQUALS])
+	{
+		this->domesound->setPlaybackSpeed(this->domesound->getPlaybackSpeed() + 0.001f );
+		this->dome->Scale( 0.01f, 0.01f, 0.01f);
+	}
+	else if(keystates[SDLK_MINUS])
+	{
+		this->domesound->setPlaybackSpeed(this->domesound->getPlaybackSpeed() - 0.001f );
+		this->dome->Scale( -0.01f, -0.01f, -0.01f);
+	}
 
 }
 
@@ -321,13 +355,19 @@ void RTStest::OnKeyUp(Uint8 scancode, SDLKey sym, SDLMod mod, Uint16 unicode)
 	{
 		this->forward = false;
 	}
+	if(!keystates[SDLK_s])
+	{
+		this->backward = false;
+	}
 	if(!keystates[SDLK_d])
 	{
 		this->yawLeft = false;
+		this->strafeRight = false;
 	}
 	if(!keystates[SDLK_a])
 	{
 		this->yawRight = false;
+		this->strafeLeft = false;
 	}
 }
 

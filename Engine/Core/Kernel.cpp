@@ -32,8 +32,8 @@ Kernel* Kernel::Instance()
 		}
 		else
 		{
-			Logger::Instance()->Log("Initializing GUI..", Info);
-			Kernel::Instance()->GetGUI()->Init();
+			/*Logger::Instance()->Log("Initializing GUI..", Info);
+			Kernel::Instance()->GetGUI()->Init();*/
 
 			//Kernel::Instance()->GetRenderer()->SetCamera(camera);
 			/*Logger::Instance()->Log("Initializing Input..", Info);
